@@ -4,15 +4,24 @@
   <meta charset="utf-8">
   
   
-  <title>Hexo</title>
+  <title>re | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="BUUCTF-RE-[GUET-CTF2019]re下载后是一个没有后缀名的文件 peid查壳 发现是64位upx壳 upx脱壳后拖入ida64分析  没有明显的主函数,Shift+F12打开字符串窗口  查看字符串调用找到主函数 12345678910111213141516171819202122232425__int64 sub_400E28()&amp;#123;  __int64 result;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="re">
+<meta property="og:url" content="http://example.com/2023/01/12/re/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="BUUCTF-RE-[GUET-CTF2019]re下载后是一个没有后缀名的文件 peid查壳 发现是64位upx壳 upx脱壳后拖入ida64分析  没有明显的主函数,Shift+F12打开字符串窗口  查看字符串调用找到主函数 12345678910111213141516171819202122232425__int64 sub_400E28()&amp;#123;  __int64 result;">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70.png">
+<meta property="og:image" content="http://example.com/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70-16735773430312.png">
+<meta property="og:image" content="http://example.com/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70-16735774324034.png">
+<meta property="og:image" content="http://example.com/images/re/image-20230113104641776.png">
+<meta property="article:published_time" content="2023-01-12T13:46:29.000Z">
+<meta property="article:modified_time" content="2023-01-13T02:50:52.742Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -69,9 +78,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-re" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-re" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/01/12/re/" class="article-date">
   <time class="dt-published" datetime="2023-01-12T13:46:29.000Z" itemprop="datePublished">2023-01-12</time>
@@ -84,8 +91,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/01/12/re/">re</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      re
     </h1>
   
 
@@ -126,130 +133,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-BUUCTF-reverse-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/01/06/BUUCTF-reverse-1/" class="article-date">
-  <time class="dt-published" datetime="2023-01-06T08:37:47.000Z" itemprop="datePublished">2023-01-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/01/06/BUUCTF-reverse-1/">BUUCTF-reverse_1</a>
-    </h1>
+    <a href="/2023/01/06/BUUCTF-reverse-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">BUUCTF-reverse_1</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>将下载好的压缩包解压，得到一个一个exe文件</p>
-<p>双击运行这个exe文件</p>
-<p><img src="/images/BUUCTF-reverse-1/ff74198e8798489d910f0fbc2dab8885.png"></p>
-<p> input the flag:</p>
-<p>说明题目需要我们输入一个flag，当flag正确的时候程序会有相应的输出</p>
-<p>我们要想找出这个flag是什么，我们只有一个可执行文件，没有源代码，无法理解程序如何运行，就需要将这个二进制文件进行逆向分析</p>
-<p>下面我们进行逆向分析</p>
-<p>1.查壳</p>
-<p><img src="/images/BUUCTF-reverse-1/3fcf7872f42e43a3a86bfb97a1e8c72b.png"></p>
-<p>无壳,是一个64位可执行文件，拖入64位ida当中</p>
-<p>2.打开字符串窗口<br>想在函数窗口寻找主函数进行反编译</p>
-<p><img src="/images/BUUCTF-reverse-1/2a179c8a1b4f4eb990d25ee0519120f0-16729952928111.png" alt="img"></p>
-<p>没有找到明显的main函数</p>
-<p>shift+F12打开string窗口查看程序中重要的字符串</p>
-<p> <img src="/images/BUUCTF-reverse-1/87c6d5ab14dd43a181a8540d343f6867-16729953368614.png" alt="img"></p>
-<p>this is the right flag，这是正确的flag</p>
-<p>点入这个重要的字符串</p>
-<p><img src="/images/BUUCTF-reverse-1/de28f2b802f246aea920312dabcdf50a-16729953581317.png" alt="img"></p>
-<p> 将光标放在这个标黄的变量上面，按下Ctrl+X，交叉引用，查看哪些函数调用了这个字符串</p>
-<p>根据字符串的字面意思，调用这个字符串的函数很可能是主函数或者是很重要的函数</p>
-<p>3.进入函数<br>点入这个函数,F5反编译成C++代码查看</p>
-<p><img src="/images/BUUCTF-reverse-1/d2e46befd615466db4de6c1fed2172a8-167299538732710.png" alt="img"></p>
-<p>分析可知:</p>
-<p>str1是我们输入的字符串，即flag</p>
-<p>strcmp()为字符串比较函数,若是两个字符串相同则返回0</p>
-<p>this is the right flag，说明输入了正确的字符串</p>
-<p>说明正确的字符串（flag）就等于str2，所以要查找str2的值</p>
-<p>点击str2进入文本界面，可以看到str2存储的是{hello_world}，尝试提交flag{hello_world},发现并不正确,继续分析代码发现</p>
-<p>for循环改变了str2</p>
-<p>111,48应该都是ASCLL码</p>
-<p>将光标点在111和48上面，按下快捷键r可以将其改为字符</p>
-<p><img src="/images/BUUCTF-reverse-1/e682e9d4e5744bbcae2993553ccdfebc-167299541033713.png" alt="img"></p>
-<p>这个循环遍历了str2，将其中的o改为了0</p>
-<p>我们就得到了str2(就是flag）</p>
-<p><strong>flag{hell0_w0rld}</strong> </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/01/06/BUUCTF-reverse-1/" data-id="clctxbuju0000dsbxhhkzhfdh" data-title="BUUCTF-reverse_1" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
-    <article id="post-BUUCTF-被劫持的神秘礼物" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/" class="article-date">
-  <time class="dt-published" datetime="2023-01-04T05:50:49.000Z" itemprop="datePublished">2023-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/">BUUCTF-被劫持的神秘礼物</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h6 id="题目-被劫持的神秘礼物"><a href="#题目-被劫持的神秘礼物" class="headerlink" title="题目:被劫持的神秘礼物"></a>题目:<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9">被劫持的神秘礼物</a></h6><h6 id="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交"><a href="#某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交" class="headerlink" title="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交"></a>某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw">https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw</a> 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交</h6><p>下载后得到文件gift.pcapng</p>
-<p>pcapng为流量包的后缀,这是一道典型的流量分析,我们用Wireshark打开流量包</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104120028859.png"></p>
-<p>追踪流发现</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104121724319.png"></p>
-<p>账号为admina,密码为adminb.</p>
-<p>由题目可知找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案</p>
-<p>所以flag为:flag{1d240aafe21a86afc11f38a45b541a49}</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/" data-id="clctxbujx0001dsbx954464z8" data-title="BUUCTF-被劫持的神秘礼物" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
