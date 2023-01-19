@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">3</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">4</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,86 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/19/Misc-%E5%93%88%E5%96%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="I'm a hacker.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/19/Misc-%E5%93%88%E5%96%BD/" class="post-title-link" itemprop="url">Misc-哈喽</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-19 10:46:11 / 修改时间：13:00:17" itemprop="dateCreated datePublished" datetime="2023-01-19T10:46:11+08:00">2023-01-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>下载解压后有两个文件</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/d6d2121a012e4a6d882434e0ea0b8ba8.png" alt="img"></p>
+<p>打开题目.txt</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/736baf4cd4d94d49a0fe6f74b5fc41a4.png" alt="img"></p>
+<p>盲猜肯定是文件头或者文件尾出错或者丢失</p>
+<p>用010打开6.gif</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/fe05492e77bb4695b9fa268d020e9a80.png" alt="img"></p>
+<p>果然就是文件头缺失</p>
+<p>gif的文件头为</p>
+<p><strong>47 49 46 38</strong></p>
+<p>这里只需要把文件头加上,然后保存就行了</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/7300429004de4ff39daf20a6bebbecfa.png" alt="img"></p>
+<p>保存后打开</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/6.gif" alt="6"></p>
+<p>是张含有4个字符串的gif动图</p>
+<p>我们直接在<a target="_blank" rel="noopener" href="https://uutool.cn/gif2img/">网站</a>上拆帧得到\</p>
+<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/image-20230119125626174.png" alt="image-20230119125626174"></p>
+<p>提取图片中的字符串得到</p>
+<p>Q1RGe3dhbmdfYmFvX3FpYW5nX2lzX3NhZH0&#x3D;</p>
+<p>字符串末尾有一个’&#x3D;’号,盲猜base64加密,解密得到</p>
+<p>CTF{wang_bao_qiang_is_sad}</p>
+<p>则flag为</p>
+<h4 id="flag-wang-bao-qiang-is-sad"><a href="#flag-wang-bao-qiang-is-sad" class="headerlink" title="flag{wang_bao_qiang_is_sad}"></a><strong>flag{wang_bao_qiang_is_sad}</strong></h4>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -472,7 +552,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
