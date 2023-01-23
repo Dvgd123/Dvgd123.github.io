@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">4</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">5</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,79 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/" class="post-title-link" itemprop="url">Web-http临时重定向</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-23 16:41:49 / 修改时间：16:47:43" itemprop="dateCreated datePublished" datetime="2023-01-23T16:41:49+08:00">2023-01-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>开启靶机</p>
+<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190229407-2005437280.png" alt="img"></p>
+<p>打开环境查看页面</p>
+<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190259107-1774572890.png" alt="img"></p>
+<p>点击Give me Flag后发生跳转</p>
+<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190357062-217897585.png" alt="img"></p>
+<p> 根据题目提示为HTTP临时重定向</p>
+<p>通过浏览器工具进行查看</p>
+<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190940760-521458118.png" alt="img"></p>
+<p>可以看到有一个状态为302的域名</p>
+<p>使用curl买了进行抓取</p>
+<p>curl不会进行跳转，curl -L会跟随重定向跳转</p>
+<p>抓取结果如下</p>
+<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/image-20230123164709178.png" alt="image-20230123164709178"></p>
+<p>成功拿到flag</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -552,7 +625,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
