@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">7</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">8</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,73 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/28/web-jicao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/28/web-jicao/" class="post-title-link" itemprop="url">web-jicao</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-28 21:55:08 / 修改时间：21:59:06" itemprop="dateCreated datePublished" datetime="2023-01-28T21:55:08+08:00">2023-01-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$id</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$json</span>=<span class="title function_ invoke__">json_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;json&#x27;</span>],<span class="literal">true</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$id</span>==<span class="string">&quot;wllmNB&quot;</span>&amp;&amp;<span class="variable">$json</span>[<span class="string">&#x27;x&#x27;</span>]==<span class="string">&quot;wllm&quot;</span>)</span><br><span class="line">&#123;<span class="keyword">echo</span> <span class="variable">$flag</span>;&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>阅读代码可知当传入一个post型的参数id与wllmNB相等并且传入一个get型的参数json；</p>
+<p>但是这里有一个函数json_decode，上网搜索可知json_decode这个函数对JSON格式的字符串进行编码</p>
+<p>参数json：待解码的json string格式的字符串，所以我们需要传入get型的参数json并且对他进行解码</p>
+<p>JSON 格式的字符串<br>$json &#x3D; ‘{“a”:”php”,”b”:”mysql”,”c”:3}’;</p>
+<p>其中a为键，php为a的键值。</p>
+<p>所以我们需要传入get:json&#x3D;{“x”:”wllm”}和post:id&#x3D;wllNB便可以得到flag。</p>
+<p><img src="/../images/web-jicao/3023439-20221104120952140-1155478415.png" alt="img"></p>
+<h5 id="NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9"><a href="#NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9" class="headerlink" title="NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}"></a>NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}</h5>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -753,7 +820,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
