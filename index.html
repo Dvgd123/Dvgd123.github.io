@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">8</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">9</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,80 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/29/web-include/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/29/web-include/" class="post-title-link" itemprop="url">web-include</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-29 10:24:16 / 修改时间：10:27:35" itemprop="dateCreated datePublished" datetime="2023-01-29T10:24:16+08:00">2023-01-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们看向这个题目的页面</p>
+<p><img src="/../images/web-include/1620.png" alt="img"></p>
+<p>他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么</p>
+<p><img src="/../images/web-include/1620-16749591749692.png" alt="img"></p>
+<p>提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on</p>
+<p>我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。</p>
+<p>使用php:&#x2F;&#x2F;filter读取到flag.php，将flag.php以base64的形式给显示出来，这样的话我们可以这样构造我们的payload</p>
+<p>url?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>我们来解读一下上面的payload：</p>
+<p>首先我们要传入file关键字的GET参数传递，php:&#x2F;&#x2F;是一种协议名称，php:&#x2F;&#x2F;filter是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode表示的是读取的方式是base64编码后resouce&#x3D;flag.php表示目标文件为flag.php</p>
+<p>也就是说，flag.php最终会以base64的形式显示出来，我们最后使用base64解码就可以了。</p>
+<p>理论存在，实践开始：</p>
+<p>我们使用上面的payload</p>
+<p><img src="/../images/web-include/1620-16749592011614.png" alt="img"></p>
+<p>然后我们得到了一段base64，我们使用base64解密，因该就可以得到答案了</p>
+<p><img src="/../images/web-include/1620-16749592431156.png" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -820,7 +894,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
