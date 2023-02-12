@@ -20,26 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="下载解压后有两个文件  打开题目.txt  盲猜肯定是文件头或者文件尾出错或者丢失 用010打开6.gif  果然就是文件头缺失 gif的文件头为 47 49 46 38 这里只需要把文件头加上,然后保存就行了  保存后打开  是张含有4个字符串的gif动图 我们直接在网站上拆帧得到\  提取图片中的字符串得到 Q1RGe3dhbmdfYmFvX3FpYW5nX2lzX3NhZH0&#x3D; 字">
+  <meta name="description" content="SQL注入相关知识一、SQl注入的基础1.介绍SQL注入SQL注入就是指WEB应用程序对用户输入数据的合法性没有判断，前端传入后端的参数是攻击者可控的，并且参数代入数据库查询，攻击者可以通过构造不同的SQL语句来是实现对数据库的任意操作。 一般情况下，开发人员可以使用动态SQL语句创建通用、灵活的应用。动态SQL语句是在执行过程中构造的，他根据不同的条件产生不同的SQL语句。当开发人员在运行过程中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Misc-哈喽">
-<meta property="og:url" content="http://example.com/2023/01/19/Misc-%E5%93%88%E5%96%BD/index.html">
+<meta property="og:title" content="web-sql注入学习">
+<meta property="og:url" content="http://example.com/2023/02/04/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="下载解压后有两个文件  打开题目.txt  盲猜肯定是文件头或者文件尾出错或者丢失 用010打开6.gif  果然就是文件头缺失 gif的文件头为 47 49 46 38 这里只需要把文件头加上,然后保存就行了  保存后打开  是张含有4个字符串的gif动图 我们直接在网站上拆帧得到\  提取图片中的字符串得到 Q1RGe3dhbmdfYmFvX3FpYW5nX2lzX3NhZH0&#x3D; 字">
+<meta property="og:description" content="SQL注入相关知识一、SQl注入的基础1.介绍SQL注入SQL注入就是指WEB应用程序对用户输入数据的合法性没有判断，前端传入后端的参数是攻击者可控的，并且参数代入数据库查询，攻击者可以通过构造不同的SQL语句来是实现对数据库的任意操作。 一般情况下，开发人员可以使用动态SQL语句创建通用、灵活的应用。动态SQL语句是在执行过程中构造的，他根据不同的条件产生不同的SQL语句。当开发人员在运行过程中">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/d6d2121a012e4a6d882434e0ea0b8ba8.png">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/736baf4cd4d94d49a0fe6f74b5fc41a4.png">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/fe05492e77bb4695b9fa268d020e9a80.png">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/7300429004de4ff39daf20a6bebbecfa.png">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/6.gif">
-<meta property="og:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/image-20230119125626174.png">
-<meta property="article:published_time" content="2023-01-19T02:46:11.000Z">
-<meta property="article:modified_time" content="2023-01-19T05:00:17.930Z">
+<meta property="og:image" content="http://example.com/images/web-%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21fZGVfZw==,size_16,color_FFFFFF,t_70.png">
+<meta property="og:image" content="http://example.com/images/web-%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21fZGVfZw==,size_16,color_FFFFFF,t_70-16754998107822.png">
+<meta property="article:published_time" content="2023-02-04T08:26:32.000Z">
+<meta property="article:modified_time" content="2023-02-04T08:39:43.413Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/Misc-%E5%93%88%E5%96%BD/d6d2121a012e4a6d882434e0ea0b8ba8.png">
+<meta name="twitter:image" content="http://example.com/images/web-%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21fZGVfZw==,size_16,color_FFFFFF,t_70.png">
 
-<link rel="canonical" href="http://example.com/2023/01/19/Misc-%E5%93%88%E5%96%BD/">
+<link rel="canonical" href="http://example.com/2023/02/04/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -52,7 +48,7 @@
   };
 </script>
 
-  <title>Misc-哈喽 | Dvgd</title>
+  <title>web-sql注入学习 | Dvgd</title>
   
 
 
@@ -168,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/19/Misc-%E5%93%88%E5%96%BD/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/04/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -181,7 +177,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Misc-哈喽
+          web-sql注入学习
         </h1>
 
         <div class="post-meta">
@@ -192,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-01-19 10:46:11 / 修改时间：13:00:17" itemprop="dateCreated datePublished" datetime="2023-01-19T10:46:11+08:00">2023-01-19</time>
+              <time title="创建时间：2023-02-04 16:26:32 / 修改时间：16:39:43" itemprop="dateCreated datePublished" datetime="2023-02-04T16:26:32+08:00">2023-02-04</time>
             </span>
 
           
@@ -213,29 +209,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>下载解压后有两个文件</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/d6d2121a012e4a6d882434e0ea0b8ba8.png" alt="img"></p>
-<p>打开题目.txt</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/736baf4cd4d94d49a0fe6f74b5fc41a4.png" alt="img"></p>
-<p>盲猜肯定是文件头或者文件尾出错或者丢失</p>
-<p>用010打开6.gif</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/fe05492e77bb4695b9fa268d020e9a80.png" alt="img"></p>
-<p>果然就是文件头缺失</p>
-<p>gif的文件头为</p>
-<p><strong>47 49 46 38</strong></p>
-<p>这里只需要把文件头加上,然后保存就行了</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/7300429004de4ff39daf20a6bebbecfa.png" alt="img"></p>
-<p>保存后打开</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/6.gif" alt="6"></p>
-<p>是张含有4个字符串的gif动图</p>
-<p>我们直接在<a target="_blank" rel="noopener" href="https://uutool.cn/gif2img/">网站</a>上拆帧得到\</p>
-<p><img src="/../images/Misc-%E5%93%88%E5%96%BD/image-20230119125626174.png" alt="image-20230119125626174"></p>
-<p>提取图片中的字符串得到</p>
-<p>Q1RGe3dhbmdfYmFvX3FpYW5nX2lzX3NhZH0&#x3D;</p>
-<p>字符串末尾有一个’&#x3D;’号,盲猜base64加密,解密得到</p>
-<p>CTF{wang_bao_qiang_is_sad}</p>
-<p>则flag为</p>
-<h4 id="flag-wang-bao-qiang-is-sad"><a href="#flag-wang-bao-qiang-is-sad" class="headerlink" title="flag{wang_bao_qiang_is_sad}"></a><strong>flag{wang_bao_qiang_is_sad}</strong></h4>
+        <h2 id="SQL注入相关知识"><a href="#SQL注入相关知识" class="headerlink" title="SQL注入相关知识"></a>SQL注入相关知识</h2><h3 id="一、SQl注入的基础"><a href="#一、SQl注入的基础" class="headerlink" title="一、SQl注入的基础"></a>一、SQl注入的基础</h3><p>1.介绍SQL注入<br>SQL注入就是指WEB应用程序对用户输入数据的合法性没有判断，前端传入后端的参数是攻击者可控的，并且参数代入数据库查询，攻击者可以通过构造不同的SQL语句来是实现对数据库的任意操作。</p>
+<p>一般情况下，开发人员可以使用动态SQL语句创建通用、灵活的应用。动态SQL语句是在执行过程中构造的，他根据不同的条件产生不同的SQL语句。当开发人员在运行过程中需要根据不同的查询标准决定提取什么字段(如select语句)，或者根据不同的条件选择不同的查询表时，动态的SQL语句会非常有用。</p>
+<p>下面以PHP语句为例。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="string">&quot;SELECT * FROM user WHERE id = <span class="subst">$_GET</span>[&#x27;id&#x27;]&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>由于这里的参数ID可控，且带入数据库查询，所以非法用户可以任意拼接SQL语句进行攻击。</p>
+<h3 id="2-SQL注入的原理"><a href="#2-SQL注入的原理" class="headerlink" title="2.SQL注入的原理"></a>2.SQL注入的原理</h3><p>SQL注入漏洞的产生需要满足以下两个条件。<br>(1)参数用户可控：前端传给后端的参数内容是用户可以控制的。<br>(2)参数代入数据库查询：传入的参数拼接到SQL语句，且带入数据库查询。<br>当传入的ID参数为1时，数据库执行的代码如下所示</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>然而当传入的ID参数为and 1&#x3D;1时，执行的SQL语句如下所示</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>因为1&#x3D;1为真，且where语句中id&#x3D;1也为真，所以页面会返回与id&#x3D;1相同的结果。当传入的ID参数为and 1&#x3D;2时，由于1&#x3D;2不成立，所以返回假，页面就会返回与id&#x3D;1不同的结果。</p>
+<p>在实际环境中，凡是满足上述两个条件的参数皆可能存在SQL注入漏洞，因此开发者需秉承”外部参数皆不可信的原则”进行开发。</p>
+<h3 id="3-与MYSQL注入相关的知识点"><a href="#3-与MYSQL注入相关的知识点" class="headerlink" title="3.与MYSQL注入相关的知识点"></a>3.与MYSQL注入相关的知识点</h3><p>在MYSQL5.0版本之后，MySQL默认在数据库中存放一个”information_schema”的数据库，在该库中，需要记住三个表名，分别是SCHEMATA、TABLES和COLUMNS。<br>SCHEMATA表存储该用户创建的所有数据库名的库名</p>
+<p><img src="/../images/web-%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21fZGVfZw==,size_16,color_FFFFFF,t_70.png" alt="在这里插入图片描述"></p>
+<p>TABLES表存储该用户创建的所有的数据库的库名和表名，</p>
+<p>库名为：<code>TABLES_SCHEMA</code>，表名为：<code>TABLE_NAME</code>，字段名为：<code>COLUMN_NAME</code>.</p>
+<p><strong>1.MySQL查询语句</strong><br>在知道一条已知条件时，语句如下所示。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 要查询的字段名 <span class="keyword">from</span> 库名.表名 <span class="keyword">where</span> 已知条件的字段名<span class="operator">=</span><span class="string">&#x27;已知条件的值&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.limit的用法</strong><br>limit的使用格式为limit m,n,其中m是指记录开始的位置，从0开始，表示第一条记录；n是指n条记录。例如limit 0,1表示从第一条记录开始，取一条记录，不使用limit和使用limit查询的结果</p>
+<p><img src="/../images/web-%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21fZGVfZw==,size_16,color_FFFFFF,t_70-16754998107822.png" alt="在这里插入图片描述"></p>
+<p><strong>3.需要记住的几个函数</strong><br>·<code>database()</code> 当前网站使用的数据库<br>·<code>version()</code> 当前MySQL的版本<br>·<code>user()</code> 当前MySQL的用户</p>
+<p><strong>4.注释符</strong><br>在MySQL中，常见注释符的表达方式：<code>#或--空格或/**/</code>。</p>
+<p><strong>5.内联注释</strong><br>内联注释的形式:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*!code*/</span></span><br></pre></td></tr></table></figure>
+
+<p>内联注释可以用于整个sql语句中，用来执行SQL语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">-1</span> <span class="comment">/*!union*/</span> <span class="comment">/*!select*/</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -250,12 +255,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/01/12/re/" rel="prev" title="re">
-      <i class="fa fa-chevron-left"></i> re
+    <a href="/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" rel="prev" title="web-基础认证">
+      <i class="fa fa-chevron-left"></i> web-基础认证
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/" rel="next" title="Web-http临时重定向">
-      Web-http临时重定向 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/02/04/%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/" rel="next" title="web-整数型注入">
+      web-整数型注入 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -315,7 +320,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#flag-wang-bao-qiang-is-sad"><span class="nav-number">1.</span> <span class="nav-text">flag{wang_bao_qiang_is_sad}</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">SQL注入相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81SQl%E6%B3%A8%E5%85%A5%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">一、SQl注入的基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">2.SQL注入的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8EMYSQL%E6%B3%A8%E5%85%A5%E7%9B%B8%E5%85%B3%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">3.与MYSQL注入相关的知识点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

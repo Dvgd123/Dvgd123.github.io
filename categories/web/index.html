@@ -20,33 +20,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1、打开题目环境  2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息  3、查看附件，得到一堆密码，应该是要直接爆破  4、点击click抓包后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin  4、输入用户名和密码后抓包，看到一串base64加密过的字符  丢到解码器里解码，发现是我刚输进去的用户名">
-<meta property="og:type" content="article">
-<meta property="og:title" content="web-基础认证">
-<meta property="og:url" content="http://example.com/2023/02/01/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/index.html">
+  <meta name="description" content="Welcome to my blog.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dvgd">
+<meta property="og:url" content="http://example.com/categories/web/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="1、打开题目环境  2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息  3、查看附件，得到一堆密码，应该是要直接爆破  4、点击click抓包后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin  4、输入用户名和密码后抓包，看到一串base64加密过的字符  丢到解码器里解码，发现是我刚输进去的用户名">
+<meta property="og:description" content="Welcome to my blog.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/11af9f2d902545a89457537ad97031cd.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8a93fcba23064b469ef3f2dabe1995c6.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/e6bc18b23c544e5aa3d5108c24479dd4.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/22cf876256334313b0d68bdd34b8a523.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/0fe41ea078914b1d80c09fa9c4927f76.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8d5a666fff6f4e6babb6f3abca86c959.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8de3db8daf804ad3b08cf334e3fcc49e.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8c03ad1544f440e09eaf0cbc7e7c4a5a.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/be2d147292674f10b416b3aa2517e580.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2ed2adeda37b4b4fa4a65e0cf3cfe290.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2a9ba7de13214ee1a7467e3f8f6f7bba.png">
-<meta property="og:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/6001e858ddba4d7c831cfe370005aef2.png">
-<meta property="article:published_time" content="2023-02-01T14:06:29.000Z">
-<meta property="article:modified_time" content="2023-02-01T14:13:02.746Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png">
 
-<link rel="canonical" href="http://example.com/2023/02/01/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/">
+<link rel="canonical" href="http://example.com/categories/web/">
 
 
 <script id="page-configurations">
@@ -54,12 +38,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>web-基础认证 | Dvgd</title>
+  <title>分类: web | Dvgd</title>
   
 
 
@@ -132,24 +116,19 @@
     <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
-
-  </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">0</span></a>
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">1</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">0</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">1</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">11</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">14</span></a>
 
   </li>
   </ul>
@@ -173,110 +152,91 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content category">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/01/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          web-基础认证
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-02-01 22:06:29 / 修改时间：22:13:02" itemprop="dateCreated datePublished" datetime="2023-02-01T22:06:29+08:00">2023-02-01</time>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">web
+          <small>分类</small>
+        </h2>
+      </div>
 
       
-        <p>1、打开题目环境</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png" alt="img"></p>
-<p>2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/11af9f2d902545a89457537ad97031cd.png" alt="img"></p>
-<p>3、查看附件，得到一堆密码，应该是要直接爆破</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8a93fcba23064b469ef3f2dabe1995c6.png" alt="img"></p>
-<p>4、点击click<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%8A%93%E5%8C%85&spm=1001.2101.3001.7020">抓包</a>后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/e6bc18b23c544e5aa3d5108c24479dd4.png" alt="img"></p>
-<p>4、输入用户名和密码后抓包，看到一串<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=base64%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">base64加密</a>过的字符</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/22cf876256334313b0d68bdd34b8a523.png" alt="img"></p>
-<p>丢到解码器里解码，发现是我刚输进去的用户名和密码，中间用冒号隔开了（冒号划重点！</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/0fe41ea078914b1d80c09fa9c4927f76.png" alt="img"></p>
-<p>6、把包发送到爆破模块，给刚刚的base64密码添加变量（这里截图截错了，添加完变量后应该这段字符前后各有一个§符号）</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8d5a666fff6f4e6babb6f3abca86c959.png" alt="img"></p>
-<p> 7、在payload options[simple list]模块把题目附件里面的密码粘贴进去</p>
-<p>8、添加前缀，admin后面一定不要忘记加冒号！</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8de3db8daf804ad3b08cf334e3fcc49e.png" alt="img"></p>
-<p> 添加base64编码</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8c03ad1544f440e09eaf0cbc7e7c4a5a.png" alt="img"></p>
-<p> 9、把特殊符号的url编码取消，不然&#x3D;会被转换成%3d</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/be2d147292674f10b416b3aa2517e580.png" alt="img"></p>
-<p> 10、全部布置完是这个样子</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2ed2adeda37b4b4fa4a65e0cf3cfe290.png" alt="img"></p>
-<p>11、开始爆破，发现长度不一样的了</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2a9ba7de13214ee1a7467e3f8f6f7bba.png" alt="img"></p>
-<p> 12、在raw模块复制后查看response，得到flag</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/6001e858ddba4d7c831cfe370005aef2.png" alt="img"></p>
-
+    <div class="collection-year">
+      <span class="collection-header">2023</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-02-04T21:11:48+08:00"
+              content="2023-02-04">
+          02-04
+        </time>
+      </div>
 
-        
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/02/04/sql%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" itemprop="url">
+            <span itemprop="name">extractvalue报错注入</span>
+          </a>
+      </div>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2023/01/29/easyrce/" rel="prev" title="easyrce">
-      <i class="fa fa-chevron-left"></i> easyrce
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-02-04T16:42:35+08:00"
+              content="2023-02-04">
+          02-04
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/02/04/%E6%95%B4%E6%95%B0%E5%9E%8B%E6%B3%A8%E5%85%A5/" itemprop="url">
+            <span itemprop="name">web-整数型注入</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-02-01T22:06:29+08:00"
+              content="2023-02-01">
+          02-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" itemprop="url">
+            <span itemprop="name">web-基础认证</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+    </div>
+  </div>
   
   
+  
+
   
 
 
@@ -344,9 +304,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
