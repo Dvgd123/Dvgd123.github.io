@@ -118,17 +118,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">1</span></a>
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">1</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">14</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">16</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,193 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/20/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/20/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">原神3.5私服搭建教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-20 16:34:43 / 修改时间：17:15:50" itemprop="dateCreated datePublished" datetime="2023-03-20T16:34:43+08:00">2023-03-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="原神3-5Grasscutter搭建教程-持续更新"><a href="#原神3-5Grasscutter搭建教程-持续更新" class="headerlink" title="原神3.5Grasscutter搭建教程(持续更新)"></a>原神3.5Grasscutter搭建教程(持续更新)</h1><p>本教程为win端原神3.5版本搭建教程</p>
+<p>服务端可能有bug</p>
+<p>所有文件和详细教程在群495974787下载 可直接进群</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>下载安装jdk(java环境), mongodb(数据库), 代理助手和 Grasscutter(服务端)</p>
+<p>所需文件已放入[百度网盘](链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1juLK62c5rmsg8ftZghPtPA?pwd=1234),%E5%8F%AF%E7%9B%B4%E6%8E%A5%E4%B8%8B%E8%BD%BD">https://pan.baidu.com/s/1juLK62c5rmsg8ftZghPtPA?pwd=1234),可直接下载</a></p>
+<p>注:jdk需要配置环境变量</p>
+<p>​	mongodb直接一路next</p>
+<p>​	代理助手和 Grasscutter下载解压就行</p>
+<h3 id="运行服务端："><a href="#运行服务端：" class="headerlink" title="运行服务端："></a>运行服务端：</h3><p>Grasscutter下载完解压得到以下文件</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320164905936.png" alt="image-20230320164905936"></p>
+<p>修改config.json</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/format,png.png" alt="img"></p>
+<p>将两处”accessAddress”: “127.0.0.1”,</p>
+<p>改为”accessAddress”: “本机IP地址”,</p>
+<p>本机IP地址获取:win+r打开cmd,输入ipconfig</p>
+<p>无线局域网适配器 WLAN:  中的ipv4地址即为所需</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165500702.png" alt="image-20230320165500702"></p>
+<p>修改完成切记保存关闭</p>
+<p>启动MongoDB数据库</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165847669.png" alt="image-20230320165847669"></p>
+<p>选择connect连接数据库</p>
+<p>运行启动.exe</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170033015.png" alt="image-20230320170033015"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">闪退就是java没配置好或者你根本就没安装</span><br><span class="line">务必启动MongoDB数据库</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170256061.png" alt="image-20230320170256061"></p>
+<p>显示 <code>加载完成！输入 &quot;help&quot; 查看命令列表</code>即代表开服成功</p>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>自行准备客户端（即你现在的官服）</p>
+<p>3.5补丁安装：<br>打开以下路径</p>
+<p>国服：Genshin Impact Game<br>国际服：Genshin Impact Game\</p>
+<p>复制刚才3.5补丁中的PublicKey.txt和version.dll到此目录</p>
+<p>如需切回官服，删除这两个文件即可</p>
+<h3 id="Windows连接服务器："><a href="#Windows连接服务器：" class="headerlink" title="Windows连接服务器："></a>Windows连接服务器：</h3><p>有很多方法，任选其一，切记所有代理软件都需要已管理员身份运行。</p>
+<p>地址：<code>127.0.0.1</code></p>
+<p>代理端口：2888</p>
+<p><code>地址填写说明：IP:2888端口(Dispatch端口)，切记使用英文符号</code>。</p>
+<p>这里使用原神代理助手,方便好用</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170652201.png" alt="image-20230320170652201"></p>
+<p>出现如图界面,表示代理成功</p>
+<h3 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h3><p>双击打开 YuanShen.exe，启动客户端</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320171222469.png" alt="image-20230320171222469"></p>
+<p>出现此界面代表你已经搭建成功</p>
+<p>在服务器 启动.exe运行窗口输入以下语法进行账户注册</p>
+<p>语法：account create 登录账号 UID<br>例如：account create rain 10000</p>
+<p>返回客户端输入你注册的账号，密码可随便填</p>
+<p>游戏登陆后默认有一个名为 server 的好友，此为游戏控制台，可向其发送指令</p>
+<p>游戏内 server 好友输入示例：&#x2F;give all</p>
+<p>最新版本需要使用指令点亮地图：&#x2F;prop unlockmap 1</p>
+<p>start.bat运行窗口输入示例：give @10001 all</p>
+<p>更多指令请使用 GrasscutterTools工具箱查看</p>
+<p>1.获得所有物品 &#x2F;give all</p>
+<p>2.获取毕业圣遗物 &#x2F;give 76524 lv20 10001 999002 999001 201062,100 201091,100 989001,2 301241,120</p>
+<p>PS:不同版本服务端文件会有所不同</p>
+<p><strong>本教程可能持续修正更新</strong></p>
+<p><strong>搭建途中如遇任何问题,可联系作者qq:2774154591</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/12/base64%E6%8D%A2%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/12/base64%E6%8D%A2%E8%A1%A8/" class="post-title-link" itemprop="url">base64换表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-12 13:47:30 / 修改时间：13:51:15" itemprop="dateCreated datePublished" datetime="2023-02-12T13:47:30+08:00">2023-02-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ida打开,查看主函数</p>
+<p><img src="/../images/base64%E6%8D%A2%E8%A1%A8/6336482063f19.png" alt="image-20220930093555529"></p>
+<p>对输入做了处理，然后和一个变量进行对比，查看<code>sub_401570</code>，做了base64操作，只不过用了自定义表，换表即可</p>
+<p><img src="/../images/base64%E6%8D%A2%E8%A1%A8/63364866eea95.png" alt="image-20220930093743473"></p>
+<p><img src="/../images/base64%E6%8D%A2%E8%A1%A8/633648814e684.png" alt="image-20220930093755396"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">str1 = <span class="string">&quot;5Mc58bPHLiAx7J8ocJIlaVUxaJvMcoYMaoPMaOfg15c475tscHfM/8==&quot;</span></span><br><span class="line"></span><br><span class="line">string1 = <span class="string">&quot;qvEJAfHmUYjBac+u8Ph5n9Od17FrICL/X0gVtM4Qk6T2z3wNSsyoebilxWKGZpRD&quot;</span></span><br><span class="line">string2 = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(base64.b64decode(str1.translate(<span class="built_in">str</span>.maketrans(string1, string2))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -829,144 +1016,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/web-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/23/web-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/" class="post-title-link" itemprop="url">WEB-Cookie欺骗、认证、伪造</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-01-23 16:59:21 / 修改时间：17:01:56" itemprop="dateCreated datePublished" datetime="2023-01-23T16:59:21+08:00">2023-01-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Cookie：浏览器用这个属性向服务器发送Cookie。Cookie是在浏览器中寄存的小型数据体，它可以记载和服务器相关的用户信息，也可以用来实现会话功能。</p>
-<p>1.根据题意，只有管理员可以获取flag</p>
-<p><img src="/../images/WEB-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/2457488-20211011110032061-205466287.png" alt="img"></p>
-<p> 2.开启BP抓包，修改cookie&#x3D;1</p>
-<p><img src="/../images/WEB-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/2457488-20211011110147243-401153781.png" alt="img"></p>
-<p>3.发送请求,获得flag</p>
-<p><img src="/../images/WEB-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/2457488-20211011110350855-1039025614.png" alt="img"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/" class="post-title-link" itemprop="url">Web-http临时重定向</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-01-23 16:41:49 / 修改时间：16:47:43" itemprop="dateCreated datePublished" datetime="2023-01-23T16:41:49+08:00">2023-01-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>开启靶机</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190229407-2005437280.png" alt="img"></p>
-<p>打开环境查看页面</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190259107-1774572890.png" alt="img"></p>
-<p>点击Give me Flag后发生跳转</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190357062-217897585.png" alt="img"></p>
-<p> 根据题目提示为HTTP临时重定向</p>
-<p>通过浏览器工具进行查看</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190940760-521458118.png" alt="img"></p>
-<p>可以看到有一个状态为302的域名</p>
-<p>使用curl买了进行抓取</p>
-<p>curl不会进行跳转，curl -L会跟随重定向跳转</p>
-<p>抓取结果如下</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/image-20230123164709178.png" alt="image-20230123164709178"></p>
-<p>成功拿到flag</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1038,20 +1087,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

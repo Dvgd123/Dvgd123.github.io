@@ -20,27 +20,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="将下载好的压缩包解压，得到一个一个exe文件 双击运行这个exe文件   input the flag: 说明题目需要我们输入一个flag，当flag正确的时候程序会有相应的输出 我们要想找出这个flag是什么，我们只有一个可执行文件，没有源代码，无法理解程序如何运行，就需要将这个二进制文件进行逆向分析 下面我们进行逆向分析 1.查壳  无壳,是一个64位可执行文件，拖入64位ida当中 2.打开">
+  <meta name="description" content="原神3.5Grasscutter搭建教程(持续更新)本教程为win端原神3.5版本搭建教程 服务端可能有bug 所有文件和详细教程在群495974787下载 可直接进群 环境配置下载安装jdk(java环境), mongodb(数据库), 代理助手和 Grasscutter(服务端) 所需文件已放入[百度网盘](链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1juLK62c5rmsg8f">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUUCTF-reverse_1">
-<meta property="og:url" content="http://example.com/2023/01/06/BUUCTF-reverse-1/index.html">
+<meta property="og:title" content="原神3.5私服搭建教程">
+<meta property="og:url" content="http://example.com/2023/03/20/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="将下载好的压缩包解压，得到一个一个exe文件 双击运行这个exe文件   input the flag: 说明题目需要我们输入一个flag，当flag正确的时候程序会有相应的输出 我们要想找出这个flag是什么，我们只有一个可执行文件，没有源代码，无法理解程序如何运行，就需要将这个二进制文件进行逆向分析 下面我们进行逆向分析 1.查壳  无壳,是一个64位可执行文件，拖入64位ida当中 2.打开">
+<meta property="og:description" content="原神3.5Grasscutter搭建教程(持续更新)本教程为win端原神3.5版本搭建教程 服务端可能有bug 所有文件和详细教程在群495974787下载 可直接进群 环境配置下载安装jdk(java环境), mongodb(数据库), 代理助手和 Grasscutter(服务端) 所需文件已放入[百度网盘](链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1juLK62c5rmsg8f">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/ff74198e8798489d910f0fbc2dab8885.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/3fcf7872f42e43a3a86bfb97a1e8c72b.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/2a179c8a1b4f4eb990d25ee0519120f0-16729952928111.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/87c6d5ab14dd43a181a8540d343f6867-16729953368614.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/de28f2b802f246aea920312dabcdf50a-16729953581317.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/d2e46befd615466db4de6c1fed2172a8-167299538732710.png">
-<meta property="og:image" content="http://example.com/images/BUUCTF-reverse-1/e682e9d4e5744bbcae2993553ccdfebc-167299541033713.png">
-<meta property="article:published_time" content="2023-01-06T08:37:47.000Z">
-<meta property="article:modified_time" content="2023-01-06T08:57:42.063Z">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320164905936.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/format,png.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165500702.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165847669.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170033015.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170256061.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170652201.png">
+<meta property="og:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320171222469.png">
+<meta property="article:published_time" content="2023-03-20T08:34:43.000Z">
+<meta property="article:modified_time" content="2023-03-20T09:15:50.875Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/BUUCTF-reverse-1/ff74198e8798489d910f0fbc2dab8885.png">
+<meta name="twitter:image" content="http://example.com/images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320164905936.png">
 
-<link rel="canonical" href="http://example.com/2023/01/06/BUUCTF-reverse-1/">
+<link rel="canonical" href="http://example.com/2023/03/20/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">
 
 
 <script id="page-configurations">
@@ -53,7 +54,7 @@
   };
 </script>
 
-  <title>BUUCTF-reverse_1 | Dvgd</title>
+  <title>原神3.5私服搭建教程 | Dvgd</title>
   
 
 
@@ -169,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/06/BUUCTF-reverse-1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/20/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -182,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          BUUCTF-reverse_1
+          原神3.5私服搭建教程
         </h1>
 
         <div class="post-meta">
@@ -193,7 +194,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-01-06 16:37:47 / 修改时间：16:57:42" itemprop="dateCreated datePublished" datetime="2023-01-06T16:37:47+08:00">2023-01-06</time>
+              <time title="创建时间：2023-03-20 16:34:43 / 修改时间：17:15:50" itemprop="dateCreated datePublished" datetime="2023-03-20T16:34:43+08:00">2023-03-20</time>
             </span>
 
           
@@ -214,41 +215,61 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>将下载好的压缩包解压，得到一个一个exe文件</p>
-<p>双击运行这个exe文件</p>
-<p><img src="/images/BUUCTF-reverse-1/ff74198e8798489d910f0fbc2dab8885.png"></p>
-<p> input the flag:</p>
-<p>说明题目需要我们输入一个flag，当flag正确的时候程序会有相应的输出</p>
-<p>我们要想找出这个flag是什么，我们只有一个可执行文件，没有源代码，无法理解程序如何运行，就需要将这个二进制文件进行逆向分析</p>
-<p>下面我们进行逆向分析</p>
-<p>1.查壳</p>
-<p><img src="/images/BUUCTF-reverse-1/3fcf7872f42e43a3a86bfb97a1e8c72b.png"></p>
-<p>无壳,是一个64位可执行文件，拖入64位ida当中</p>
-<p>2.打开字符串窗口<br>想在函数窗口寻找主函数进行反编译</p>
-<p><img src="/images/BUUCTF-reverse-1/2a179c8a1b4f4eb990d25ee0519120f0-16729952928111.png" alt="img"></p>
-<p>没有找到明显的main函数</p>
-<p>shift+F12打开string窗口查看程序中重要的字符串</p>
-<p> <img src="/images/BUUCTF-reverse-1/87c6d5ab14dd43a181a8540d343f6867-16729953368614.png" alt="img"></p>
-<p>this is the right flag，这是正确的flag</p>
-<p>点入这个重要的字符串</p>
-<p><img src="/images/BUUCTF-reverse-1/de28f2b802f246aea920312dabcdf50a-16729953581317.png" alt="img"></p>
-<p> 将光标放在这个标黄的变量上面，按下Ctrl+X，交叉引用，查看哪些函数调用了这个字符串</p>
-<p>根据字符串的字面意思，调用这个字符串的函数很可能是主函数或者是很重要的函数</p>
-<p>3.进入函数<br>点入这个函数,F5反编译成C++代码查看</p>
-<p><img src="/images/BUUCTF-reverse-1/d2e46befd615466db4de6c1fed2172a8-167299538732710.png" alt="img"></p>
-<p>分析可知:</p>
-<p>str1是我们输入的字符串，即flag</p>
-<p>strcmp()为字符串比较函数,若是两个字符串相同则返回0</p>
-<p>this is the right flag，说明输入了正确的字符串</p>
-<p>说明正确的字符串（flag）就等于str2，所以要查找str2的值</p>
-<p>点击str2进入文本界面，可以看到str2存储的是{hello_world}，尝试提交flag{hello_world},发现并不正确,继续分析代码发现</p>
-<p>for循环改变了str2</p>
-<p>111,48应该都是ASCLL码</p>
-<p>将光标点在111和48上面，按下快捷键r可以将其改为字符</p>
-<p><img src="/images/BUUCTF-reverse-1/e682e9d4e5744bbcae2993553ccdfebc-167299541033713.png" alt="img"></p>
-<p>这个循环遍历了str2，将其中的o改为了0</p>
-<p>我们就得到了str2(就是flag）</p>
-<p><strong>flag{hell0_w0rld}</strong> </p>
+        <h1 id="原神3-5Grasscutter搭建教程-持续更新"><a href="#原神3-5Grasscutter搭建教程-持续更新" class="headerlink" title="原神3.5Grasscutter搭建教程(持续更新)"></a>原神3.5Grasscutter搭建教程(持续更新)</h1><p>本教程为win端原神3.5版本搭建教程</p>
+<p>服务端可能有bug</p>
+<p>所有文件和详细教程在群495974787下载 可直接进群</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>下载安装jdk(java环境), mongodb(数据库), 代理助手和 Grasscutter(服务端)</p>
+<p>所需文件已放入[百度网盘](链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1juLK62c5rmsg8ftZghPtPA?pwd=1234),%E5%8F%AF%E7%9B%B4%E6%8E%A5%E4%B8%8B%E8%BD%BD">https://pan.baidu.com/s/1juLK62c5rmsg8ftZghPtPA?pwd=1234),可直接下载</a></p>
+<p>注:jdk需要配置环境变量</p>
+<p>​	mongodb直接一路next</p>
+<p>​	代理助手和 Grasscutter下载解压就行</p>
+<h3 id="运行服务端："><a href="#运行服务端：" class="headerlink" title="运行服务端："></a>运行服务端：</h3><p>Grasscutter下载完解压得到以下文件</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320164905936.png" alt="image-20230320164905936"></p>
+<p>修改config.json</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/format,png.png" alt="img"></p>
+<p>将两处”accessAddress”: “127.0.0.1”,</p>
+<p>改为”accessAddress”: “本机IP地址”,</p>
+<p>本机IP地址获取:win+r打开cmd,输入ipconfig</p>
+<p>无线局域网适配器 WLAN:  中的ipv4地址即为所需</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165500702.png" alt="image-20230320165500702"></p>
+<p>修改完成切记保存关闭</p>
+<p>启动MongoDB数据库</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320165847669.png" alt="image-20230320165847669"></p>
+<p>选择connect连接数据库</p>
+<p>运行启动.exe</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170033015.png" alt="image-20230320170033015"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">闪退就是java没配置好或者你根本就没安装</span><br><span class="line">务必启动MongoDB数据库</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170256061.png" alt="image-20230320170256061"></p>
+<p>显示 <code>加载完成！输入 &quot;help&quot; 查看命令列表</code>即代表开服成功</p>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>自行准备客户端（即你现在的官服）</p>
+<p>3.5补丁安装：<br>打开以下路径</p>
+<p>国服：Genshin Impact Game<br>国际服：Genshin Impact Game\</p>
+<p>复制刚才3.5补丁中的PublicKey.txt和version.dll到此目录</p>
+<p>如需切回官服，删除这两个文件即可</p>
+<h3 id="Windows连接服务器："><a href="#Windows连接服务器：" class="headerlink" title="Windows连接服务器："></a>Windows连接服务器：</h3><p>有很多方法，任选其一，切记所有代理软件都需要已管理员身份运行。</p>
+<p>地址：<code>127.0.0.1</code></p>
+<p>代理端口：2888</p>
+<p><code>地址填写说明：IP:2888端口(Dispatch端口)，切记使用英文符号</code>。</p>
+<p>这里使用原神代理助手,方便好用</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320170652201.png" alt="image-20230320170652201"></p>
+<p>出现如图界面,表示代理成功</p>
+<h3 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h3><p>双击打开 YuanShen.exe，启动客户端</p>
+<p><img src="/../images/%E5%8E%9F%E7%A5%9E3-5%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/image-20230320171222469.png" alt="image-20230320171222469"></p>
+<p>出现此界面代表你已经搭建成功</p>
+<p>在服务器 启动.exe运行窗口输入以下语法进行账户注册</p>
+<p>语法：account create 登录账号 UID<br>例如：account create rain 10000</p>
+<p>返回客户端输入你注册的账号，密码可随便填</p>
+<p>游戏登陆后默认有一个名为 server 的好友，此为游戏控制台，可向其发送指令</p>
+<p>游戏内 server 好友输入示例：&#x2F;give all</p>
+<p>最新版本需要使用指令点亮地图：&#x2F;prop unlockmap 1</p>
+<p>start.bat运行窗口输入示例：give @10001 all</p>
+<p>更多指令请使用 GrasscutterTools工具箱查看</p>
+<p>1.获得所有物品 &#x2F;give all</p>
+<p>2.获取毕业圣遗物 &#x2F;give 76524 lv20 10001 999002 999001 201062,100 201091,100 989001,2 301241,120</p>
+<p>PS:不同版本服务端文件会有所不同</p>
+<p><strong>本教程可能持续修正更新</strong></p>
+<p><strong>搭建途中如遇任何问题,可联系作者qq:2774154591</strong></p>
 
     </div>
 
@@ -264,13 +285,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/" rel="prev" title="BUUCTF-被劫持的神秘礼物">
-      <i class="fa fa-chevron-left"></i> BUUCTF-被劫持的神秘礼物
+    <a href="/2023/02/12/base64%E6%8D%A2%E8%A1%A8/" rel="prev" title="base64换表">
+      <i class="fa fa-chevron-left"></i> base64换表
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/01/12/re/" rel="next" title="re">
-      re <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -329,6 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%A5%9E3-5Grasscutter%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">原神3.5Grasscutter搭建教程(持续更新)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%9A"><span class="nav-number">1.0.2.</span> <span class="nav-text">运行服务端：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.0.3.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%9A"><span class="nav-number">1.0.4.</span> <span class="nav-text">Windows连接服务器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.0.5.</span> <span class="nav-text">客户端连接</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
