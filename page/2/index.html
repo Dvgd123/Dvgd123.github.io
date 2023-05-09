@@ -123,12 +123,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">17</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">16</span></a>
 
   </li>
   </ul>
@@ -158,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/28/web-easy-md5/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/29/web-include/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -172,7 +172,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/01/28/web-easy-md5/" class="post-title-link" itemprop="url">web-easy_md5</a>
+            <a href="/2023/01/29/web-include/" class="post-title-link" itemprop="url">web-include</a>
         </h2>
 
         <div class="post-meta">
@@ -181,9 +181,195 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-28 21:46:04 / 修改时间：21:50:50" itemprop="dateCreated datePublished" datetime="2023-01-28T21:46:04+08:00">2023-01-28</time>
+              <time title="创建时间：2023-01-29 10:24:16" itemprop="dateCreated datePublished" datetime="2023-01-29T10:24:16+08:00">2023-01-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:58:45" itemprop="dateModified" datetime="2023-05-09T15:58:45+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们看向这个题目的页面</p>
+<p><img src="/../images/web-include/1620.png" alt="img"></p>
+<p>他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么</p>
+<p><img src="/../images/web-include/1620-16749591749692.png" alt="img"></p>
+<p>提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on</p>
+<p>我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。</p>
+<p>使用php:&#x2F;&#x2F;filter读取到flag.php，将flag.php以base64的形式给显示出来，这样的话我们可以这样构造我们的payload</p>
+<p>url?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>我们来解读一下上面的payload：</p>
+<p>首先我们要传入file关键字的GET参数传递，php:&#x2F;&#x2F;是一种协议名称，php:&#x2F;&#x2F;filter是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode表示的是读取的方式是base64编码后resouce&#x3D;flag.php表示目标文件为flag.php</p>
+<p>也就是说，flag.php最终会以base64的形式显示出来，我们最后使用base64解码就可以了。</p>
+<p>理论存在，实践开始：</p>
+<p>我们使用上面的payload</p>
+<p><img src="/../images/web-include/1620-16749592011614.png" alt="img"></p>
+<p>然后我们得到了一段base64，我们使用base64解密，因该就可以得到答案了</p>
+<p><img src="/../images/web-include/1620-16749592431156.png" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/28/jicao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/28/jicao/" class="post-title-link" itemprop="url">jicao</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-28 21:55:08" itemprop="dateCreated datePublished" datetime="2023-01-28T21:55:08+08:00">2023-01-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:38:05" itemprop="dateModified" datetime="2023-05-09T15:38:05+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$id</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$json</span>=<span class="title function_ invoke__">json_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;json&#x27;</span>],<span class="literal">true</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$id</span>==<span class="string">&quot;wllmNB&quot;</span>&amp;&amp;<span class="variable">$json</span>[<span class="string">&#x27;x&#x27;</span>]==<span class="string">&quot;wllm&quot;</span>)</span><br><span class="line">&#123;<span class="keyword">echo</span> <span class="variable">$flag</span>;&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>阅读代码可知当传入一个post型的参数id与wllmNB相等并且传入一个get型的参数json；</p>
+<p>但是这里有一个函数json_decode，上网搜索可知json_decode这个函数对JSON格式的字符串进行编码</p>
+<p>参数json：待解码的json string格式的字符串，所以我们需要传入get型的参数json并且对他进行解码</p>
+<p>JSON 格式的字符串<br>$json &#x3D; ‘{“a”:”php”,”b”:”mysql”,”c”:3}’;</p>
+<p>其中a为键，php为a的键值。</p>
+<p>所以我们需要传入get:json&#x3D;{“x”:”wllm”}和post:id&#x3D;wllNB便可以得到flag。</p>
+<p><img src="/../images/web-jicao/3023439-20221104120952140-1155478415.png" alt="img"></p>
+<h5 id="NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9"><a href="#NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9" class="headerlink" title="NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}"></a>NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}</h5>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/28/easy-md5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/28/easy-md5/" class="post-title-link" itemprop="url">web-easy_md5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-28 21:46:04" itemprop="dateCreated datePublished" datetime="2023-01-28T21:46:04+08:00">2023-01-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:38:39" itemprop="dateModified" datetime="2023-05-09T15:38:39+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
             </span>
 
           
@@ -221,7 +407,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/web-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -235,7 +421,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/01/23/web-Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/" class="post-title-link" itemprop="url">WEB-Cookie欺骗、认证、伪造</a>
+            <a href="/2023/01/23/Cookie%E6%AC%BA%E9%AA%97%E3%80%81%E8%AE%A4%E8%AF%81%E3%80%81%E4%BC%AA%E9%80%A0/" class="post-title-link" itemprop="url">WEB-Cookie欺骗、认证、伪造</a>
         </h2>
 
         <div class="post-meta">
@@ -244,9 +430,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-23 16:59:21 / 修改时间：17:01:56" itemprop="dateCreated datePublished" datetime="2023-01-23T16:59:21+08:00">2023-01-23</time>
+              <time title="创建时间：2023-01-23 16:59:21" itemprop="dateCreated datePublished" datetime="2023-01-23T16:59:21+08:00">2023-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:39:24" itemprop="dateModified" datetime="2023-05-09T15:39:24+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
             </span>
 
           
@@ -286,7 +487,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/23/http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -300,7 +501,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/01/23/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/" class="post-title-link" itemprop="url">Web-http临时重定向</a>
+            <a href="/2023/01/23/http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/" class="post-title-link" itemprop="url">Web-http临时重定向</a>
         </h2>
 
         <div class="post-meta">
@@ -309,9 +510,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-23 16:41:49 / 修改时间：16:47:43" itemprop="dateCreated datePublished" datetime="2023-01-23T16:41:49+08:00">2023-01-23</time>
+              <time title="创建时间：2023-01-23 16:41:49" itemprop="dateCreated datePublished" datetime="2023-01-23T16:41:49+08:00">2023-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:31:39" itemprop="dateModified" datetime="2023-05-09T15:31:39+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
             </span>
 
           
@@ -325,9 +541,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>开启靶机</p>
-<p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190229407-2005437280.png" alt="img"></p>
-<p>打开环境查看页面</p>
+          <p>打开环境查看页面</p>
 <p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190259107-1774572890.png" alt="img"></p>
 <p>点击Give me Flag后发生跳转</p>
 <p><img src="/../images/Web-http%E4%B8%B4%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91/1753051-20200303190357062-217897585.png" alt="img"></p>
@@ -359,7 +573,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/19/Misc-%E5%93%88%E5%96%BD/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/19/gif/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -373,7 +587,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/01/19/Misc-%E5%93%88%E5%96%BD/" class="post-title-link" itemprop="url">Misc-哈喽</a>
+            <a href="/2023/01/19/gif/" class="post-title-link" itemprop="url">Misc-哈喽</a>
         </h2>
 
         <div class="post-meta">
@@ -382,9 +596,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-19 10:46:11 / 修改时间：13:00:17" itemprop="dateCreated datePublished" datetime="2023-01-19T10:46:11+08:00">2023-01-19</time>
+              <time title="创建时间：2023-01-19 10:46:11" itemprop="dateCreated datePublished" datetime="2023-01-19T10:46:11+08:00">2023-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:40:01" itemprop="dateModified" datetime="2023-05-09T15:40:01+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
+                </span>
             </span>
 
           
@@ -421,251 +650,6 @@
 <p>CTF{wang_bao_qiang_is_sad}</p>
 <p>则flag为</p>
 <h4 id="flag-wang-bao-qiang-is-sad"><a href="#flag-wang-bao-qiang-is-sad" class="headerlink" title="flag{wang_bao_qiang_is_sad}"></a><strong>flag{wang_bao_qiang_is_sad}</strong></h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/12/re/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/12/re/" class="post-title-link" itemprop="url">re</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-01-12 21:46:29" itemprop="dateCreated datePublished" datetime="2023-01-12T21:46:29+08:00">2023-01-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-13 10:50:52" itemprop="dateModified" datetime="2023-01-13T10:50:52+08:00">2023-01-13</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="BUUCTF-RE-GUET-CTF2019-re"><a href="#BUUCTF-RE-GUET-CTF2019-re" class="headerlink" title="BUUCTF-RE-[GUET-CTF2019]re"></a>BUUCTF-RE-[GUET-CTF2019]re</h1><p>下载后是一个没有后缀名的文件</p>
-<h4 id="peid查壳"><a href="#peid查壳" class="headerlink" title="peid查壳"></a>peid查壳</h4><p><img src="/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70.png" alt="在这里插入图片描述"></p>
-<p>发现是64位upx壳</p>
-<p>upx脱壳后拖入ida64分析</p>
-<p><img src="/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70-16735773430312.png" alt="在这里插入图片描述"></p>
-<p>没有明显的主函数,Shift+F12打开字符串窗口</p>
-<p><img src="/images/re/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hlbmxlbmw=,size_16,color_FFFFFF,t_70-16735774324034.png" alt="在这里插入图片描述"></p>
-<p>查看字符串调用找到主函数</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 <span class="title">sub_400E28</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 result; <span class="comment">// rax</span></span><br><span class="line">  __int64 v1; <span class="comment">// [rsp+0h] [rbp-30h]</span></span><br><span class="line">  __int64 v2; <span class="comment">// [rsp+8h] [rbp-28h]</span></span><br><span class="line">  __int64 v3; <span class="comment">// [rsp+10h] [rbp-20h]</span></span><br><span class="line">  __int64 v4; <span class="comment">// [rsp+18h] [rbp-18h]</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v5; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v5 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  v1 = <span class="number">0LL</span>;</span><br><span class="line">  v2 = <span class="number">0LL</span>;</span><br><span class="line">  v3 = <span class="number">0LL</span>;</span><br><span class="line">  v4 = <span class="number">0LL</span>;</span><br><span class="line">  <span class="built_in">sub_40F950</span>((<span class="type">unsigned</span> __int64)<span class="string">&quot;input your flag:&quot;</span>);</span><br><span class="line">  <span class="built_in">sub_40FA80</span>((__int64)<span class="string">&quot;%s&quot;</span>, &amp;v1, <span class="number">0LL</span>, <span class="number">0LL</span>, <span class="number">0LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">sub_4009AE</span>((<span class="type">char</span> *)&amp;v1) )</span><br><span class="line">    <span class="built_in">sub_410350</span>(<span class="string">&quot;Correct!&quot;</span>);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">sub_410350</span>(<span class="string">&quot;Wrong!&quot;</span>);</span><br><span class="line">  result = <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( __readfsqword(<span class="number">0x28</span>u) != v5 )</span><br><span class="line">    <span class="built_in">sub_443550</span>();</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>查看关键函数sub_4009AE</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_BOOL8 __fastcall <span class="title">sub_4009AE</span><span class="params">(<span class="type">char</span> *a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">1629056</span> * *a1 != <span class="number">166163712</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">6771600</span> * a1[<span class="number">1</span>] != <span class="number">731332800</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">3682944</span> * a1[<span class="number">2</span>] != <span class="number">357245568</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">10431000</span> * a1[<span class="number">3</span>] != <span class="number">1074393000</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">3977328</span> * a1[<span class="number">4</span>] != <span class="number">489211344</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">5138336</span> * a1[<span class="number">5</span>] != <span class="number">518971936</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">7532250</span> * a1[<span class="number">7</span>] != <span class="number">406741500</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">5551632</span> * a1[<span class="number">8</span>] != <span class="number">294236496</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">3409728</span> * a1[<span class="number">9</span>] != <span class="number">177305856</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">13013670</span> * a1[<span class="number">10</span>] != <span class="number">650683500</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">6088797</span> * a1[<span class="number">11</span>] != <span class="number">298351053</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">7884663</span> * a1[<span class="number">12</span>] != <span class="number">386348487</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">8944053</span> * a1[<span class="number">13</span>] != <span class="number">438258597</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">5198490</span> * a1[<span class="number">14</span>] != <span class="number">249527520</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">4544518</span> * a1[<span class="number">15</span>] != <span class="number">445362764</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">3645600</span> * a1[<span class="number">17</span>] != <span class="number">174988800</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">10115280</span> * a1[<span class="number">16</span>] != <span class="number">981182160</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">9667504</span> * a1[<span class="number">18</span>] != <span class="number">493042704</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">5364450</span> * a1[<span class="number">19</span>] != <span class="number">257493600</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">13464540</span> * a1[<span class="number">20</span>] != <span class="number">767478780</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">5488432</span> * a1[<span class="number">21</span>] != <span class="number">312840624</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">14479500</span> * a1[<span class="number">22</span>] != <span class="number">1404511500</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">6451830</span> * a1[<span class="number">23</span>] != <span class="number">316139670</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">6252576</span> * a1[<span class="number">24</span>] != <span class="number">619005024</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">7763364</span> * a1[<span class="number">25</span>] != <span class="number">372641472</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">7327320</span> * a1[<span class="number">26</span>] != <span class="number">373693320</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">8741520</span> * a1[<span class="number">27</span>] != <span class="number">498266640</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">8871876</span> * a1[<span class="number">28</span>] != <span class="number">452465676</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">4086720</span> * a1[<span class="number">29</span>] != <span class="number">208422720</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="number">9374400</span> * a1[<span class="number">30</span>] == <span class="number">515592000</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">5759124</span> * a1[<span class="number">31</span>] == <span class="number">719890500</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>答案已经很明显了,数组a1中储存的就是flag</p>
-<p>本来想一个个除的,但发现flag长度有32位,太麻烦了,这里我们还是写脚本</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a1[<span class="number">32</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=<span class="number">31</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i)</span><br><span class="line">            a1[i<span class="number">-1</span>]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(a1[i]=<span class="number">1</span>;a1[i]&lt;<span class="number">200</span>;a1[i]++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">1629056</span> * a1[<span class="number">0</span>]== <span class="number">166163712</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">6771600</span> * a1[<span class="number">1</span>] == <span class="number">731332800</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">3682944</span> * a1[<span class="number">2</span>] == <span class="number">357245568</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">10431000</span> * a1[<span class="number">3</span>] == <span class="number">1074393000</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">3977328</span> * a1[<span class="number">4</span>] == <span class="number">489211344</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5138336</span> * a1[<span class="number">5</span>] == <span class="number">518971936</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">7532250</span> * a1[<span class="number">7</span>] == <span class="number">406741500</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5551632</span> * a1[<span class="number">8</span>] == <span class="number">294236496</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">3409728</span> * a1[<span class="number">9</span>] == <span class="number">177305856</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">13013670</span> * a1[<span class="number">10</span>] == <span class="number">650683500</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">6088797</span> * a1[<span class="number">11</span>] == <span class="number">298351053</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">7884663</span> * a1[<span class="number">12</span>] == <span class="number">386348487</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">8944053</span> * a1[<span class="number">13</span>] == <span class="number">438258597</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5198490</span> * a1[<span class="number">14</span>] == <span class="number">249527520</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">4544518</span> * a1[<span class="number">15</span>] == <span class="number">445362764</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">3645600</span> * a1[<span class="number">17</span>] == <span class="number">174988800</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">10115280</span> * a1[<span class="number">16</span>] == <span class="number">981182160</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">9667504</span> * a1[<span class="number">18</span>] == <span class="number">493042704</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5364450</span> * a1[<span class="number">19</span>] == <span class="number">257493600</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">13464540</span> * a1[<span class="number">20</span>] == <span class="number">767478780</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5488432</span> * a1[<span class="number">21</span>] == <span class="number">312840624</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">14479500</span> * a1[<span class="number">22</span>] == <span class="number">1404511500</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">6451830</span> * a1[<span class="number">23</span>] == <span class="number">316139670</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">6252576</span> * a1[<span class="number">24</span>] == <span class="number">619005024</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">7763364</span> * a1[<span class="number">25</span>] == <span class="number">372641472</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">7327320</span> * a1[<span class="number">26</span>] == <span class="number">373693320</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">8741520</span> * a1[<span class="number">27</span>] == <span class="number">498266640</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">8871876</span> * a1[<span class="number">28</span>] == <span class="number">452465676</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">4086720</span> * a1[<span class="number">29</span>] == <span class="number">208422720</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">9374400</span> * a1[<span class="number">30</span>] == <span class="number">515592000</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">            <span class="keyword">if</span> ( <span class="number">5759124</span> * a1[<span class="number">31</span>] == <span class="number">719890500</span> )</span><br><span class="line">                <span class="built_in">putchar</span>(a1[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Tips:用记事本将sub_4009AE中的伪代码替换编写脚本会更方便哦!</strong></p>
-<p>运行得到</p>
-<p><img src="/images/re/image-20230113104641776.png" alt="image-20230113104641776"></p>
-<p>flag{e65421110ba03099a1c039337}</p>
-<p>但这里有一个坑,原代码下标为6的元素a1[6]，也就是说第七个是没有值的，没办法只能爆破 所以真正的flag应该是</p>
-<h4 id="flag-e165421110ba03099a1c039337"><a href="#flag-e165421110ba03099a1c039337" class="headerlink" title="flag{e165421110ba03099a1c039337}"></a><strong>flag{e165421110ba03099a1c039337}</strong></h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/06/BUUCTF-reverse-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/06/BUUCTF-reverse-1/" class="post-title-link" itemprop="url">BUUCTF-reverse_1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-01-06 16:37:47 / 修改时间：16:57:42" itemprop="dateCreated datePublished" datetime="2023-01-06T16:37:47+08:00">2023-01-06</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>将下载好的压缩包解压，得到一个一个exe文件</p>
-<p>双击运行这个exe文件</p>
-<p><img src="/images/BUUCTF-reverse-1/ff74198e8798489d910f0fbc2dab8885.png"></p>
-<p> input the flag:</p>
-<p>说明题目需要我们输入一个flag，当flag正确的时候程序会有相应的输出</p>
-<p>我们要想找出这个flag是什么，我们只有一个可执行文件，没有源代码，无法理解程序如何运行，就需要将这个二进制文件进行逆向分析</p>
-<p>下面我们进行逆向分析</p>
-<p>1.查壳</p>
-<p><img src="/images/BUUCTF-reverse-1/3fcf7872f42e43a3a86bfb97a1e8c72b.png"></p>
-<p>无壳,是一个64位可执行文件，拖入64位ida当中</p>
-<p>2.打开字符串窗口<br>想在函数窗口寻找主函数进行反编译</p>
-<p><img src="/images/BUUCTF-reverse-1/2a179c8a1b4f4eb990d25ee0519120f0-16729952928111.png" alt="img"></p>
-<p>没有找到明显的main函数</p>
-<p>shift+F12打开string窗口查看程序中重要的字符串</p>
-<p> <img src="/images/BUUCTF-reverse-1/87c6d5ab14dd43a181a8540d343f6867-16729953368614.png" alt="img"></p>
-<p>this is the right flag，这是正确的flag</p>
-<p>点入这个重要的字符串</p>
-<p><img src="/images/BUUCTF-reverse-1/de28f2b802f246aea920312dabcdf50a-16729953581317.png" alt="img"></p>
-<p> 将光标放在这个标黄的变量上面，按下Ctrl+X，交叉引用，查看哪些函数调用了这个字符串</p>
-<p>根据字符串的字面意思，调用这个字符串的函数很可能是主函数或者是很重要的函数</p>
-<p>3.进入函数<br>点入这个函数,F5反编译成C++代码查看</p>
-<p><img src="/images/BUUCTF-reverse-1/d2e46befd615466db4de6c1fed2172a8-167299538732710.png" alt="img"></p>
-<p>分析可知:</p>
-<p>str1是我们输入的字符串，即flag</p>
-<p>strcmp()为字符串比较函数,若是两个字符串相同则返回0</p>
-<p>this is the right flag，说明输入了正确的字符串</p>
-<p>说明正确的字符串（flag）就等于str2，所以要查找str2的值</p>
-<p>点击str2进入文本界面，可以看到str2存储的是{hello_world}，尝试提交flag{hello_world},发现并不正确,继续分析代码发现</p>
-<p>for循环改变了str2</p>
-<p>111,48应该都是ASCLL码</p>
-<p>将光标点在111和48上面，按下快捷键r可以将其改为字符</p>
-<p><img src="/images/BUUCTF-reverse-1/e682e9d4e5744bbcae2993553ccdfebc-167299541033713.png" alt="img"></p>
-<p>这个循环遍历了str2，将其中的o改为了0</p>
-<p>我们就得到了str2(就是flag）</p>
-<p><strong>flag{hell0_w0rld}</strong> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/04/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/" class="post-title-link" itemprop="url">BUUCTF-被劫持的神秘礼物</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-01-04 13:50:49 / 修改时间：18:34:42" itemprop="dateCreated datePublished" datetime="2023-01-04T13:50:49+08:00">2023-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h6 id="题目-被劫持的神秘礼物"><a href="#题目-被劫持的神秘礼物" class="headerlink" title="题目:被劫持的神秘礼物"></a>题目:<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9">被劫持的神秘礼物</a></h6><h6 id="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交"><a href="#某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。-链接-https-pan-baidu-com-s-1pwVVpA5-WWY8Og6dhCcWRw-提取码-31vk-注意：得到的-flag-请包上-flag-提交" class="headerlink" title="某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交"></a>某天小明收到了一件很特别的礼物，有奇怪的后缀，奇怪的名字和格式。小明找到了知心姐姐度娘，度娘好像知道这是啥，但是度娘也不知道里面是啥。。。你帮帮小明？找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案。 链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw">https://pan.baidu.com/s/1pwVVpA5_WWY8Og6dhCcWRw</a> 提取码: 31vk 注意：得到的 flag 请包上 flag{} 提交</h6><p>下载后得到文件gift.pcapng</p>
-<p>pcapng为流量包的后缀,这是一道典型的流量分析,我们用Wireshark打开流量包</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104120028859.png"></p>
-<p>追踪流发现</p>
-<p><img src="/images/BUUCTF-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9/image-20230104121724319.png"></p>
-<p>账号为admina,密码为adminb.</p>
-<p>由题目可知找到帐号密码，串在一起，用32位小写MD5哈希一下得到的就是答案</p>
-<p>所以flag为:flag{1d240aafe21a86afc11f38a45b541a49}</p>
-
       
     </div>
 
@@ -751,14 +735,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

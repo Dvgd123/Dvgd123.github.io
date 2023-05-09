@@ -20,21 +20,24 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="12345678&lt;?phphighlight_file(&amp;#x27;index.php&amp;#x27;);include(&quot;flag.php&quot;);$id&#x3D;$_POST[&amp;#x27;id&amp;#x27;];$json&#x3D;json_decode($_GET[&amp;#x27;json&amp;#x27;],true);if ($id&#x3D;&#x3D;&quot;wllmNB&quot;&amp;&amp;$jso">
+  <meta name="description" content="我们看向这个题目的页面  他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么  提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on 我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。 使用php:&#x2F;&amp;#x2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="web-jicao">
-<meta property="og:url" content="http://example.com/2023/01/28/web-jicao/index.html">
+<meta property="og:title" content="web-include">
+<meta property="og:url" content="http://example.com/2023/01/29/include/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="12345678&lt;?phphighlight_file(&amp;#x27;index.php&amp;#x27;);include(&quot;flag.php&quot;);$id&#x3D;$_POST[&amp;#x27;id&amp;#x27;];$json&#x3D;json_decode($_GET[&amp;#x27;json&amp;#x27;],true);if ($id&#x3D;&#x3D;&quot;wllmNB&quot;&amp;&amp;$jso">
+<meta property="og:description" content="我们看向这个题目的页面  他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么  提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on 我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。 使用php:&#x2F;&amp;#x2">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/web-jicao/3023439-20221104120952140-1155478415.png">
-<meta property="article:published_time" content="2023-01-28T13:55:08.000Z">
-<meta property="article:modified_time" content="2023-01-28T13:59:06.315Z">
+<meta property="og:image" content="http://example.com/images/web-include/1620.png">
+<meta property="og:image" content="http://example.com/images/web-include/1620-16749591749692.png">
+<meta property="og:image" content="http://example.com/images/web-include/1620-16749592011614.png">
+<meta property="og:image" content="http://example.com/images/web-include/1620-16749592431156.png">
+<meta property="article:published_time" content="2023-01-29T02:24:16.000Z">
+<meta property="article:modified_time" content="2023-05-09T07:37:19.726Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/web-jicao/3023439-20221104120952140-1155478415.png">
+<meta name="twitter:image" content="http://example.com/images/web-include/1620.png">
 
-<link rel="canonical" href="http://example.com/2023/01/28/web-jicao/">
+<link rel="canonical" href="http://example.com/2023/01/29/include/">
 
 
 <script id="page-configurations">
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title>web-jicao | Dvgd</title>
+  <title>web-include | Dvgd</title>
   
 
 
@@ -127,12 +130,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">17</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">16</span></a>
 
   </li>
   </ul>
@@ -163,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/28/web-jicao/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/29/include/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -176,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          web-jicao
+          web-include
         </h1>
 
         <div class="post-meta">
@@ -185,9 +188,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-28 21:55:08 / 修改时间：21:59:06" itemprop="dateCreated datePublished" datetime="2023-01-28T21:55:08+08:00">2023-01-28</time>
+              <time title="创建时间：2023-01-29 10:24:16" itemprop="dateCreated datePublished" datetime="2023-01-29T10:24:16+08:00">2023-01-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-09 15:37:19" itemprop="dateModified" datetime="2023-05-09T15:37:19+08:00">2023-05-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
             </span>
 
           
@@ -208,16 +226,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$id</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$json</span>=<span class="title function_ invoke__">json_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;json&#x27;</span>],<span class="literal">true</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$id</span>==<span class="string">&quot;wllmNB&quot;</span>&amp;&amp;<span class="variable">$json</span>[<span class="string">&#x27;x&#x27;</span>]==<span class="string">&quot;wllm&quot;</span>)</span><br><span class="line">&#123;<span class="keyword">echo</span> <span class="variable">$flag</span>;&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+        <p>我们看向这个题目的页面</p>
+<p><img src="/../images/web-include/1620.png" alt="img"></p>
+<p>他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么</p>
+<p><img src="/../images/web-include/1620-16749591749692.png" alt="img"></p>
+<p>提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on</p>
+<p>我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。</p>
+<p>使用php:&#x2F;&#x2F;filter读取到flag.php，将flag.php以base64的形式给显示出来，这样的话我们可以这样构造我们的payload</p>
+<p>url?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>我们来解读一下上面的payload：</p>
+<p>首先我们要传入file关键字的GET参数传递，php:&#x2F;&#x2F;是一种协议名称，php:&#x2F;&#x2F;filter是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode表示的是读取的方式是base64编码后resouce&#x3D;flag.php表示目标文件为flag.php</p>
+<p>也就是说，flag.php最终会以base64的形式显示出来，我们最后使用base64解码就可以了。</p>
+<p>理论存在，实践开始：</p>
+<p>我们使用上面的payload</p>
+<p><img src="/../images/web-include/1620-16749592011614.png" alt="img"></p>
+<p>然后我们得到了一段base64，我们使用base64解密，因该就可以得到答案了</p>
+<p><img src="/../images/web-include/1620-16749592431156.png" alt="img"></p>
 
-<p>阅读代码可知当传入一个post型的参数id与wllmNB相等并且传入一个get型的参数json；</p>
-<p>但是这里有一个函数json_decode，上网搜索可知json_decode这个函数对JSON格式的字符串进行编码</p>
-<p>参数json：待解码的json string格式的字符串，所以我们需要传入get型的参数json并且对他进行解码</p>
-<p>JSON 格式的字符串<br>$json &#x3D; ‘{“a”:”php”,”b”:”mysql”,”c”:3}’;</p>
-<p>其中a为键，php为a的键值。</p>
-<p>所以我们需要传入get:json&#x3D;{“x”:”wllm”}和post:id&#x3D;wllNB便可以得到flag。</p>
-<p><img src="/../images/web-jicao/3023439-20221104120952140-1155478415.png" alt="img"></p>
-<h5 id="NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9"><a href="#NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9" class="headerlink" title="NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}"></a>NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}</h5>
     </div>
 
     
@@ -232,12 +257,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/01/28/web-easy-md5/" rel="prev" title="web-easy_md5">
-      <i class="fa fa-chevron-left"></i> web-easy_md5
+    <a href="/2023/01/29/web-include/" rel="prev" title="web-include">
+      <i class="fa fa-chevron-left"></i> web-include
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/01/29/web-include/" rel="next" title="web-include">
-      web-include <i class="fa fa-chevron-right"></i>
+    <a href="/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" rel="next" title="web-基础认证">
+      web-基础认证 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -297,7 +322,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#NSSCTF-bc1f4ffb-af59-4738-a613-25e55f1a6af9"><span class="nav-number">1.</span> <span class="nav-text">NSSCTF{bc1f4ffb-af59-4738-a613-25e55f1a6af9}</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -313,14 +337,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
