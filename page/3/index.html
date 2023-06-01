@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">27</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">28</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,106 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/01/%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/" class="post-title-link" itemprop="url">web-基础认证</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-02-01 22:06:29" itemprop="dateCreated datePublished" datetime="2023-02-01T22:06:29+08:00">2023-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-02-05 13:56:03" itemprop="dateModified" datetime="2023-02-05T13:56:03+08:00">2023-02-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1、打开题目环境</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/115e8182e56a4dc9bb03b150c2434453.png" alt="img"></p>
+<p>2、点击click跳出来一个登录弹窗，随便输入用户名和密码登录试试，没有返回任何有用信息</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/11af9f2d902545a89457537ad97031cd.png" alt="img"></p>
+<p>3、查看附件，得到一堆密码，应该是要直接爆破</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8a93fcba23064b469ef3f2dabe1995c6.png" alt="img"></p>
+<p>4、点击click<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%8A%93%E5%8C%85&spm=1001.2101.3001.7020">抓包</a>后发送到repeater模块，重新发包得到”Do u know admin”的信息，猜测用户名即为admin</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/e6bc18b23c544e5aa3d5108c24479dd4.png" alt="img"></p>
+<p>4、输入用户名和密码后抓包，看到一串<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=base64%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">base64加密</a>过的字符</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/22cf876256334313b0d68bdd34b8a523.png" alt="img"></p>
+<p>丢到解码器里解码，发现是我刚输进去的用户名和密码，中间用冒号隔开了（冒号划重点！</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/0fe41ea078914b1d80c09fa9c4927f76.png" alt="img"></p>
+<p>6、把包发送到爆破模块，给刚刚的base64密码添加变量（这里截图截错了，添加完变量后应该这段字符前后各有一个§符号）</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8d5a666fff6f4e6babb6f3abca86c959.png" alt="img"></p>
+<p> 7、在payload options[simple list]模块把题目附件里面的密码粘贴进去</p>
+<p>8、添加前缀，admin后面一定不要忘记加冒号！</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8de3db8daf804ad3b08cf334e3fcc49e.png" alt="img"></p>
+<p> 添加base64编码</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/8c03ad1544f440e09eaf0cbc7e7c4a5a.png" alt="img"></p>
+<p> 9、把特殊符号的url编码取消，不然&#x3D;会被转换成%3d</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/be2d147292674f10b416b3aa2517e580.png" alt="img"></p>
+<p> 10、全部布置完是这个样子</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2ed2adeda37b4b4fa4a65e0cf3cfe290.png" alt="img"></p>
+<p>11、开始爆破，发现长度不一样的了</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/2a9ba7de13214ee1a7467e3f8f6f7bba.png" alt="img"></p>
+<p> 12、在raw模块复制后查看response，得到flag</p>
+<p><img src="/../images/web-%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%81/6001e858ddba4d7c831cfe370005aef2.png" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -824,7 +924,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
