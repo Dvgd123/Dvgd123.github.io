@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最初想法是想找到一种不影响程序本身运行，但是能够给程序禁用一些系统调用（execve、open等）来实现通防的方法。看了网上很多资料，感觉没有找到比较理想的解决方案，有一些是环境都搭不起来，有一些工具对文件本身内容改动太大了（加段），而awd中假如check的脚本是本地运行的话是有可能check文件修改字节数的。那就只能自己动手，丰衣足食了。 工具说明github地址https:&#x2F;&#x2F;github.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pwn通防">
+<meta property="og:url" content="http://example.com/2023/06/29/pwn%E9%80%9A%E9%98%B2/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="最初想法是想找到一种不影响程序本身运行，但是能够给程序禁用一些系统调用（execve、open等）来实现通防的方法。看了网上很多资料，感觉没有找到比较理想的解决方案，有一些是环境都搭不起来，有一些工具对文件本身内容改动太大了（加段），而awd中假如check的脚本是本地运行的话是有可能check文件修改字节数的。那就只能自己动手，丰衣足食了。 工具说明github地址https:&#x2F;&#x2F;github.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2f7fd37c13da4bc1905e183f4ce972a6.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6e2bf6a2a07f4d2fa7a92576d13a6cae.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/73c22e1cd06c480f96f3dd1c144c9c34.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a512246a1c1f431e9ded2a9c0a88a84c.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ec354898825445ccbff1ab187652c3f1.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6c69d1d4fc7f4de29e7219c2e2cf2bb5.png#pic_center">
+<meta property="og:image" content="http://example.com/images/pwn%E9%80%9A%E9%98%B2/e84557fc8f934ac5bee5e2c5e92fd5da-168804182185113.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/bfbaf575076944af83e2888646a5460f.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/395a516336784251b8d107cacb665680.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/1aaec8e99b0a4581a2621a0e8ff59522.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ed49394a6bae444984e3d7e935b65beb.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a9ab738106e24776958139ee0e1675c8.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c88a1e9bd00d49e69263af2e5c945fb5.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9c25e7f08148411e90e87fa4b319f7f6.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/877799e989884d2f9236f7ae52cb9323.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2a1abdb980d54092b68cc972363fdb48.png#pic_center">
+<meta property="article:published_time" content="2023-06-29T12:27:27.000Z">
+<meta property="article:modified_time" content="2023-06-29T12:32:25.943Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2f7fd37c13da4bc1905e183f4ce972a6.png#pic_center">
+
+<link rel="canonical" href="http://example.com/2023/06/29/pwn%E9%80%9A%E9%98%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pwn通防 | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">36</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/29/pwn%E9%80%9A%E9%98%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pwn通防
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-29 20:27:27 / 修改时间：20:32:25" itemprop="dateCreated datePublished" datetime="2023-06-29T20:27:27+08:00">2023-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最初想法是想找到一种不影响程序本身运行，但是能够给程序禁用一些系统调用（<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=execve&spm=1001.2101.3001.7020">execve</a>、open等）来实现通防的方法。看了网上很多资料，感觉没有找到比较理想的解决方案，有一些是环境都搭不起来，有一些工具对文件本身内容改动太大了（加段），而awd中假如check的脚本是本地运行的话是有可能check文件修改字节数的。那就只能自己动手，丰衣足食了。</p>
+<h2 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h2><h3 id="github地址"><a href="#github地址" class="headerlink" title="github地址"></a>github地址</h3><p><a target="_blank" rel="noopener" href="https://github.com/[TTY](https://so.csdn.net/so/search?q=TTY&spm=1001.2101.3001.7020)-flag/evilPatcher">https://github.com/[TTY](https://so.csdn.net/so/search?q=TTY&amp;spm=1001.2101.3001.7020)-flag/evilPatcher</a></p>
+<p>觉得还可以的话给个star~</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>修改的字节数少，0x100字节以下</li>
+<li>不修改文件头信息</li>
+<li>沙箱规则可以自己定义</li>
+<li>支持i386和amd64</li>
+<li>支持pie开启和未开启情况</li>
+</ul>
+<p>注：已在ubuntu16、18、20上测试过默认版本gcc编译出的程序，通过；暂不支持g++编译出的程序。</p>
+<h3 id="环境需求"><a href="#环境需求" class="headerlink" title="环境需求"></a>环境需求</h3><p> 运行需要依赖seccomps-tools和pwntools</p>
+<p> pwntools <a target="_blank" rel="noopener" href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a></p>
+<p> seccomps-tools <a target="_blank" rel="noopener" href="https://github.com/david942j/seccomp-tools">https://github.com/david942j/seccomp-tools</a></p>
+<h3 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h3><p><strong>sandboxs文件夹</strong></p>
+<p> sandboxs里面存放了禁用的规则，这里根据自己的需要进行修改和选择。</p>
+<p>实例（sandbox1.asm）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A = sys_number</span><br><span class="line">A &gt;= 0x40000000 ? dead : next</span><br><span class="line">A == execve ? dead : next</span><br><span class="line">A == open ? dead : next</span><br><span class="line">return ALLOW</span><br><span class="line">dead:</span><br><span class="line">return KILL</span><br><span class="line">1234567</span><br></pre></td></tr></table></figure>
+
+<p><strong>test文件夹</strong></p>
+<p> 执行<code>./complie.sh</code>生成四个可执行文件可供测试，分别是64&#x2F;32位和pie开启&#x2F;关闭的排列组合。</p>
+<p><img src="https://img-blog.csdnimg.cn/2f7fd37c13da4bc1905e183f4ce972a6.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="运行脚本命令"><a href="#运行脚本命令" class="headerlink" title="运行脚本命令"></a>运行脚本命令</h3><p> 第一个参数是想要patch的elf文件，第二个参数是沙箱规则文件，可以从sandboxs文件夹里选，假如想输出更多的中间过程可以在最后参数加上一个1。（已自动识别32位和64位）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Usage: python evil_patcher.py elfFile sandboxFile</span><br><span class="line">       python evil_patcher.py elfFile sandboxFile 1 (more detailed process message)</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/6e2bf6a2a07f4d2fa7a92576d13a6cae.png#pic_center" alt="在这里插入图片描述"></p>
+<p> 结果输出一个patch过后的文件，文件名为原来文件加上.patch后缀，再改回原来的名字就可以开开心心传到靶机上了。</p>
+<p><img src="https://img-blog.csdnimg.cn/73c22e1cd06c480f96f3dd1c144c9c34.png#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>验证</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/a512246a1c1f431e9ded2a9c0a88a84c.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="禁用系统调用的两种方式"><a href="#禁用系统调用的两种方式" class="headerlink" title="禁用系统调用的两种方式"></a>禁用系统调用的两种方式</h2><h3 id="1-seccomp库实现"><a href="#1-seccomp库实现" class="headerlink" title="1.seccomp库实现"></a>1.seccomp库实现</h3><p>这种方法需要安装一些库文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libseccomp-dev libseccomp2 seccomp</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    scmp_filter_ctx ctx;</span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW);</span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>);</span><br><span class="line">    seccomp_load(ctx);</span><br><span class="line">    <span class="type">char</span> * str = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    write(<span class="number">1</span>,<span class="string">&quot;hello worldn&quot;</span>,<span class="number">12</span>);</span><br><span class="line">    syscall(<span class="number">59</span>,str,<span class="literal">NULL</span>,<span class="literal">NULL</span>);<span class="comment">//execve</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">1234567891011121314</span></span><br></pre></td></tr></table></figure>
+
+<p> scmp_filter_ctx是过滤器的结构体</p>
+<p> seccomp_init对结构体进行初始化，若参数为SCMP_ACT_ALLOW，则过滤为黑名单模式；若为SCMP_ACT_KILL，则为白名单模式，即没有匹配到规则的系统调用都会杀死进程，默认不允许所有的syscall。</p>
+<p> seccomp_rule_add用来添加一条规则，arg_cnt为0,表示我们直接限制execve,不管参数是什么，如果arg_cnt不为0,那arg_cnt表示后面限制的参数的个数,也就是只有调用execve,且参数满足要求时,才会拦截</p>
+<p> seccomp_load是应用过滤器,如果不调用seccomp_load则上面所有的过滤都不会生效</p>
+<p> 注意：编译的时候要在最后面加 -lseccomp</p>
+<p> 这该种方式实现的话会涉及到堆的操作，会留下堆使用痕迹，出题一般不用这种，假如栈题倒是可以用。正常用倒是方便，直接调库就行。</p>
+<p><img src="https://img-blog.csdnimg.cn/ec354898825445ccbff1ab187652c3f1.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="2-prctl实现"><a href="#2-prctl实现" class="headerlink" title="2.prctl实现"></a>2.prctl实现</h3><p>实例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/filter.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stderr</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> <span class="title">filter</span>[] =</span> &#123;</span><br><span class="line">    BPF_STMT(BPF_LD+BPF_W+BPF_ABS,<span class="number">4</span>),</span><br><span class="line">    BPF_JUMP(BPF_JMP+BPF_JEQ,<span class="number">0xc000003e</span>,<span class="number">0</span>,<span class="number">2</span>),</span><br><span class="line">    BPF_STMT(BPF_LD+BPF_W+BPF_ABS,<span class="number">0</span>),</span><br><span class="line">    BPF_JUMP(BPF_JMP+BPF_JEQ,<span class="number">59</span>,<span class="number">0</span>,<span class="number">1</span>),</span><br><span class="line">    BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_KILL),</span><br><span class="line">    BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_ALLOW),</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> <span class="title">prog</span> =</span> &#123;</span><br><span class="line">    .len = (<span class="type">unsigned</span> <span class="type">short</span>)(<span class="keyword">sizeof</span>(filter)/<span class="keyword">sizeof</span>(filter[<span class="number">0</span>])),</span><br><span class="line">    .filter = filter,</span><br><span class="line">    &#125;;</span><br><span class="line">    prctl(PR_SET_NO_NEW_PRIVS,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&amp;prog);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start!\n&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">12345678910111213141516171819202122232425262728293031323334</span></span><br></pre></td></tr></table></figure>
+
+<p> 主要用到两个结构体sock_filter和sock_fprog，prog会作为参数传入prctl,这里禁用了execve，x64的情况下其系统调用号为59。</p>
+<p>效果图</p>
+<p><img src="https://img-blog.csdnimg.cn/6c69d1d4fc7f4de29e7219c2e2cf2bb5.png#pic_center" alt="在这里插入图片描述"></p>
+<p> ps：一种更快捷的方式是通过seccomp-tools，可以直接生成代码，不过得提前写好沙箱规则的文件，格式和sandboxs文件夹中的文件一样。</p>
+<p><img src="/../images/pwn%E9%80%9A%E9%98%B2/e84557fc8f934ac5bee5e2c5e92fd5da-168804182185113.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><h3 id="1-修改-start代码块"><a href="#1-修改-start代码块" class="headerlink" title="1.修改_start代码块"></a>1.修改_start代码块</h3><p>ELF执行流程图</p>
+<p><img src="https://img-blog.csdnimg.cn/bfbaf575076944af83e2888646a5460f.png#pic_center" alt="在这里插入图片描述"></p>
+<p> 程序的入口默认情况下都是_start函数，这里主要就是调用了__libc_start_main。</p>
+<p>函数原型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __libc_start_main(<span class="type">int</span> *(main) (<span class="type">int</span>, <span class="type">char</span> * *, <span class="type">char</span> * *), <span class="type">int</span> argc, <span class="type">char</span> * * ubp_av, <span class="type">void</span> (*init) (<span class="type">void</span>), <span class="type">void</span> (*fini) (<span class="type">void</span>), <span class="type">void</span> (*rtld_fini) (<span class="type">void</span>), <span class="type">void</span> (* stack_end));</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p> main函数的地址就是第一个参数，那么我们可以修改这个参数为我们提前布置好的代码的地址，然后最后再跳转回main去执行正常流程，类似于病毒？不过这里藏得更深一点，病毒一般会修改程序入口点。</p>
+<h4 id="32位情况"><a href="#32位情况" class="headerlink" title="32位情况"></a>32位情况</h4><p>pie未开启</p>
+<p> 情况比较简单，直接修改mov的第二个操作数为我们要跳转的地址就行。</p>
+<p><img src="https://img-blog.csdnimg.cn/395a516336784251b8d107cacb665680.png#pic_center" alt="在这里插入图片描述"></p>
+<p>pie开启</p>
+<p> 这里情况稍微特殊一点，<code>push ds:(main_ptr - 3FC4)[ebx]</code>指令长度为6个字节，<code>lea ecx, (unk_2060 - 3FC4h)[ebx];push ecx;</code>两条指令长度起来为7，所以后面的<code>call ___libc_start_main</code>指令其实往后移了一个字节，把<code>hlt</code>覆盖了。</p>
+<p><img src="https://img-blog.csdnimg.cn/1aaec8e99b0a4581a2621a0e8ff59522.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="64位情况"><a href="#64位情况" class="headerlink" title="64位情况"></a>64位情况</h4><p> 64位情况比较简单，都是修改mov或者lea的第二个参数就行，因为64位情况下是通过寄存器来传递参数的。</p>
+<p>pie未开启</p>
+<p><img src="https://img-blog.csdnimg.cn/ed49394a6bae444984e3d7e935b65beb.png#pic_center" alt="在这里插入图片描述"></p>
+<p>pie开启</p>
+<p><img src="https://img-blog.csdnimg.cn/a9ab738106e24776958139ee0e1675c8.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="2-prctl汇编实现"><a href="#2-prctl汇编实现" class="headerlink" title="2.prctl汇编实现"></a>2.prctl汇编实现</h3><p> 我们需要实现的其实是以下两个函数完成的事情，只不过我们现在使用系统调用来完成。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prctl(PR_SET_NO_NEW_PRIVS,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&amp;prog);</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p> PR_SET_NO_NEW_PRIVS、PR_SET_SECCOMP、SECCOMP_MODE_FILTER这三个都是常数，那么只要解决prog和prctl系统调用汇编实现就行了。幸运的是pwntools对于系统调用汇编实现已经有了相应的模块，好耶，懒狗狂喜。</p>
+<p><img src="https://img-blog.csdnimg.cn/c88a1e9bd00d49e69263af2e5c945fb5.png#pic_center" alt="在这里插入图片描述"></p>
+<p> 对于sock_filter和sock_fprog两个结构体可以当一维数组来看就行了，无脑push进栈就行了，不过最后还是需要进行堆栈平衡操作的，主要怕程序结束的时候异常。</p>
+<p><strong>注入代码放在哪？</strong></p>
+<p><strong>.eh_frame节</strong></p>
+<p> 正常编译处理的程序一般都会包含这个节区，里面主要记载一些异常处理的信息，一般是只读权限的，但是加载到内存的时候是有可能和<code>.text</code>节在同一个页，具有执行权限（之后发现ubuntu18.04编译出来的是如下图，但ubuntu16.04编译出来的<code>.eh_frame</code>并没有和<code>.text</code>节在一个段里）</p>
+<p> 选择把shellcode注入到这个节上，这个节的长度也一般会&gt;0x100个字节。</p>
+<p> 实现代码如下，不同情况汇编代码稍有区别，但思路一致。</p>
+<p><img src="https://img-blog.csdnimg.cn/9c25e7f08148411e90e87fa4b319f7f6.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="3-修改段权限"><a href="#3-修改段权限" class="headerlink" title="3.修改段权限"></a>3.修改段权限</h3><p> 编译出的文件<code>.eh_frame</code>节对应的那个段不一定有可执行权限，和编译器版本相关，那么我们只需要把<code>.eh_frame</code>节对应的那个段加上可执行权限就行。</p>
+<p><img src="https://img-blog.csdnimg.cn/877799e989884d2f9236f7ae52cb9323.png#pic_center" alt="在这里插入图片描述"></p>
+<p> ps：假如想手动修改段权限可以用010Editor直接改，非常好用，学习ELF文件格式用它非常好用。</p>
+<p><img src="https://img-blog.csdnimg.cn/2a1abdb980d54092b68cc972363fdb48.png#pic_center" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/26/z3%E7%BA%A6%E6%9D%9F%E6%B1%82%E8%A7%A3/" rel="prev" title="z3约束求解">
+      <i class="fa fa-chevron-left"></i> z3约束求解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/29/python2%E5%AE%89%E8%A3%85pwntools/" rel="next" title="python2安装pwntools">
+      python2安装pwntools <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">工具说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E5%9C%B0%E5%9D%80"><span class="nav-number">1.1.</span> <span class="nav-text">github地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%9C%80%E6%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">环境需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E"><span class="nav-number">1.4.</span> <span class="nav-text">目录说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">运行脚本命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%81%E7%94%A8%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">禁用系统调用的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-seccomp%E5%BA%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.1.</span> <span class="nav-text">1.seccomp库实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-prctl%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.prctl实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">实现思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BF%AE%E6%94%B9-start%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">3.1.</span> <span class="nav-text">1.修改_start代码块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#32%E4%BD%8D%E6%83%85%E5%86%B5"><span class="nav-number">3.1.1.</span> <span class="nav-text">32位情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#64%E4%BD%8D%E6%83%85%E5%86%B5"><span class="nav-number">3.1.2.</span> <span class="nav-text">64位情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-prctl%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2.prctl汇编实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9%E6%AE%B5%E6%9D%83%E9%99%90"><span class="nav-number">3.3.</span> <span class="nav-text">3.修改段权限</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+
