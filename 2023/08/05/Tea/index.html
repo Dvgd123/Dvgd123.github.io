@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[GDOUCTF 2023]Tea首先下载，拖进exe查看  发现为64位，拖进ida64，快捷键shift+f12到字符串然后ctrl+f搜索关键词flag  双击flag跟进 ，找到调用函数sub_140016230，点进去查看函数关键代码。 双击sub_140011339(v7)跟进，然后跟进sub_1400117D0(a1)函数，  可知v7为key，且被更改为{2233，4455，667">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tea">
+<meta property="og:url" content="http://example.com/2023/08/05/Tea/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="[GDOUCTF 2023]Tea首先下载，拖进exe查看  发现为64位，拖进ida64，快捷键shift+f12到字符串然后ctrl+f搜索关键词flag  双击flag跟进 ，找到调用函数sub_140016230，点进去查看函数关键代码。 双击sub_140011339(v7)跟进，然后跟进sub_1400117D0(a1)函数，  可知v7为key，且被更改为{2233，4455，667">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Tea/222da3f37947403e8fac9bd56cf09a6d.png">
+<meta property="og:image" content="http://example.com/images/Tea/da0a9fdd239f43f088362ebc3db9b7f1.png">
+<meta property="og:image" content="http://example.com/images/Tea/6d24d84c4c5346ee8f417b2f90a18f4b.png">
+<meta property="og:image" content="http://example.com/images/Tea/ae0f734a3dce46bbbf112a82bf88c41f.png">
+<meta property="og:image" content="http://example.com/images/Tea/c91d2c54103a48fc91fa71d85acf006c.png">
+<meta property="og:image" content="http://example.com/images/Tea/0f567038a37a4e03b0149e66bb85369c.png">
+<meta property="og:image" content="http://example.com/images/Tea/9c192ae9b2854516a5d19cecd0a0041b.png">
+<meta property="og:image" content="http://example.com/images/Tea/7f2f797412c6448f8692a5d33ceeb3a7.png">
+<meta property="og:image" content="http://example.com/images/Tea/2341466f8b1c4608be29a21b74b08f38.png">
+<meta property="og:image" content="http://example.com/images/Tea/14cffdffc75948fc90624a4fe873ea71.png">
+<meta property="article:published_time" content="2023-08-05T02:32:34.000Z">
+<meta property="article:modified_time" content="2023-08-06T14:05:29.022Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Tea/222da3f37947403e8fac9bd56cf09a6d.png">
+
+<link rel="canonical" href="http://example.com/2023/08/05/Tea/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Tea | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/05/Tea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tea
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-05 10:32:34" itemprop="dateCreated datePublished" datetime="2023-08-05T10:32:34+08:00">2023-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-08-06 22:05:29" itemprop="dateModified" datetime="2023-08-06T22:05:29+08:00">2023-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="GDOUCTF-2023-Tea"><a href="#GDOUCTF-2023-Tea" class="headerlink" title="[GDOUCTF 2023]Tea"></a>[GDOUCTF 2023]Tea</h1><p>首先下载，拖进exe查看<img src="/../images/Tea/222da3f37947403e8fac9bd56cf09a6d.png" alt="img"></p>
+<p> 发现为64位，拖进ida64，快捷键shift+f12到<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%AD%97%E7%AC%A6%E4%B8%B2&spm=1001.2101.3001.7020">字符串</a>然后ctrl+f搜索关键词flag</p>
+<p><img src="/../images/Tea/da0a9fdd239f43f088362ebc3db9b7f1.png" alt="img"></p>
+<p>双击flag跟进 ，找到调用函数sub_140016230，点进去查看函数关键代码。<img src="/../images/Tea/6d24d84c4c5346ee8f417b2f90a18f4b.png" alt="img"></p>
+<p>双击sub_140011339(v7)跟进，然后跟进sub_1400117D0(a1)函数，<img src="/../images/Tea/ae0f734a3dce46bbbf112a82bf88c41f.png" alt="img"></p>
+<p> 可知v7为key，且被更改为{2233，4455，6677，8899}，双击 sub_1400112B7(v8, v7)，跟进sub_140011900(a1, a2)函数，<img src="/../images/Tea/c91d2c54103a48fc91fa71d85acf006c.png" alt="img"></p>
+<p>可知其为tea<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">加密</a>，然后再双击sub_140011352(v8)，跟进sub_140011B60(a1)函数，<img src="/../images/Tea/0f567038a37a4e03b0149e66bb85369c.png" alt="img"></p>
+<p>上述为加密后的数据，接下来就是写脚本</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#include &lt;stdio.h&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="built_in">int</span> <span class="title">main</span>()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">int</span> key[] = &#123;<span class="number">2233</span>, <span class="number">4455</span>, <span class="number">6677</span>, <span class="number">8899</span>&#125;;</span><br><span class="line">	unsigned <span class="built_in">int</span> <span class="keyword">value</span>[<span class="number">10</span>];</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">0</span>] = <span class="number">0x1A800BDA</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">1</span>] = <span class="number">0xF7A6219B</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">2</span>] = <span class="number">0x491811D8</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">3</span>] = <span class="number">0xF2013328</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">4</span>] = <span class="number">0x156C365B</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">5</span>] = <span class="number">0x3C6EAAD8</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">6</span>] = <span class="number">0x84D4BF28</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">7</span>] = <span class="number">0xF11A7EE7</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">8</span>] = <span class="number">0x3313B252</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">9</span>] = <span class="number">0xDD9FE279</span>;</span><br><span class="line">	<span class="built_in">int</span> dalte = <span class="number">0xF462900</span>;</span><br><span class="line">	<span class="built_in">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">int</span> wheel;</span><br><span class="line">	<span class="built_in">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 逆算法</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">8</span>; i&gt;=<span class="number">0</span>; i--)&#123;</span><br><span class="line">        <span class="comment">// 轮数</span></span><br><span class="line">		wheel = <span class="number">33</span>;</span><br><span class="line">      </span><br><span class="line">		sum = dalte * (i+wheel);</span><br><span class="line">		<span class="keyword">while</span>(wheel--)&#123;</span><br><span class="line">			sum -= dalte;</span><br><span class="line">			<span class="keyword">value</span>[i+<span class="number">1</span>] -= (sum + key[(sum &gt;&gt; <span class="number">11</span>) &amp; <span class="number">3</span>]) ^ (<span class="keyword">value</span>[i] + ((<span class="keyword">value</span>[i] &gt;&gt; <span class="number">5</span>) ^ (<span class="number">16</span> * <span class="keyword">value</span>[i])));</span><br><span class="line">			<span class="keyword">value</span>[i] -= sum ^ (<span class="keyword">value</span>[i+<span class="number">1</span>] + ((<span class="keyword">value</span>[i+<span class="number">1</span>] &gt;&gt; <span class="number">5</span>) ^ (<span class="number">16</span> * <span class="keyword">value</span>[i+<span class="number">1</span>]))) ^ (sum + key[sum&amp;<span class="number">3</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">9</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">		printf(<span class="string">&quot;%x&quot;</span>, <span class="keyword">value</span>[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="/../images/Tea/9c192ae9b2854516a5d19cecd0a0041b.png" alt="img"></p>
+<p> 将结果借助在线工具转换成文本字符串就可以了<img src="/../images/Tea/7f2f797412c6448f8692a5d33ceeb3a7.png" alt="img"></p>
+<p>故结果为，NSSCTF{hzCtf_94_re666fingcry5641qq}。</p>
+<h1 id="HNCTF-2022-WEEK2-TTTTTTTTTea"><a href="#HNCTF-2022-WEEK2-TTTTTTTTTea" class="headerlink" title="[HNCTF 2022 WEEK2]TTTTTTTTTea"></a>[HNCTF 2022 WEEK2]TTTTTTTTTea</h1><p>题目链接：[NSSCTF - <a target="_blank" rel="noopener" href="https://www.ctfer.vip/problem/2957">HNCTF 2022 WEEK2]TTTTTTTTTea (ctfer.vip)</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://nss-1307121815.cos.ap-chengdu.myqcloud.com/821232fa2ce447e0b3724908b900a8be?q-sign-algorithm=sha1&q-ak=AKIDUnqdARRAernSrzrTothETSAcmgJfkY6O&q-sign-time=1670149528;1670153188&q-key-time=1670149528;1670153188&q-header-list=&q-url-param-list=response-content-disposition&q-signature=13e679a6c66eeb57c5835ac3f65a3af797c704cc&response-content-disposition=attachment;filename=TTT.exe">下载</a></p>
+<p>简单xtea加密学习</p>
+<p>拖入IDA，主函数查看代码<img src="/../images/Tea/2341466f8b1c4608be29a21b74b08f38.png" alt="img"></p>
+<p>分析：把flag放入v4数组中，然后经过tea_encrypt加密后和v4数组前6个数组分别对应相等，进入加密函数，<img src="/../images/Tea/14cffdffc75948fc90624a4fe873ea71.png" alt="img"></p>
+<p> 可以发现是xtea加密，所以直接求flag即可。注意：key数组为4字节，所以数据变为dd类型(类型处按d即可)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> l,r;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> ciphertext[<span class="number">6</span>]=&#123;<span class="number">-1054939302</span>,<span class="number">-1532163725</span>,<span class="number">-165900264</span>,<span class="number">853769165</span>,<span class="number">768352038</span>,<span class="number">876839116</span>&#125;;</span><br><span class="line">	<span class="type">int</span> flag[<span class="number">6</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> delta;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> key[<span class="number">4</span>]=&#123;<span class="number">0x00010203</span>,<span class="number">0x04050607</span>,<span class="number">0x08090a0b</span>,<span class="number">0x0c0d0e0f</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i+=<span class="number">2</span>)&#123;</span><br><span class="line">		l=ciphertext[i];</span><br><span class="line">		r=ciphertext[i+<span class="number">1</span>];</span><br><span class="line">		delta=<span class="number">-32</span>*<span class="number">1640531527</span>;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">32</span>;j++)&#123;</span><br><span class="line">			r -= (((l &gt;&gt; <span class="number">5</span>) ^ (l*<span class="number">16</span>)) + l) ^ (key[(delta&gt;&gt;<span class="number">11</span>)&amp;<span class="number">3</span>]+ delta);<span class="comment">//*16==&lt;&lt;4 </span></span><br><span class="line">    		delta += <span class="number">1640531527</span>;</span><br><span class="line">    		l -= (((r &gt;&gt; <span class="number">5</span>) ^ (r*<span class="number">16</span>)) + r) ^ (key[delta&amp;<span class="number">3</span>]+ delta);</span><br><span class="line">		&#125;</span><br><span class="line">		flag[i]=l;</span><br><span class="line">		flag[i+<span class="number">1</span>]=r;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">char</span> *p = (<span class="type">char</span>*)flag;</span><br><span class="line">	<span class="comment">//for(i=0;i&lt;6;i++)</span></span><br><span class="line">	<span class="comment">//	printf(&quot;%#x&quot;,flag[i]);</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">24</span>;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,*p);</span><br><span class="line">		p++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/31/note-service2/" rel="prev" title="note-service2">
+      <i class="fa fa-chevron-left"></i> note-service2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/06/onlydbg/" rel="next" title="onlydbg">
+      onlydbg <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GDOUCTF-2023-Tea"><span class="nav-number">1.</span> <span class="nav-text">[GDOUCTF 2023]Tea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HNCTF-2022-WEEK2-TTTTTTTTTea"><span class="nav-number">2.</span> <span class="nav-text">[HNCTF 2022 WEEK2]TTTTTTTTTea</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+

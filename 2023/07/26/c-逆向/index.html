@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="攻防世界逆向高手题之re2-cpp-is-awesome继续开启全栈梦想之逆向之旅~这题是攻防世界逆向高手题的re2-cpp-is-awesome载附件，照例扔入exeinfope中查看信息：64位ELF文件，无壳，运行一下查看主要显示字符串： 照例扔入IDA中查看伪代码，有main函数看main函数： C++面向对象的代码有点乱，也有点杂，在string中追踪Better luck next t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++逆向">
+<meta property="og:url" content="http://example.com/2023/07/26/c-%E9%80%86%E5%90%91/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="攻防世界逆向高手题之re2-cpp-is-awesome继续开启全栈梦想之逆向之旅~这题是攻防世界逆向高手题的re2-cpp-is-awesome载附件，照例扔入exeinfope中查看信息：64位ELF文件，无壳，运行一下查看主要显示字符串： 照例扔入IDA中查看伪代码，有main函数看main函数： C++面向对象的代码有点乱，也有点杂，在string中追踪Better luck next t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_17,color_FFFFFF,t_70,g_se,x_16.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/7a36fa9dbc59413d91e40a29bdd0629e.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195892.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195893.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195894.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195905.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/13c4de57a8cc47f7ad03b0f567d69bb7.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/6f1cc188e2834aaa9f5a0ba3909ebf58.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195906.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/ef083f52059d459bab571b5db04770f4.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_18,color_FFFFFF,t_70,g_se,x_16.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_13,color_FFFFFF,t_70,g_se,x_16.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195907.png">
+<meta property="og:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/6f84b0a555844d81b80a920d0bed2ee2.png">
+<meta property="article:published_time" content="2023-07-26T02:13:22.000Z">
+<meta property="article:modified_time" content="2023-07-26T02:14:24.588Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16.png">
+
+<link rel="canonical" href="http://example.com/2023/07/26/c-%E9%80%86%E5%90%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>c++逆向 | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/26/c-%E9%80%86%E5%90%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++逆向
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-26 10:13:22 / 修改时间：10:14:24" itemprop="dateCreated datePublished" datetime="2023-07-26T10:13:22+08:00">2023-07-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="攻防世界逆向高手题之re2-cpp-is-awesome"><a href="#攻防世界逆向高手题之re2-cpp-is-awesome" class="headerlink" title="攻防世界逆向高手题之re2-cpp-is-awesome"></a>攻防世界逆向高手题之re2-cpp-is-awesome</h1><p>继续开启<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%85%A8%E6%A0%88&spm=1001.2101.3001.7020">全栈</a>梦想之逆向之旅~<br>这题是攻防世界逆向高手题的re2-cpp-is-awesome<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述">载附件，照例扔入exeinfope中查看信息：<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_17,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"><br>64位ELF文件，无壳，运行一下查看主要显示字符串：<br><img src="/../images/c-%E9%80%86%E5%90%91/7a36fa9dbc59413d91e40a29bdd0629e.png" alt="在这里插入图片描述"></p>
+<p>照例扔入IDA中查看<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E4%BC%AA%E4%BB%A3%E7%A0%81&spm=1001.2101.3001.7020">伪代码</a>，有main函数看main函数：</p>
+<p>C++面向对象的代码有点乱，也有点杂，在string中追踪Better luck next time字符串跟踪出在下图的第一个红框处：<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195892.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195893.png" alt="在这里插入图片描述"></p>
+<p>C++代码比较陌生，但是根据前面做题中积累的经验中在长类名静态调用的最后一个是要使用的函数名，比如std::__cxx11::basic_string&lt;char,std::char_traits,std::allocator&gt;::begin调用的就是begin这个函数。</p>
+<p>所以开始分析：(这里积累第一个经验)<br>第一个红框中把用户命令行输入的a2赋值给了v3。<br>第二个红框用的是cout函数，输出Usage这个字符串。<br>第三个红框不明觉厉。<br>第四个红框allocator(&amp;v13, a2, a3);应该是把a2的内容赋值给了v13。<br>第五个红框basic_string(v12, a2[1], &amp;v13);应该是把v13赋值给了V12。<br>第六、七个红框应该是v11取v12字符串的开头begin(v12)。<br>第八、九个红框应该是v14取v12的结尾end(v12)。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195894.png" alt="在这里插入图片描述"><br>接着往下分析：<br>先看这里分析跳出循环的条件，一开始我也不知道v14是字符串的结尾，所以很被动，现在知道了。</p>
+<p>(这里积累第二个经验)<br>这里第一个红框sub_400D3D函数是取v11和v14比较，v14前面说过取输入字符串最后一个字符，而v11在第二个红框中sub_400D7A(v11)是向后取v11一个字符，所以这个if是判断当前字符是否为输入的最后一个字符，如果是就跳出循环。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195905.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/13c4de57a8cc47f7ad03b0f567d69bb7.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/6f1cc188e2834aaa9f5a0ba3909ebf58.png" alt="在这里插入图片描述"></p>
+<p>继续往下走：<br>第一个红框是v9取v11当前的字符。<br>第二个红框是用v9和两个嵌套数组off_6020A0[dword_6020C0[v15]]作比较，dword_6020C0[v15]作为off_6020A0的下标取字符。<br>第三个红框是v5的递增操作。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195906.png" alt="在这里插入图片描述"></p>
+<p>所以逻辑很明显了，逆向数组即可先找到off_6020A0数组：<br><img src="/../images/c-%E9%80%86%E5%90%91/ef083f52059d459bab571b5db04770f4.png" alt="在这里插入图片描述"><br>然后打印dword_6020C0数组：</p>
+<p>(这里积累第三个经验)<br>这里有个align 8，align num是让后面的字节都对齐num，也就是这里都对齐8才对，中间补7个0。可是这里下一个数和上一个数明明间隔4而已！后来查了很多资料才发现是IDA自动把多个0判断成对齐操作了，这里align 8是因为前面dd 24h中本来是db 24 0 0 0 然后后面一个双字是dd 0 也就是db 0 0 0 0，IDA把这连着的7个0当成了间隔，那上一个数和下一个数间隔就是8了，所以IDA生成了align 8。我们只要鼠标右键undefine或把上面的dd 24改一下数据大小即可重定义align 8，重新生成数据了。(前面的align 20h 也是同样的道理)<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_18,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_13,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"></p>
+<p>然后开始嵌入python脚本dump下数组内容</p>
+<p>(这里积累第四个经验)<br>IDA库函数Dword是以当前地址向后四个作为Dword数据，所以我们地址要addr+4*i来保持4的间隔。(0x60213c-0x6020c0)&gt;&gt;2是因为地址之间以4为一个单位，&gt;&gt;2在前面博客中总结过就是除4且保留整数部分。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">addr=<span class="number">0x6020c0</span></span><br><span class="line">list1=[]</span><br><span class="line"><span class="keyword">for</span> i in range((<span class="number">0x60213c</span><span class="number">-0x6020c0</span>)&gt;&gt;<span class="number">2</span>):</span><br><span class="line">    list1.append(Dword(addr+<span class="number">4</span>*i))</span><br><span class="line">print(list1)</span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195907.png" alt="在这里插入图片描述"></p>
+<p>逆向逻辑脚本：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">key1=[<span class="number">36</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">54</span>, <span class="number">101</span>, <span class="number">7</span>, <span class="number">39</span>, <span class="number">38</span>, <span class="number">45</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">86</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">101</span>, <span class="number">3</span>, <span class="number">45</span>, <span class="number">22</span>, <span class="number">2</span>, <span class="number">21</span>, <span class="number">3</span>, <span class="number">101</span>, <span class="number">0</span>, <span class="number">41</span>, <span class="number">68</span>, <span class="number">68</span>, <span class="number">1</span>, <span class="number">68</span>, <span class="number">43</span>]</span><br><span class="line">key2=<span class="string">&quot;L3t_ME_T3ll_Y0u_S0m3th1ng_1mp0rtant_A_&#123;FL4G&#125;_W0nt_b3_3X4ctly_th4t_345y_t0_c4ptur3_H0wev3r_1T_w1ll_b3_C00l_1F_Y0u_g0t_1t&quot;</span></span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i in key1:</span><br><span class="line">	flag+=key2[i]</span><br><span class="line">print(flag)</span><br><span class="line"><span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/c-%E9%80%86%E5%90%91/6f84b0a555844d81b80a920d0bed2ee2.png" alt="在这里插入图片描述"></p>
+<p>.<br>.<br>总结：</p>
+<blockquote>
+<p>1：<br>(这里积累第一个经验) 第一个红框中把用户命令行输入的a2赋值给了v3。 第二个红框用的是cout函数，输出Usage这个字符串。<br>第三个红框不明觉厉。 第四个红框allocator(&amp;v13, a2, a3);应该是把a2的内容赋值给了v13。<br>第五个红框basic_string(v12, a2[1], &amp;v13);应该是把v13赋值给了V12。<br>第六、七个红框应该是v11取v12字符串的开头begin(v12)。 第八、九个红框应该是v14取v12的结尾end(v12)。</p>
+</blockquote>
+<blockquote>
+<p>2：<br>(这里积累第二个经验)<br>这里第一个红框sub_400D3D函数是取v11和v14比较，v14前面说过取输入字符串最后一个字符，而v11在第二个红框中sub_400D7A(v11)是向后取v11一个字符，所以这个if是判断当前字符是否为输入的最后一个字符，如果是就跳出循环。</p>
+</blockquote>
+<blockquote>
+<p>3：<br>(这里积累第三个经验) 这里有个align 8，align num是让后面的字节都对齐num，也就是这里都对齐8才对，中间补7个0。可是这里下一个数和上一个数明明间隔4而已！后来查了很多资料才发现是IDA自动把多个0判断成对齐操作了，这里align 8是因为前面dd 24h中本来是db 24 0 0 0 然后后面一个双字是dd 0 也就是db 0 0 0 0，IDA把这连着的7个0当成了间隔，那上一个数和下一个数间隔就是8了，所以IDA生成了align 8。我们只要鼠标右键undefine或把上面的dd 24改一下数据大小即可重定义align 8，重新生成数据了。(前面的align 20h 也是同样的道理)</p>
+</blockquote>
+<blockquote>
+<p>4：<br>(这里积累第四个经验)<br>IDA库函数Dword是以当前地址向后四个作为Dword数据，所以我们地址要addr+4*i来保持4的间隔。(0x60213c-0x6020c0)&gt;&gt;2是因为地址之间以4为一个单位，&gt;&gt;2在前面博客中总结过就是除4且保留整数部分。</p>
+</blockquote>
+<p>解毕！敬礼！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/25/%E8%B0%83%E8%AF%95/" rel="prev" title="调试">
+      <i class="fa fa-chevron-left"></i> 调试
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/31/assemb/" rel="next" title="assemb">
+      assemb <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C%E9%80%86%E5%90%91%E9%AB%98%E6%89%8B%E9%A2%98%E4%B9%8Bre2-cpp-is-awesome"><span class="nav-number">1.</span> <span class="nav-text">攻防世界逆向高手题之re2-cpp-is-awesome</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+
