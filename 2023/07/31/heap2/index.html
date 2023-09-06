@@ -23,7 +23,7 @@
   <meta name="description" content="攻防世界PWN之note-service2题解首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行  然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现  创建这里，有三处值得我们注意   创建的堆空间大小最多为8字节 保存堆指针的数组下标可以越界  既然数组下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="note-service2">
-<meta property="og:url" content="http://example.com/2023/07/31/note-service2/index.html">
+<meta property="og:url" content="http://example.com/2023/07/31/heap2/index.html">
 <meta property="og:site_name" content="Dvgd">
 <meta property="og:description" content="攻防世界PWN之note-service2题解首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行  然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现  创建这里，有三处值得我们注意   创建的堆空间大小最多为8字节 保存堆指针的数组下标可以越界  既然数组下">
 <meta property="og:locale" content="zh_CN">
@@ -43,7 +43,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/note-service2/20191110222658445.png">
 
-<link rel="canonical" href="http://example.com/2023/07/31/note-service2/">
+<link rel="canonical" href="http://example.com/2023/07/31/heap2/">
 
 
 <script id="page-configurations">
@@ -136,12 +136,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
 
   </li>
   </ul>
@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/note-service2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/heap2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -442,14 +442,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

